@@ -1027,15 +1027,15 @@
   </div>
 </div>
 
-<!-- Modal: Balance Mensual & Rentabilidad (Estilo Planilla) -->
+<!-- Modal: Balance Mensual & Rentabilidad -->
 <div id="modalBalance" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-  <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+  <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
     <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
       <div class="flex items-center gap-3">
         <div class="p-2 bg-cyan-500/10 text-cyan-400 rounded-lg border border-cyan-500/20"><i data-lucide="scale" class="w-5 h-5"></i></div>
         <div>
-          <h3 class="text-lg font-bold text-white">Balance General & Rentabilidad</h3>
-          <p class="text-xs text-slate-400">Vista detallada en formato planilla contable</p>
+          <h3 class="text-lg font-bold text-white">Balance Mensual & Rentabilidad</h3>
+          <p class="text-xs text-slate-400">Análisis contable, desglose de cobros/gastos y margen neto</p>
         </div>
       </div>
       <button onclick="document.getElementById('modalBalance').classList.add('hidden')" class="p-1 text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -1048,80 +1048,44 @@
           <label class="block text-[11px] font-semibold text-slate-400 mb-1">Seleccionar Mes de Análisis</label>
           <input type="month" id="inputMesBalance" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white text-xs">
         </div>
-        <button onclick="calcularBalanceMensual()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg text-xs transition">Actualizar Balance</button>
+        <button onclick="calcularBalanceMensual()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg text-xs transition">Calcular Balance</button>
       </div>
 
-      <!-- SECCIÓN: INGRESOS -->
-      <div class="bg-slate-950 rounded-xl border border-slate-800 overflow-hidden">
-        <div class="bg-amber-600/20 text-amber-300 font-bold px-4 py-2 text-center uppercase tracking-wider border-b border-slate-800 text-sm">
-          Ingresos
+      <!-- Resultados del Balance -->
+      <div id="resultadoBalanceContainer" class="space-y-4">
+        <!-- Ingresos -->
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <h4 class="text-sm font-bold text-emerald-400 border-b border-slate-800 pb-2">Ingresos del Mes</h4>
+          <div id="detalleIngresosBalance" class="space-y-1 text-slate-300">
+            <p class="text-slate-500 italic">Seleccione un mes y presione "Calcular Balance".</p>
+          </div>
+          <div class="pt-2 border-t border-slate-800 flex justify-between font-bold text-white text-sm">
+            <span>Total General de Ingresos:</span>
+            <span id="balanceTotalIngresos" class="text-emerald-400">$ 0</span>
+          </div>
         </div>
-        <div class="grid grid-cols-4 divide-x divide-slate-800 text-center border-b border-slate-800 bg-slate-900/50 text-[11px] font-semibold text-slate-400">
-          <div class="py-2">EFECTIVO</div>
-          <div class="py-2">TRANSFERENCIA</div>
-          <div class="py-2">DÉBITO</div>
-          <div class="py-2">CRÉDITO</div>
+
+        <!-- Egresos -->
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <h4 class="text-sm font-bold text-rose-400 border-b border-slate-800 pb-2">Egresos por Sección</h4>
+          <div id="detalleEgresosBalance" class="space-y-1 text-slate-300">
+            <p class="text-slate-500 italic">Sin datos calculados.</p>
+          </div>
+          <div class="pt-2 border-t border-slate-800 flex justify-between font-bold text-white text-sm">
+            <span>Total General de Egresos:</span>
+            <span id="balanceTotalEgresos" class="text-rose-400">$ 0</span>
+          </div>
         </div>
-        <div class="grid grid-cols-4 divide-x divide-slate-800 text-center py-3 text-white font-medium" id="filaMontosIngresos">
-          <div id="ingEfectivo">$ 0</div>
-          <div id="ingTransferencia">$ 0</div>
-          <div id="ingDebito">$ 0</div>
-          <div id="ingCredito">$ 0</div>
-        </div>
-        <div class="bg-emerald-600/20 border-t border-slate-800 px-4 py-3 flex justify-between items-center text-white font-bold">
-          <span class="text-emerald-400">TOTAL INGRESOS</span>
-          <span id="balanceTotalIngresos" class="text-emerald-400 text-sm">$ 0</span>
+
+        <!-- Rentabilidad -->
+        <div class="bg-gradient-to-r from-cyan-950/40 to-slate-900 p-4 rounded-xl border border-cyan-800/50 flex justify-between items-center">
+          <div>
+            <span class="text-cyan-300 block text-xs uppercase font-bold">Porcentaje de Rentabilidad del Mes</span>
+            <span class="text-slate-400 text-[11px]">Fórmula: ((Ingresos - Egresos) / Ingresos) * 100</span>
+          </div>
+          <div class="text-2xl font-black text-cyan-400" id="balanceRentabilidad">0 %</div>
         </div>
       </div>
-
-      <!-- SECCIÓN: EGRESOS -->
-      <div class="bg-slate-950 rounded-xl border border-slate-800 overflow-hidden">
-        <div class="bg-amber-600/20 text-amber-300 font-bold px-4 py-2 text-center uppercase tracking-wider border-b border-slate-800 text-sm">
-          Egresos
-        </div>
-        <table class="w-full text-left text-xs">
-          <thead class="bg-slate-900/50 text-slate-400 uppercase text-[10px] border-b border-slate-800">
-            <tr>
-              <th class="py-2.5 px-4">Detalle / Rubro</th>
-              <th class="py-2.5 px-4 text-right">Monto</th>
-              <th class="py-2.5 px-4 text-right">Representación (%)</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-800" id="tablaEgresosBalance">
-            <!-- Dinámico -->
-          </tbody>
-        </table>
-        <div class="bg-rose-600/20 border-t border-slate-800 px-4 py-3 flex justify-between items-center text-white font-bold">
-          <span class="text-rose-400">TOTAL EGRESOS</span>
-          <span id="balanceTotalEgresos" class="text-rose-400 text-sm">$ 0</span>
-        </div>
-      </div>
-
-      <!-- SECCIÓN: BALANCE GENERAL -->
-      <div class="bg-slate-950 rounded-xl border border-slate-800 overflow-hidden max-w-md mx-auto w-full shadow-lg">
-        <div class="bg-cyan-600/20 text-cyan-300 font-bold px-4 py-2 text-center uppercase tracking-wider border-b border-slate-800 text-sm">
-          Balance General
-        </div>
-        <div class="divide-y divide-slate-800">
-          <div class="px-4 py-3 flex justify-between">
-            <span class="text-slate-400 font-medium">INGRESOS</span>
-            <span class="text-emerald-400 font-bold" id="bgIngresos">$ 0</span>
-          </div>
-          <div class="px-4 py-3 flex justify-between">
-            <span class="text-slate-400 font-medium">EGRESOS</span>
-            <span class="text-rose-400 font-bold" id="bgEgresos">$ 0</span>
-          </div>
-          <div class="px-4 py-3 flex justify-between">
-            <span class="text-slate-400 font-medium">DIFERENCIA (NETO)</span>
-            <span class="font-bold text-cyan-400" id="bgDiferencia">$ 0</span>
-          </div>
-          <div class="px-4 py-3 flex justify-between bg-cyan-950/40">
-            <span class="text-cyan-300 font-bold">RENTABILIDAD</span>
-            <span class="font-black text-cyan-400 text-sm" id="bgRentabilidad">0 %</span>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 </div>
@@ -1805,90 +1769,11 @@ function abrirModalBalanceMensual() {
 }
 
 function calcularBalanceMensual() {
-  const mesSeleccionado = document.getElementById('inputMesBalance').value; 
+  const mesSeleccionado = document.getElementById('inputMesBalance').value; // Formato "YYYY-MM"
   if (!mesSeleccionado) {
     alert('Por favor seleccione un mes.');
     return;
   }
-
-  const movsMes = movimientosFinancieros.filter(m => m.fecha && m.fecha.startsWith(mesSeleccionado));
-
-  // Acumuladores de Ingresos por forma de pago
-  let ingEfectivo = 0;
-  let ingTransferencia = 0;
-  let ingDebito = 0;
-  let ingCredito = 0;
-  let totalIngresos = 0;
-
-  // Acumuladores de Egresos por las 8 secciones
-  const egresosPorRubro = {
-    'Pago docente': 0,
-    'Pago a proveedor': 0,
-    'Pago de servicios': 0,
-    'Impuestos': 0,
-    'Compra de insumos': 0,
-    'Compra de material': 0,
-    'Compra de instrumentos': 0,
-    'Otros': 0
-  };
-  let totalEgresos = 0;
-
-  movsMes.forEach(m => {
-    if (m.tipo === 'INGRESO') {
-      totalIngresos += m.monto;
-      const fp = (m.formaPago || '').toLowerCase();
-      if (fp.includes('efectivo')) ingEfectivo += m.monto;
-      else if (fp.includes('transferencia')) ingTransferencia += m.monto;
-      else if (fp.includes('débito') || fp.includes('debito')) ingDebito += m.monto;
-      else if (fp.includes('crédito') || fp.includes('credito')) ingCredito += m.monto;
-      else ingEfectivo += m.monto; // Por defecto si no coincide
-    } else if (m.tipo === 'EGRESO') {
-      totalEgresos += m.monto;
-      const rubro = m.rubro || 'Otros';
-      if (egresosPorRubro[rubro] !== undefined) {
-        egresosPorRubro[rubro] += m.monto;
-      } else {
-        egresosPorRubro['Otros'] += m.monto;
-      }
-    }
-  });
-
-  // Pintar Ingresos en columnas
-  document.getElementById('ingEfectivo').innerText = `$ ${ingEfectivo.toLocaleString()}`;
-  document.getElementById('ingTransferencia').innerText = `$ ${ingTransferencia.toLocaleString()}`;
-  document.getElementById('ingDebito').innerText = `$ ${ingDebito.toLocaleString()}`;
-  document.getElementById('ingCredito').innerText = `$ ${ingCredito.toLocaleString()}`;
-  document.getElementById('balanceTotalIngresos').innerText = `$ ${totalIngresos.toLocaleString()}`;
-
-  // Pintar Egresos con su porcentaje de representación
-  const tbodyEgresos = document.getElementById('tablaEgresosBalance');
-  tbodyEgresos.innerHTML = Object.entries(egresosPorRubro).map(([rubro, monto]) => {
-    let porcentaje = totalEgresos > 0 ? (monto / totalEgresos) * 100 : 0;
-    return `
-      <tr class="hover:bg-slate-900/50">
-        <td class="py-2.5 px-4 text-slate-300 font-medium">${rubro}</td>
-        <td class="py-2.5 px-4 text-right text-rose-400 font-semibold">$ ${monto.toLocaleString()}</td>
-        <td class="py-2.5 px-4 text-right text-slate-400">${porcentaje.toFixed(2)} %</td>
-      </tr>
-    `;
-  }).join('');
-  document.getElementById('balanceTotalEgresos').innerText = `$ ${totalEgresos.toLocaleString()}`;
-
-  // Balance General & Rentabilidad
-  const diferencia = totalIngresos - totalEgresos;
-  let rentabilidad = totalIngresos > 0 ? ((totalIngresos - totalEgresos) / totalIngresos) * 100 : 0;
-
-  document.getElementById('bgIngresos').innerText = `$ ${totalIngresos.toLocaleString()}`;
-  document.getElementById('bgEgresos').innerText = `$ ${totalEgresos.toLocaleString()}`;
-  
-  const lblDif = document.getElementById('bgDiferencia');
-  lblDif.innerText = `$ ${diferencia.toLocaleString()}`;
-  lblDif.className = `font-bold ${diferencia >= 0 ? 'text-cyan-400' : 'text-rose-400'}`;
-
-  const lblRent = document.getElementById('bgRentabilidad');
-  lblRent.innerText = `${rentabilidad.toFixed(1)} %`;
-  lblRent.className = `font-black text-sm ${rentabilidad >= 0 ? 'text-cyan-400' : 'text-rose-400'}`;
-}
 
   // Filtrar movimientos del mes seleccionado
   const movsMes = movimientosFinancieros.filter(m => m.fecha && m.fecha.startsWith(mesSeleccionado));
