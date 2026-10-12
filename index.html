@@ -226,9 +226,9 @@
               </h2>
               <p class="text-xs text-slate-400">Registro de datos personales, avance pedagógico, sanciones y asistencia.</p>
             </div>
-            <button onclick="openModal('modal-alumno')" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
-              <i data-lucide="plus" class="w-4 h-4"></i> Nuevo Legajo
-            </button>
+            <button onclick="abrirModalNuevoLegajo()" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
+               <i data-lucide="plus" class="w-4 h-4"></i> Nuevo Legajo
+</button>
           </div>
 
           <div class="flex gap-3">
@@ -494,6 +494,81 @@
       sb.classList.toggle('hidden');
     }
   </script>
+
+function abrirModalNuevoLegajo() {
+  const form = document.getElementById('formNuevoLegajo');
+  if (form) form.reset();
+  cambiarTabLegajo('datos');
+  const modal = document.getElementById('modalLegajo');
+  if (modal) modal.classList.remove('hidden');
+}
+
+function cambiarTabLegajo(tab) {
+  ['datos', 'avance', 'sanciones', 'asistencia'].forEach(t => {
+    const content = document.getElementById(`tabContent-${t}`);
+    const btn = document.getElementById(`tabBtn-${t}`);
+    if (content) content.classList.add('hidden');
+    if (btn) btn.className = "py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2";
+  });
+  
+  const activeContent = document.getElementById(`tabContent-${tab}`);
+  const activeBtn = document.getElementById(`tabBtn-${tab}`);
+  if (activeContent) activeContent.classList.remove('hidden');
+  if (activeBtn) activeBtn.className = "py-3 px-3 border-b-2 border-cyan-500 font-medium text-cyan-400 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2";
+}
+
+function intentarCerrarModalLegajo() {
+  const nombre = document.getElementById('legajoNombre').value;
+  const dni = document.getElementById('legajoDni').value;
+  
+  // Si hay algún dato escrito, muestra la alerta
+  if (nombre.trim() !== '' || dni.trim() !== '') {
+    document.getElementById('modalConfirmarCancelar').classList.remove('hidden');
+  } else {
+    cerrarModalLegajoDirecto();
+  }
+}
+
+function confirmarDescarte(seguro) {
+  document.getElementById('modalConfirmarCancelar').classList.add('hidden');
+  if (seguro) {
+    cerrarModalLegajoDirecto(); // Sí: descarta los datos
+  }
+  // No: no hace nada, se queda editando el nuevo legajo
+}
+
+function cerrarModalLegajoDirecto() {
+  document.getElementById('modalLegajo').classList.add('hidden');
+  document.getElementById('formNuevoLegajo').reset();
+}
+
+function guardarLegajo(e) {
+  e.preventDefault();
+  
+  const nombre = document.getElementById('legajoNombre').value;
+  const dni = document.getElementById('legajoDni').value;
+  const curso = document.getElementById('legajoCurso').value;
+  const profesor = document.getElementById('legajoProfesor').value || 'Sin asignar';
+  const nivel = document.getElementById('legajoNivel').value;
+  const tutor = document.getElementById('legajoTutor').value || 'No especificado';
+
+  // Añade el alumno nuevo al listado existente
+  alumnosEjemplo.unshift({
+    id: Date.now(),
+    nombre,
+    dni,
+    curso,
+    profesor,
+    nivel,
+    tutor,
+    sanciones: 0
+  });
+
+  renderAlumnos();
+  alert(`¡Legajo de ${nombre} guardado correctamente!`);
+  cerrarModalLegajoDirecto();
+}
+
 </body>
 </html>
 
