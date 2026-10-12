@@ -103,6 +103,7 @@
     </div>
   </div>
 
+
   <!-- ========================================== -->
   <!-- SISTEMA PRINCIPAL (BLOQUES 2, 3 Y 4)      -->
   <!-- ========================================== -->
@@ -224,29 +225,43 @@
               <h2 class="text-xl font-bold text-white flex items-center gap-2">
                 <i data-lucide="graduation-cap" class="text-amber-400"></i> Legajos de Alumnos
               </h2>
-              <p class="text-xs text-slate-400">Registro de datos personales, avance pedagógico, sanciones y asistencia.</p>
+              <p class="text-xs text-slate-400">Gestión privada y consulta segura de expedientes académicos.</p>
             </div>
-            <button onclick="abrirModalNuevoLegajo()" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
-              <i data-lucide="user-plus" class="w-4 h-4"></i> Nuevo Legajo
-            </button>
+            <div class="flex items-center gap-2">
+              <button onclick="toggleBarraBusqueda()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700 transition">
+                <i data-lucide="search" class="w-4 h-4"></i> Buscar Legajo
+              </button>
+              <button onclick="abrirModalNuevoLegajo()" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
+                <i data-lucide="user-plus" class="w-4 h-4"></i> Nuevo Legajo
+              </button>
+            </div>
           </div>
 
-          <div class="flex gap-3">
-            <input type="text" placeholder="Buscar legajo por nombre, DNI o curso..." class="flex-1 bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500" />
-            <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700">
-              <i data-lucide="printer" class="w-4 h-4"></i> Imprimir Listado
-            </button>
+          <!-- Barra de Búsqueda Desplegable (Privada) -->
+          <div id="barraBusquedaContainer" class="hidden bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
+            <div class="flex gap-2">
+              <input type="text" id="inputBusquedaLegajo" placeholder="Escriba nombre, DNI o curso a buscar..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500" oninput="ejecutarBusquedaLegajo()">
+              <button onclick="cerrarBarraBusqueda()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs">Cerrar</button>
+            </div>
+            <!-- Contenedor de resultados dinámicos -->
+            <div id="resultadosBusqueda" class="divide-y divide-slate-800 max-h-48 overflow-y-auto text-xs text-slate-300">
+              <p class="text-slate-500 py-2 text-center">Ingrese un término para buscar en los legajos...</p>
+            </div>
           </div>
 
+          <!-- Listado Resumido de Alumnos -->
           <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+            <div class="p-4 bg-slate-800/40 border-b border-slate-800 text-xs text-slate-400 flex justify-between items-center">
+              <span>Listado General de Alumnos Activos</span>
+              <span id="contadorAlumnos" class="text-cyan-400 font-semibold">2 alumnos registrados</span>
+            </div>
             <table class="w-full text-left text-xs text-slate-300">
               <thead class="bg-slate-800/60 text-slate-400 border-b border-slate-800 uppercase text-[10px] tracking-wider">
                 <tr>
                   <th class="py-3 px-4">Alumno / DNI</th>
                   <th class="py-3 px-4">Curso / Profesor</th>
                   <th class="py-3 px-4">Nivel / Avance</th>
-                  <th class="py-3 px-4">Tutor / Emergencia</th>
-                  <th class="py-3 px-4">Sanciones</th>
+                  <th class="py-3 px-4">Tutor</th>
                   <th class="py-3 px-4 text-right">Acciones</th>
                 </tr>
               </thead>
@@ -387,6 +402,7 @@
     </footer>
 
   </div>
+
 
   <!-- ========================================== -->
   <!-- MODALES DE APOYO Y NUEVO LEGAJO          -->
@@ -569,7 +585,44 @@
     </div>
   </div>
 
-  <!-- Cartel de Alerta de Confirmación al Cancelar -->
+  <!-- Modal: Visualizar Legajo (Con opción de confirmar impresión) -->
+  <div id="modalVerLegajo" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      
+      <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg border border-amber-500/20">
+            <i data-lucide="file-text" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white" id="verLegajoTitulo">Legajo de Alumno</h3>
+            <p class="text-xs text-slate-400">Información detallada del expediente</p>
+          </div>
+        </div>
+        <button type="button" onclick="cerrarModalVerLegajo()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Contenido del Legajo -->
+      <div class="p-6 overflow-y-auto space-y-4 text-xs text-slate-300 flex-1" id="contenidoDetalleLegajo">
+        <!-- Se carga dinámicamente -->
+      </div>
+
+      <!-- Footer con opción de imprimir bajo confirmación -->
+      <div class="p-5 border-t border-slate-800 flex justify-between items-center bg-slate-950/80">
+        <button type="button" onclick="imprimirLegajoActual()" class="px-4 py-2 rounded-xl text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center gap-2 transition">
+          <i data-lucide="printer" class="w-4 h-4"></i> Imprimir Ficha
+        </button>
+        <button type="button" onclick="cerrarModalVerLegajo()" class="px-5 py-2 rounded-xl text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 text-white transition">
+          Cerrar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Cartel de Alerta de Confirmación al Cancelar Nuevo Legajo -->
   <div id="modalConfirmarCancelar" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-[60] p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl">
       <div class="w-12 h-12 bg-amber-500/10 text-amber-500 rounded-full flex items-center justify-center mx-auto border border-amber-500/20">
@@ -590,6 +643,7 @@
     </div>
   </div>
 
+
   <!-- ========================================== -->
   <!-- LÓGICA JAVASCRIPT                          -->
   <!-- ========================================== -->
@@ -605,15 +659,18 @@
 
     function renderAlumnos() {
       const tbody = document.getElementById('tabla-alumnos');
+      const contador = document.getElementById('contadorAlumnos');
+      if (contador) contador.innerText = `${alumnosEjemplo.length} alumnos registrados`;
+
+      if (!tbody) return;
       tbody.innerHTML = alumnosEjemplo.map(a => `
         <tr class="hover:bg-slate-800/40 transition">
           <td class="py-3 px-4 font-medium text-white">${a.nombre}<br><span class="text-[10px] text-slate-500">DNI: ${a.dni}</span></td>
           <td class="py-3 px-4">${a.curso}<br><span class="text-[10px] text-slate-500">${a.profesor}</span></td>
           <td class="py-3 px-4"><span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded text-[10px]">${a.nivel}</span></td>
           <td class="py-3 px-4">${a.tutor || 'No especificado'}</td>
-          <td class="py-3 px-4">${a.sanciones > 0 ? `<span class="text-rose-400 font-bold">${a.sanciones} aplicada(s)</span>` : '<span class="text-slate-500">Sin sanciones</span>'}</td>
           <td class="py-3 px-4 text-right">
-            <button onclick="window.print()" class="text-cyan-400 hover:underline text-[11px]">Ver Legajo / Imprimir</button>
+            <button onclick="verDetalleLegajo(${a.id})" class="text-cyan-400 hover:underline text-[11px] font-medium">Ver Legajo</button>
           </td>
         </tr>
       `).join('');
@@ -691,6 +748,108 @@
       cerrarModalLegajoDirecto();
     }
 
+    // Control de la barra de búsqueda privada de legajos
+    function toggleBarraBusqueda() {
+      const container = document.getElementById('barraBusquedaContainer');
+      container.classList.toggle('hidden');
+      if (!container.classList.contains('hidden')) {
+        document.getElementById('inputBusquedaLegajo').focus();
+      }
+    }
+
+    function cerrarBarraBusqueda() {
+      document.getElementById('barraBusquedaContainer').classList.add('hidden');
+      document.getElementById('inputBusquedaLegajo').value = '';
+      document.getElementById('resultadosBusqueda').innerHTML = '<p class="text-slate-500 py-2 text-center">Ingrese un término para buscar en los legajos...</p>';
+    }
+
+    function ejecutarBusquedaLegajo() {
+      const query = document.getElementById('inputBusquedaLegajo').value.toLowerCase().trim();
+      const resultadosDiv = document.getElementById('resultadosBusqueda');
+
+      if (query === '') {
+        resultadosDiv.innerHTML = '<p class="text-slate-500 py-2 text-center">Ingrese un término para buscar en los legajos...</p>';
+        return;
+      }
+
+      const encontrados = alumnosEjemplo.filter(a => 
+        a.nombre.toLowerCase().includes(query) || 
+        a.dni.toLowerCase().includes(query) || 
+        a.curso.toLowerCase().includes(query)
+      );
+
+      if (encontrados.length === 0) {
+        resultadosDiv.innerHTML = '<p class="text-rose-400 py-2 text-center">No se encontraron legajos con ese criterio.</p>';
+        return;
+      }
+
+      resultadosDiv.innerHTML = encontrados.map(a => `
+        <div class="py-2.5 px-3 flex items-center justify-between hover:bg-slate-800/60 rounded-lg transition">
+          <div>
+            <div class="font-semibold text-white">${a.nombre} <span class="text-slate-500 font-normal">(DNI: ${a.dni})</span></div>
+            <div class="text-[11px] text-slate-400">Curso: ${a.curso} — Profesor: ${a.profesor}</div>
+          </div>
+          <button onclick="verDetalleLegajo(${a.id})" class="px-3 py-1 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-[11px] transition">
+            Ver Legajo
+          </button>
+        </div>
+      `).join('');
+    }
+
+    // Visualizar Detalle del Legajo Seleccionado
+    function verDetalleLegajo(id) {
+      const alumno = alumnosEjemplo.find(a => a.id === id);
+      if (!alumno) return;
+
+      document.getElementById('verLegajoTitulo').innerText = `Legajo de: ${alumno.nombre}`;
+      
+      const detalleDiv = document.getElementById('contenidoDetalleLegajo');
+      detalleDiv.innerHTML = `
+        <div class="grid grid-cols-2 gap-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
+          <div>
+            <span class="text-slate-500 block text-[10px] uppercase">Nombre Completo</span>
+            <strong class="text-white text-sm">${alumno.nombre}</strong>
+          </div>
+          <div>
+            <span class="text-slate-500 block text-[10px] uppercase">DNI</span>
+            <strong class="text-white text-sm">${alumno.dni}</strong>
+          </div>
+          <div>
+            <span class="text-slate-500 block text-[10px] uppercase">Curso / Taller</span>
+            <strong class="text-cyan-400">${alumno.curso}</strong>
+          </div>
+          <div>
+            <span class="text-slate-500 block text-[10px] uppercase">Profesor a Cargo</span>
+            <strong class="text-slate-200">${alumno.profesor}</strong>
+          </div>
+          <div>
+            <span class="text-slate-500 block text-[10px] uppercase">Nivel Actual</span>
+            <strong class="text-amber-400">${alumno.nivel}</strong>
+          </div>
+          <div>
+            <span class="text-slate-500 block text-[10px] uppercase">Tutor / Contacto</span>
+            <strong class="text-slate-200">${alumno.tutor || 'No especificado'}</strong>
+          </div>
+          <div class="col-span-2 pt-2 border-t border-slate-800">
+            <span class="text-slate-500 block text-[10px] uppercase mb-1">Registro de Sanciones y Asistencia</span>
+            <p class="text-slate-300">${alumno.sanciones > 0 ? `<span class="text-rose-400 font-bold">${alumno.sanciones} sanción(es) aplicada(s)</span>` : 'Sin sanciones registradas. Asistencia regular.'}</p>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('modalVerLegajo').classList.remove('hidden');
+    }
+
+    function cerrarModalVerLegajo() {
+      document.getElementById('modalVerLegajo').classList.add('hidden');
+    }
+
+    function imprimirLegajoActual() {
+      if (confirm('¿Desea enviar este legajo a la impresora?')) {
+        window.print();
+      }
+    }
+
     // Cambios de pantallas / Navegación
     function navigateTo(sectionId) {
       const sections = ['inicio', 'alumnos', 'inventario', 'personal', 'finanzas', 'agenda', 'backup', 'guia'];
@@ -751,4 +910,3 @@
   </script>
 </body>
 </html>
-
