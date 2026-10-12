@@ -1090,6 +1090,60 @@
   </div>
 </div>
 
+<!-- Modal: Estadísticas Financieras & Gráficos -->
+<div id="modalEstadisticas" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+  <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+    <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
+      <div class="flex items-center gap-3">
+        <div class="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg border border-indigo-500/20"><i data-lucide="bar-chart-3" class="w-5 h-5"></i></div>
+        <div>
+          <h3 class="text-lg font-bold text-white">Estadísticas & Gráficos Financieros</h3>
+          <p class="text-xs text-slate-400">Análisis comparativo por rango de fechas</p>
+        </div>
+      </div>
+      <button onclick="document.getElementById('modalEstadisticas').classList.add('hidden')" class="p-1 text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+
+    <div class="p-6 overflow-y-auto space-y-6 flex-1 text-xs text-slate-300">
+      <!-- Filtro de Fechas -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Fecha Desde</label>
+          <input type="date" id="statsFechaDesde" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white text-xs">
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Fecha Hasta</label>
+          <input type="date" id="statsFechaHasta" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white text-xs">
+        </div>
+        <div class="flex items-end">
+          <button onclick="actualizarEstadisticas()" class="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg text-xs transition">Generar Informe</button>
+        </div>
+      </div>
+
+      <!-- Tarjetas Resumen -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+          <p class="text-[11px] text-slate-400">Ingresos en el Periodo</p>
+          <p class="text-xl font-bold text-emerald-400 mt-1" id="statsIngresos">$ 0</p>
+        </div>
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+          <p class="text-[11px] text-slate-400">Egresos en el Periodo</p>
+          <p class="text-xl font-bold text-rose-400 mt-1" id="statsEgresos">$ 0</p>
+        </div>
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+          <p class="text-[11px] text-slate-400">Balance del Periodo</p>
+          <p class="text-xl font-bold text-cyan-400 mt-1" id="statsBalance">$ 0</p>
+        </div>
+      </div>
+
+      <!-- Contenedor del Gráfico -->
+      <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 relative h-72">
+        <canvas id="graficoFinanzas"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   <!-- ========================================== -->
   <!-- LÓGICA JAVASCRIPT GLOBAL                   -->
@@ -1790,6 +1844,98 @@ function calcularBalanceMensual() {
   const lblRentabilidad = document.getElementById('balanceRentabilidad');
   lblRentabilidad.innerText = `${rentabilidad.toFixed(1)} %`;
   lblRentabilidad.className = `text-2xl font-black ${rentabilidad >= 0 ? 'text-cyan-400' : 'text-rose-400'}`;
+}
+
+let miGraficoFinanzas = null;
+
+function abrirModalEstadisticas() {
+  // Asignar por defecto el mes actual en curso
+  const hoy = new Date();
+  const anio = hoy.getFullYear();
+  const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+  const ultimoDia = new Date(anio, hoy.getMonth() + 1, 0).getDate();
+
+  document.getElementById('statsFechaDesde').value = `${anio}-${mes}-01`;
+  document.getElementById('statsFechaHasta').value = `${anio}-${mes}-${ultimoDia}`;
+
+  document.getElementById('modalEstadisticas').classList.remove('hidden');
+  actualizarEstadisticas();
+}
+
+function actualizarEstadisticas() {
+  const desde = document.getElementById('statsFechaDesde').value;
+  const hasta = document.getElementById('statsFechaHasta').value;
+
+  if (!desde || !hasta) {
+    alert('Por favor ingrese un rango de fechas válido.');
+    return;
+  }
+
+  // Filtrar movimientos según el rango de fechas seleccionado
+  const movsFiltrados = movimientosFinancieros.filter(m => m.fecha >= desde && m.fecha <= hasta);
+
+  let totalIng = 0;
+  let totalEgr = 0;
+
+  movsFiltrados.forEach(m => {
+    if (m.tipo === 'INGRESO') totalIng += m.monto;
+    else if (m.tipo === 'EGRESO') totalEgr += m.monto;
+  });
+
+  const balance = totalIng - totalEgr;
+
+  // Actualizar tarjetas de resumen
+  document.getElementById('statsIngresos').innerText = `$ ${totalIng.toLocaleString()}`;
+  document.getElementById('statsEgresos').innerText = `$ ${totalEgr.toLocaleString()}`;
+  const lblBal = document.getElementById('statsBalance');
+  lblBal.innerText = `$ ${balance.toLocaleString()}`;
+  lblBal.className = `text-xl font-bold mt-1 ${balance >= 0 ? 'text-cyan-400' : 'text-rose-400'}`;
+
+  // Renderizar o actualizar el gráfico con Chart.js
+  const ctx = document.getElementById('graficoFinanzas').getContext('2d');
+  
+  if (miGraficoFinanzas) {
+    miGraficoFinanzas.destroy(); // Destruir gráfico anterior para evitar superposiciones
+  }
+
+  miGraficoFinanzas = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Ingresos Totales', 'Egresos Totales', 'Balance Neto'],
+      datasets: [{
+        label: 'Monto en ARS ($)',
+        data: [totalIng, totalEgr, balance],
+        backgroundColor: [
+          'rgba(16, 185, 129, 0.6)',
+          'rgba(244, 63, 94, 0.6)',
+          'rgba(6, 182, 212, 0.6)'
+        ],
+        borderColor: [
+          'rgb(16, 185, 129)',
+          'rgb(244, 63, 94)',
+          'rgb(6, 182, 212)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: {
+          ticks: { color: '#94a3b8' },
+          grid: { color: '#1e293b' }
+        },
+        x: {
+          ticks: { color: '#94a3b8' },
+          grid: { display: false }
+        }
+      }
+    }
+  });
 }
   
   </script>
