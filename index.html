@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>P.A. – Gestión de Academia de Música</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js para Estadísticas de Finanzas -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: #334155;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+
+  <!-- ========================================== -->
+  <!-- BLOQUE 1: AUTENTICACIÓN / LOGIN Y REGISTRO -->
+  <!-- ========================================== -->
+  <div id="auth-screen" class="fixed inset-0 z-50 bg-slate-950 flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-8 max-w-md w-full relative">
+      <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-cyan-500/10 text-cyan-400 mb-3">
+          <i data-lucide="music" class="w-8 h-8"></i>
+        </div>
+        <h1 class="text-2xl font-bold text-white">Proyecto Academia (P.A.)</h1>
+        <p class="text-sm text-slate-400 mt-1">Gestión integral de Academia de Música</p>
+      </div>
+
+      <!-- Formularios de Auth -->
+      <div id="auth-forms">
+        <!-- Formulario Login -->
+        <form id="form-login" onsubmit="event.preventDefault(); loginUser();" class="space-y-4">
+          <h2 class="text-lg font-semibold text-slate-200">Iniciar Sesión</h2>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Usuario / Email</label>
+            <input type="text" id="login-user" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="usuario@ejemplo.com" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Contraseña</label>
+            <input type="password" id="login-pass" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="••••••••" />
+          </div>
+          <div class="flex items-center text-xs text-slate-400">
+            <input type="checkbox" id="login-terms" required class="mr-2 rounded border-slate-700 bg-slate-800 text-cyan-500" />
+            <label for="login-terms">Acepto los <a href="#" onclick="openModal('modal-terms')" class="text-cyan-400 underline">Términos y Condiciones</a> y la <a href="#" onclick="openModal('modal-privacy')" class="text-cyan-400 underline">Política de Privacidad</a></label>
+          </div>
+          <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-medium py-2 rounded-lg text-sm transition">Ingresar al Programa</button>
+          
+          <div class="flex justify-between text-xs text-slate-400 pt-2 border-t border-slate-800">
+            <button type="button" onclick="toggleAuthForm('register')" class="hover:text-cyan-400">Crear cuenta nueva</button>
+            <button type="button" onclick="toggleAuthForm('recover')" class="hover:text-cyan-400">¿Olvidaste tu contraseña?</button>
+          </div>
+        </form>
+
+        <!-- Formulario Registro -->
+        <form id="form-register" onsubmit="event.preventDefault(); registerUser();" class="space-y-4 hidden">
+          <h2 class="text-lg font-semibold text-slate-200">Registro de Cuenta</h2>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Nombre Completo</label>
+            <input type="text" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Correo Electrónico</label>
+            <input type="email" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Contraseña</label>
+            <input type="password" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" />
+          </div>
+          <div class="flex items-center text-xs text-slate-400">
+            <input type="checkbox" required class="mr-2 rounded border-slate-700 bg-slate-800 text-cyan-500" />
+            <label>Acepto los <a href="#" onclick="openModal('modal-terms')" class="text-cyan-400 underline">Términos y Condiciones</a> y la <a href="#" onclick="openModal('modal-privacy')" class="text-cyan-400 underline">Política de Privacidad</a></label>
+          </div>
+          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded-lg text-sm transition">Registrarse</button>
+          <button type="button" onclick="toggleAuthForm('login')" class="w-full text-center text-xs text-slate-400 hover:text-white mt-2">Volver al Inicio de Sesión</button>
+        </form>
+
+        <!-- Formulario Recuperación -->
+        <form id="form-recover" onsubmit="event.preventDefault(); recoverPass();" class="space-y-4 hidden">
+          <h2 class="text-lg font-semibold text-slate-200">Recuperar Contraseña</h2>
+          <p class="text-xs text-slate-400">Ingresá tu correo registrado para recibir las instrucciones de restablecimiento.</p>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Correo Electrónico</label>
+            <input type="email" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="correo@ejemplo.com" />
+          </div>
+          <button type="submit" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-medium py-2 rounded-lg text-sm transition">Enviar Instrucciones</button>
+          <button type="button" onclick="toggleAuthForm('login')" class="w-full text-center text-xs text-slate-400 hover:text-white mt-2">Volver al Inicio de Sesión</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- SISTEMA PRINCIPAL (BLOQUES 2, 3 Y 4)       -->
+  <!-- ========================================== -->
+  <div id="app-content" class="flex flex-col h-full hidden">
+    
+    <!-- ENCABEZADO / HEADER -->
+    <header class="bg-slate-900 border-b border-slate-800 px-4 py-3 flex items-center justify-between shrink-0">
+      <a href="#" onclick="navigateTo('inicio')" class="flex items-center gap-2 hover:opacity-80 transition group">
+        <div class="bg-cyan-500/20 text-cyan-400 p-2 rounded-lg group-hover:bg-cyan-500/30">
+          <i data-lucide="music" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h1 class="text-sm font-bold text-white tracking-wide">P.A. – Gestión de Academia de Música</h1>
+          <p class="text-[10px] text-slate-400">Sistema de Control Integral</p>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-3">
+        <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-400 hover:text-white border border-slate-800 rounded-lg">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+        <button onclick="logoutUser()" class="flex items-center gap-1.5 bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500/20 px-3 py-1.5 rounded-lg text-xs font-medium transition">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+          <span>Cerrar sesión</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- CUERPO PRINCIPAL (LATERAL + PANTALLA PRINCIPAL) -->
+    <div class="flex flex-1 overflow-hidden">
+
+      <!-- BLOQUE 2: MENÚ LATERAL (SIDEBAR) -->
+      <aside id="sidebar" class="w-64 bg-slate-900/95 border-r border-slate-800 flex flex-col justify-between shrink-0 transition-all duration-300">
+        <div class="p-3 space-y-1 custom-scroll overflow-y-auto">
+          <p class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider px-3 mb-2">Menú Principal</p>
+
+          <button onclick="navigateTo('inicio')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition active-nav" id="nav-inicio">
+            <i data-lucide="home" class="w-4 h-4 text-cyan-400"></i>
+            <span>Inicio</span>
+          </button>
+
+          <button onclick="navigateTo('alumnos')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition" id="nav-alumnos">
+            <i data-lucide="graduation-cap" class="w-4 h-4 text-amber-400"></i>
+            <span>Alumnos</span>
+          </button>
+
+          <button onclick="navigateTo('inventario')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition" id="nav-inventario">
+            <i data-lucide="box" class="w-4 h-4 text-emerald-400"></i>
+            <span>Inventario</span>
+          </button>
+
+          <button onclick="navigateTo('personal')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition" id="nav-personal">
+            <i data-lucide="users" class="w-4 h-4 text-indigo-400"></i>
+            <span>Personal de la Academia</span>
+          </button>
+
+          <button onclick="navigateTo('finanzas')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition" id="nav-finanzas">
+            <i data-lucide="dollar-sign" class="w-4 h-4 text-green-400"></i>
+            <span>Finanzas</span>
+          </button>
+
+          <button onclick="navigateTo('agenda')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition" id="nav-agenda">
+            <i data-lucide="calendar" class="w-4 h-4 text-purple-400"></i>
+            <span>Agenda & Clases</span>
+          </button>
+
+          <button onclick="navigateTo('backup')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition" id="nav-backup">
+            <i data-lucide="hard-drive" class="w-4 h-4 text-blue-400"></i>
+            <span>Backup / Copia Seg.</span>
+          </button>
+
+          <div class="pt-4 mt-4 border-t border-slate-800/80">
+            <a href="https://wa.me/5493580000000" target="_blank" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-emerald-400 hover:bg-emerald-500/10 transition">
+              <i data-lucide="message-square" class="w-4 h-4"></i>
+              <span>Contacto WhatsApp</span>
+            </a>
+
+            <button onclick="navigateTo('guia')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition" id="nav-guia">
+              <i data-lucide="book-open" class="w-4 h-4 text-slate-400"></i>
+              <span>Guía de Usuario</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="p-3 border-t border-slate-800 text-[11px] text-slate-500 text-center">
+          Versión 1.0 — P.A.
+        </div>
+      </aside>
+
+      <!-- ÁREA DE CONTENIDO PRINCIPAL -->
+      <main class="flex-1 overflow-y-auto custom-scroll bg-slate-950 p-6">
+
+        <!-- BLOQUE 4: INICIO / DASHBOARD HERO -->
+        <section id="section-inicio" class="h-full flex flex-col justify-center items-center">
+          <div class="relative w-full max-w-4xl h-[480px] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center">
+            <!-- Imagen Cálida de Música -->
+            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80" alt="Música" class="absolute inset-0 w-full h-full object-cover brightness-40" />
+            
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+
+            <div class="relative z-10 text-center px-6">
+              <span class="inline-block px-3 py-1 bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 rounded-full text-xs font-semibold tracking-wider uppercase mb-4">
+                Plataforma de Control
+              </span>
+              <h2 class="text-4xl md:text-5xl font-black text-white tracking-tight drop-shadow-md">
+                BIENVENIDO A P.A.
+              </h2>
+              <p class="text-slate-300 mt-2 max-w-lg mx-auto text-sm md:text-base">
+                Gestión integral de la Academia de Música: Alumnos, Inventario, Personal y Finanzas.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- PANTALLA: ALUMNOS -->
+        <section id="section-alumnos" class="hidden space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div>
+              <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                <i data-lucide="graduation-cap" class="text-amber-400"></i> Legajos de Alumnos
+              </h2>
+              <p class="text-xs text-slate-400">Registro de datos personales, avance pedagógico, sanciones y asistencia.</p>
+            </div>
+            <button onclick="openModal('modal-alumno')" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
+              <i data-lucide="plus" class="w-4 h-4"></i> Nuevo Legajo
+            </button>
+          </div>
+
+          <div class="flex gap-3">
+            <input type="text" placeholder="Buscar legajo por nombre, DNI o curso..." class="flex-1 bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500" />
+            <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700">
+              <i data-lucide="printer" class="w-4 h-4"></i> Imprimir Listado
+            </button>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+            <table class="w-full text-left text-xs text-slate-300">
+              <thead class="bg-slate-800/60 text-slate-400 border-b border-slate-800 uppercase text-[10px] tracking-wider">
+                <tr>
+                  <th class="py-3 px-4">Alumno / DNI</th>
+                  <th class="py-3 px-4">Curso / Profesor</th>
+                  <th class="py-3 px-4">Nivel / Avance</th>
+                  <th class="py-3 px-4">Tutor / Emergencia</th>
+                  <th class="py-3 px-4">Sanciones</th>
+                  <th class="py-3 px-4 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800" id="tabla-alumnos">
+                <!-- Se llena mediante Javascript -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- PANTALLA: INVENTARIO -->
+        <section id="section-inventario" class="hidden space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div>
+              <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                <i data-lucide="box" class="text-emerald-400"></i> Inventario de Instrumentos y Mobiliario
+              </h2>
+              <p class="text-xs text-slate-400">Carga, estado de funcionamiento y disponibilidad de activos.</p>
+            </div>
+            <button class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
+              <i data-lucide="plus" class="w-4 h-4"></i> Cargar Artículo
+            </button>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 text-center text-slate-400 text-xs">
+            Gestión de Inventario lista para conectar registros.
+          </div>
+        </section>
+
+        <!-- PANTALLA: PERSONAL -->
+        <section id="section-personal" class="hidden space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div>
+              <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                <i data-lucide="users" class="text-indigo-400"></i> Personal de la Academia
+              </h2>
+              <p class="text-xs text-slate-400">Legajos de profesores, datos de contacto y estado activo/inactivo.</p>
+            </div>
+            <button class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
+              <i data-lucide="plus" class="w-4 h-4"></i> Cargar Profesor
+            </button>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 text-center text-slate-400 text-xs">
+            Módulo de legajos de profesores cargado.
+          </div>
+        </section>
+
+        <!-- PANTALLA: FINANZAS -->
+        <section id="section-finanzas" class="hidden space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div>
+              <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                <i data-lucide="dollar-sign" class="text-green-400"></i> Finanzas & Balance
+              </h2>
+              <p class="text-xs text-slate-400">Ingresos por cuotas, pago de sueldos a profesores, egresos y gráficos estadísticos.</p>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+              <p class="text-xs text-slate-400">Ingresos Totales</p>
+              <p class="text-2xl font-bold text-emerald-400 mt-1">$ 450,000</p>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+              <p class="text-xs text-slate-400">Egresos / Sueldos</p>
+              <p class="text-2xl font-bold text-rose-400 mt-1">$ 180,000</p>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+              <p class="text-xs text-slate-400">Balance Neto</p>
+              <p class="text-2xl font-bold text-cyan-400 mt-1">$ 270,000</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- PANTALLA: AGENDA -->
+        <section id="section-agenda" class="hidden space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div>
+              <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                <i data-lucide="calendar" class="text-purple-400"></i> Agenda & Control de Asistencia
+              </h2>
+              <p class="text-xs text-slate-400">Programación de clases, eventos especiales e integración con Google Calendar.</p>
+            </div>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 text-center text-slate-400 text-xs">
+            Calendario de clases y vinculación con asistencia de alumnos.
+          </div>
+        </section>
+
+        <!-- PANTALLA: BACKUP -->
+        <section id="section-backup" class="hidden space-y-6">
+          <div class="border-b border-slate-800 pb-4">
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <i data-lucide="hard-drive" class="text-blue-400"></i> Copias de Seguridad (Backup)
+            </h2>
+            <p class="text-xs text-slate-400">Programación de respaldos automáticos en la PC o dispositivos externos.</p>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4 max-w-md">
+            <button onclick="alert('Backup generado y guardado localmente.')" class="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium py-2 rounded-lg transition">Generar Backup Ahora</button>
+          </div>
+        </section>
+
+        <!-- PANTALLA: GUÍA -->
+        <section id="section-guia" class="hidden space-y-6">
+          <div class="border-b border-slate-800 pb-4">
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <i data-lucide="book-open" class="text-slate-400"></i> Guía de Usuario
+            </h2>
+            <p class="text-xs text-slate-400">Instrucciones de uso para el personal de Punto Tech y la Academia.</p>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- BLOQUE 3: PIE DE PÁGINA (FOOTER)           -->
+    <!-- ========================================== -->
+    <footer class="bg-slate-900 border-t border-slate-800 text-xs text-slate-400 shrink-0">
+      <div class="px-6 py-3 flex flex-wrap items-center justify-between gap-4 border-b border-slate-800/60">
+        <div class="flex flex-wrap items-center gap-6 text-[11px]">
+          <button onclick="openModal('modal-terms')" class="hover:text-cyan-400 transition">Términos y Condiciones</button>
+          <button onclick="openModal('modal-privacy')" class="hover:text-cyan-400 transition">Política de Privacidad</button>
+          <a href="tel:+5493580000000" class="hover:text-cyan-400 transition">Teléfono</a>
+          <a href="mailto:contacto@puntotech.com" class="hover:text-cyan-400 transition">Correo electrónico</a>
+          <button onclick="alert('Apartado de Planes y Suscripción P.A.')" class="hover:text-cyan-400 transition">Planes y Suscripción</button>
+        </div>
+      </div>
+
+      <div class="px-6 py-2.5 flex flex-wrap items-center justify-between gap-4 text-[11px] text-slate-500 bg-slate-950/50">
+        <div>Dirección: Río Cuarto, Córdoba, Argentina</div>
+        <div class="font-medium text-slate-400">2026 P.A. – Desarrollado por Punto Tech</div>
+        <div class="flex items-center gap-3">
+          <a href="#" class="hover:text-cyan-400 transition"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+          <a href="#" class="hover:text-cyan-400 transition"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+          <a href="#" class="hover:text-cyan-400 transition"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- MODALES DE APOYO                           -->
+  <!-- ========================================== -->
+  <div id="modal-terms" class="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 max-w-lg w-full">
+      <h3 class="text-lg font-bold text-white mb-2">Términos y Condiciones</h3>
+      <p class="text-xs text-slate-400 leading-relaxed mb-4">El presente software es de uso exclusivo para la gestión de la Academia de Música bajo licencia de Punto Tech (2026).</p>
+      <button onclick="closeModal('modal-terms')" class="bg-slate-800 hover:bg-slate-700 text-white text-xs px-4 py-2 rounded-lg">Cerrar</button>
+    </div>
+  </div>
+
+  <div id="modal-privacy" class="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 max-w-lg w-full">
+      <h3 class="text-lg font-bold text-white mb-2">Política de Privacidad</h3>
+      <p class="text-xs text-slate-400 leading-relaxed mb-4">Todos los datos personales de alumnos, legajos y finanzas son encriptados y protegidos conforme a las normativas locales.</p>
+      <button onclick="closeModal('modal-privacy')" class="bg-slate-800 hover:bg-slate-700 text-white text-xs px-4 py-2 rounded-lg">Cerrar</button>
+    </div>
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- LÓGICA JAVASCRIPT                          -->
+  <!-- ========================================== -->
+  <script>
+    // Inicialización de Iconos Lucide
+    lucide.createIcons();
+
+    // Datos de Ejemplo para Alumnos
+    const alumnosEjemplo = [
+      { id: 1, nombre: "Sofía Martínez", dni: "44.123.456", curso: "Piano Inicial", profesor: "Prof. Carlos Rossi", nivel: "Nivel 2", tutor: "María Rossi", sanciones: 0 },
+      { id: 2, nombre: "Lucas Gómez", dni: "46.789.012", curso: "Guitarra Eléctrica", profesor: "Prof. Ana López", nivel: "Nivel 1", tutor: "Juan Gómez", sanciones: 1 }
+    ];
+
+    function renderAlumnos() {
+      const tbody = document.getElementById('tabla-alumnos');
+      tbody.innerHTML = alumnosEjemplo.map(a => `
+        <tr class="hover:bg-slate-800/40 transition">
+          <td class="py-3 px-4 font-medium text-white">${a.nombre}<br><span class="text-[10px] text-slate-500">DNI: ${a.dni}</span></td>
+          <td class="py-3 px-4">${a.curso}<br><span class="text-[10px] text-slate-500">${a.profesor}</span></td>
+          <td class="py-3 px-4"><span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded text-[10px]">${a.nivel}</span></td>
+          <td class="py-3 px-4">${a.tutor}</td>
+          <td class="py-3 px-4">${a.sanciones > 0 ? `<span class="text-rose-400 font-bold">${a.sanciones} aplicada(s)</span>` : '<span class="text-slate-500">Sin sanciones</span>'}</td>
+          <td class="py-3 px-4 text-right">
+            <button onclick="window.print()" class="text-cyan-400 hover:underline text-[11px]">Ver Legajo / Imprimir</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Cambios de pantallas / Navegación
+    function navigateTo(sectionId) {
+      const sections = ['inicio', 'alumnos', 'inventario', 'personal', 'finanzas', 'agenda', 'backup', 'guia'];
+      sections.forEach(s => {
+        const secEl = document.getElementById(`section-${s}`);
+        const navEl = document.getElementById(`nav-${s}`);
+        if (secEl) secEl.classList.add('hidden');
+        if (navEl) navEl.classList.remove('bg-slate-800', 'text-white');
+      });
+
+      const currentSec = document.getElementById(`section-${sectionId}`);
+      const currentNav = document.getElementById(`nav-${sectionId}`);
+      if (currentSec) currentSec.classList.remove('hidden');
+      if (currentNav) currentNav.classList.add('bg-slate-800', 'text-white');
+
+      if (sectionId === 'alumnos') renderAlumnos();
+    }
+
+    // Formularios de Autenticación (Bloque 1)
+    function toggleAuthForm(formType) {
+      document.getElementById('form-login').classList.add('hidden');
+      document.getElementById('form-register').classList.add('hidden');
+      document.getElementById('form-recover').classList.add('hidden');
+
+      document.getElementById(`form-${formType}`).classList.remove('hidden');
+    }
+
+    function loginUser() {
+      document.getElementById('auth-screen').classList.add('hidden');
+      document.getElementById('app-content').classList.remove('hidden');
+      navigateTo('inicio');
+    }
+
+    function logoutUser() {
+      document.getElementById('app-content').classList.add('hidden');
+      document.getElementById('auth-screen').classList.remove('hidden');
+    }
+
+    function registerUser() {
+      alert('Cuenta registrada con éxito. Ya podés ingresar.');
+      toggleAuthForm('login');
+    }
+
+    function recoverPass() {
+      alert('Se enviaron las instrucciones a tu casilla de correo.');
+      toggleAuthForm('login');
+    }
+
+    // Modales
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    // Toggle Sidebar Mobile
+    function toggleSidebar() {
+      const sb = document.getElementById('sidebar');
+      sb.classList.toggle('hidden');
+    }
+  </script>
+</body>
+</html>
