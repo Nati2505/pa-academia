@@ -1027,8 +1027,9 @@
   </div>
 </div>
 
-<!-- Modal: Balance Mensual & Rentabilidad -->
-<div id="modalBalance" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4"></div>
+<!-- Modal: Balance Mensual & Rentabilidad (Formato Planilla Contable) -->
+<div id="modalBalance" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+  <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
     <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
       <div class="flex items-center gap-3">
         <div class="p-2 bg-cyan-500/10 text-cyan-400 rounded-lg border border-cyan-500/20"><i data-lucide="scale" class="w-5 h-5"></i></div>
@@ -1125,45 +1126,6 @@
   </div>
 </div>
 
-
-      <!-- Resultados del Balance -->
-      <div id="resultadoBalanceContainer" class="space-y-4">
-        <!-- Ingresos -->
-        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-          <h4 class="text-sm font-bold text-emerald-400 border-b border-slate-800 pb-2">Ingresos del Mes</h4>
-          <div id="detalleIngresosBalance" class="space-y-1 text-slate-300">
-            <p class="text-slate-500 italic">Seleccione un mes y presione "Calcular Balance".</p>
-          </div>
-          <div class="pt-2 border-t border-slate-800 flex justify-between font-bold text-white text-sm">
-            <span>Total General de Ingresos:</span>
-            <span id="balanceTotalIngresos" class="text-emerald-400">$ 0</span>
-          </div>
-        </div>
-
-        <!-- Egresos -->
-        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-          <h4 class="text-sm font-bold text-rose-400 border-b border-slate-800 pb-2">Egresos por Sección</h4>
-          <div id="detalleEgresosBalance" class="space-y-1 text-slate-300">
-            <p class="text-slate-500 italic">Sin datos calculados.</p>
-          </div>
-          <div class="pt-2 border-t border-slate-800 flex justify-between font-bold text-white text-sm">
-            <span>Total General de Egresos:</span>
-            <span id="balanceTotalEgresos" class="text-rose-400">$ 0</span>
-          </div>
-        </div>
-
-        <!-- Rentabilidad -->
-        <div class="bg-gradient-to-r from-cyan-950/40 to-slate-900 p-4 rounded-xl border border-cyan-800/50 flex justify-between items-center">
-          <div>
-            <span class="text-cyan-300 block text-xs uppercase font-bold">Porcentaje de Rentabilidad del Mes</span>
-            <span class="text-slate-400 text-[11px]">Fórmula: ((Ingresos - Egresos) / Ingresos) * 100</span>
-          </div>
-          <div class="text-2xl font-black text-cyan-400" id="balanceRentabilidad">0 %</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Modal: Estadísticas Financieras & Gráficos -->
 <div id="modalEstadisticas" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
