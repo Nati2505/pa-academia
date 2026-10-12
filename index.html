@@ -9,7 +9,6 @@
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    /* Custom Scrollbar */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -28,7 +27,7 @@
 </head>
 <body class="h-full flex flex-col font-sans antialiased bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-white">
 
-  <!-- Navbar Principal -->
+  <!-- Header / Navigation Original -->
   <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -37,7 +36,7 @@
         </div>
         <div>
           <h1 class="font-bold text-lg text-white leading-tight">Proyecto Academia <span class="text-xs font-semibold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">P.A.</span></h1>
-          <p class="text-xs text-slate-400">Sistema de Gestión de Academia de Música</p>
+          <p class="text-xs text-slate-400">Gestión Integral de Academia de Música</p>
         </div>
       </div>
 
@@ -65,23 +64,23 @@
     </div>
   </header>
 
-  <!-- Contenido Principal -->
+  <!-- Main Content Area -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
 
-    <!-- Encabezado de Sección: Alumnos -->
+    <!-- Section Title & Action -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
       <div>
         <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
           <i data-lucide="graduation-cap" class="text-cyan-400"></i> Módulo de Alumnos y Legajos
         </h2>
-        <p class="text-slate-400 text-sm mt-1">Administración de datos personales, historial académico, sanciones y asistencia.</p>
+        <p class="text-slate-400 text-sm mt-1">Gestión de datos personales, historial académico, sanciones y asistencia.</p>
       </div>
       <button onclick="abrirModalNuevoLegajo()" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg shadow-cyan-600/20 transition-all flex items-center gap-2 w-fit">
         <i data-lucide="user-plus" class="w-4 h-4"></i> + Nuevo Legajo
       </button>
     </div>
 
-    <!-- Tabla de Alumnos Cargados -->
+    <!-- Table Container -->
     <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
       <div class="p-4 border-b border-slate-800 flex flex-col sm:flex-row justify-between gap-3 bg-slate-900/80">
         <div class="relative flex-1">
@@ -139,69 +138,83 @@
 
   </main>
 
-  <!-- Ventana Emergente (Modal): Nuevo Legajo -->
-  <div id="modalLegajo" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+  <!-- Modal: Nuevo Legajo (Rediseñado con el estilo original) -->
+  <div id="modalLegajo" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
       
-      <!-- Header del Modal -->
-      <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950">
-        <h3 class="text-lg font-bold text-white flex items-center gap-2">
-          <i data-lucide="user-plus" class="text-cyan-400"></i> Nuevo Legajo de Alumno
-        </h3>
-        <button onclick="intentarCerrarModalLegajo()" class="text-slate-400 hover:text-white transition-colors">
+      <!-- Modal Header -->
+      <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-cyan-500/10 text-cyan-400 rounded-lg border border-cyan-500/20">
+            <i data-lucide="user-plus" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white">Nuevo Legajo de Alumno</h3>
+            <p class="text-xs text-slate-400">Complete la información en las secciones correspondientes</p>
+          </div>
+        </div>
+        <button onclick="intentarCerrarModalLegajo()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <!-- Navegación de Pestañas -->
-      <div class="flex border-b border-slate-800 bg-slate-950/40 px-5 gap-2 overflow-x-auto">
-        <button id="tabBtn-datos" onclick="cambiarTabLegajo('datos')" class="py-3 px-3 border-b-2 border-cyan-500 font-medium text-cyan-400 text-xs sm:text-sm whitespace-nowrap">1. Datos Personales</button>
-        <button id="tabBtn-avance" onclick="cambiarTabLegajo('avance')" class="py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap">2. Avance Académico</button>
-        <button id="tabBtn-sanciones" onclick="cambiarTabLegajo('sanciones')" class="py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap">3. Sanciones</button>
-        <button id="tabBtn-asistencia" onclick="cambiarTabLegajo('asistencia')" class="py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap">4. Asistencia & Agenda</button>
+      <!-- Navigation Tabs -->
+      <div class="flex border-b border-slate-800 bg-slate-950/40 px-6 gap-2 overflow-x-auto">
+        <button id="tabBtn-datos" onclick="cambiarTabLegajo('datos')" class="py-3 px-3 border-b-2 border-cyan-500 font-medium text-cyan-400 text-xs sm:text-sm whitespace-nowrap transition-colors flex items-center gap-2">
+          <i data-lucide="user" class="w-4 h-4"></i> Datos Personales
+        </button>
+        <button id="tabBtn-avance" onclick="cambiarTabLegajo('avance')" class="py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap transition-colors flex items-center gap-2">
+          <i data-lucide="trending-up" class="w-4 h-4"></i> Avance
+        </button>
+        <button id="tabBtn-sanciones" onclick="cambiarTabLegajo('sanciones')" class="py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap transition-colors flex items-center gap-2">
+          <i data-lucide="alert-circle" class="w-4 h-4"></i> Sanciones
+        </button>
+        <button id="tabBtn-asistencia" onclick="cambiarTabLegajo('asistencia')" class="py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap transition-colors flex items-center gap-2">
+          <i data-lucide="calendar-check" class="w-4 h-4"></i> Asistencia & Agenda
+        </button>
       </div>
 
-      <!-- Formulario (Scrollable) -->
+      <!-- Form Body -->
       <form id="formNuevoLegajo" onsubmit="guardarLegajo(event)" class="p-6 overflow-y-auto space-y-6 flex-1">
         
-        <!-- Pestaña 1: Datos Personales -->
+        <!-- Tab 1: Datos Personales -->
         <div id="tabContent-datos" class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-semibold text-slate-400 mb-1">Nombre y Apellido *</label>
-              <input type="text" id="legajoNombre" required placeholder="Ej: Lucía Gómez" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+              <input type="text" id="legajoNombre" required placeholder="Ej: Lucía Gómez" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-400 mb-1">DNI *</label>
-              <input type="text" id="legajoDni" required placeholder="Ej: 45123890" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+              <input type="text" id="legajoDni" required placeholder="Ej: 45123890" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de Nacimiento</label>
-              <input type="date" id="legajoNacimiento" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+              <input type="date" id="legajoNacimiento" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de Ingreso</label>
-              <input type="date" id="legajoIngreso" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+              <input type="date" id="legajoIngreso" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
             </div>
             <div class="md:col-span-2">
               <label class="block text-xs font-semibold text-slate-400 mb-1">Dirección</label>
-              <input type="text" id="legajoDireccion" placeholder="Calle, número, barrio" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+              <input type="text" id="legajoDireccion" placeholder="Calle, número, barrio" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-400 mb-1">Teléfono</label>
-              <input type="tel" id="legajoTelefono" placeholder="358..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+              <input type="tel" id="legajoTelefono" placeholder="358..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-400 mb-1">Tutor (si aplica)</label>
-              <input type="text" id="legajoTutor" placeholder="Nombre del padre/madre/tutor" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+              <input type="text" id="legajoTutor" placeholder="Nombre del padre/madre/tutor" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
             </div>
             <div class="md:col-span-2">
               <label class="block text-xs font-semibold text-slate-400 mb-1">Contacto de Emergencia</label>
-              <input type="text" id="legajoEmergencia" placeholder="Nombre y Teléfono de contacto de emergencia" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+              <input type="text" id="legajoEmergencia" placeholder="Nombre y Teléfono de contacto de emergencia" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-400 mb-1">Curso / Taller</label>
-              <select id="legajoCurso" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+              <select id="legajoCurso" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
                 <option value="Guitarra Inicial">Guitarra Inicial</option>
                 <option value="Piano y Teclado">Piano y Teclado</option>
                 <option value="Canto e Impostación">Canto e Impostación</option>
@@ -211,17 +224,17 @@
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-400 mb-1">Profesor a Cargo</label>
-              <input type="text" id="legajoProfesor" placeholder="Profesor asignado" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+              <input type="text" id="legajoProfesor" placeholder="Profesor asignado" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
             </div>
           </div>
         </div>
 
-        <!-- Pestaña 2: Avance Académico -->
+        <!-- Tab 2: Avance Académico -->
         <div id="tabContent-avance" class="space-y-4 hidden">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-slate-400 mb-1">Nivel Actual en el que se encuentra</label>
-              <select id="legajoNivel" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Nivel Actual</label>
+              <select id="legajoNivel" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
                 <option value="Principiante (Nivel 1)">Principiante (Nivel 1)</option>
                 <option value="Intermedio (Nivel 2)">Intermedio (Nivel 2)</option>
                 <option value="Avanzado (Nivel 3)">Avanzado (Nivel 3)</option>
@@ -230,42 +243,42 @@
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de Cambio / Promoción de Nivel</label>
-              <input type="date" id="legajoFechaNivel" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+              <input type="date" id="legajoFechaNivel" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
             </div>
           </div>
         </div>
 
-        <!-- Pestaña 3: Sanciones -->
+        <!-- Tab 3: Sanciones -->
         <div id="tabContent-sanciones" class="space-y-4 hidden">
-          <p class="text-xs text-slate-400">Registro de sanciones aplicadas al legajo del alumno:</p>
+          <p class="text-xs text-slate-400">Registro de sanciones aplicadas al alumno:</p>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div>
               <label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de la Sanción</label>
-              <input type="date" id="sancionFecha" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm">
+              <input type="date" id="sancionFecha" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm">
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-400 mb-1">Tipo / Apercibimiento</label>
-              <input type="text" id="sancionTipo" placeholder="Ej: Advertencia por tardanza" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm">
+              <input type="text" id="sancionTipo" placeholder="Ej: Advertencia por tardanza" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm">
             </div>
             <div class="md:col-span-3">
               <label class="block text-xs font-semibold text-slate-400 mb-1">Motivo / Detalle</label>
-              <textarea id="sancionMotivo" rows="3" placeholder="Describa el motivo o la observación..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-cyan-500"></textarea>
+              <textarea id="sancionMotivo" rows="3" placeholder="Describa el motivo o la observación..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-cyan-500"></textarea>
             </div>
           </div>
         </div>
 
-        <!-- Pestaña 4: Asistencia & Link a Agenda -->
+        <!-- Tab 4: Asistencia -->
         <div id="tabContent-asistencia" class="space-y-4 hidden">
           <div class="bg-cyan-950/40 border border-cyan-800/50 p-4 rounded-xl flex items-start gap-3">
             <i data-lucide="calendar" class="text-cyan-400 w-5 h-5 mt-0.5"></i>
             <div>
               <h4 class="text-sm font-semibold text-cyan-300">Vinculación Automática con la Agenda</h4>
-              <p class="text-xs text-slate-400 mt-1">Este legajo linkea con la agenda general para llevar el historial y registro diario de asistencias e inasistencias.</p>
+              <p class="text-xs text-slate-400 mt-1">Este legajo linkea con la agenda general para llevar el registro diario de asistencias e inasistencias.</p>
             </div>
           </div>
           <div>
             <label class="block text-xs font-semibold text-slate-400 mb-1">Estado de Asistencia Inicial</label>
-            <select id="legajoAsistenciaEstado" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-cyan-500">
+            <select id="legajoAsistenciaEstado" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-cyan-500">
               <option value="Regular">Regular (Sin inasistencias acumuladas)</option>
               <option value="En observación">En observación</option>
             </select>
@@ -274,8 +287,8 @@
 
       </form>
 
-      <!-- Footer del Modal -->
-      <div class="p-5 border-t border-slate-800 flex justify-end gap-3 bg-slate-950">
+      <!-- Modal Footer -->
+      <div class="p-5 border-t border-slate-800 flex justify-end gap-3 bg-slate-950/80">
         <button type="button" onclick="intentarCerrarModalLegajo()" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 transition-colors">
           Cancelar
         </button>
@@ -287,8 +300,8 @@
     </div>
   </div>
 
-  <!-- Modal Alerta de Confirmación al Cancelar -->
-  <div id="modalConfirmarCancelar" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+  <!-- Confirmation Modal -->
+  <div id="modalConfirmarCancelar" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl">
       <div class="w-12 h-12 bg-amber-500/10 text-amber-500 rounded-full flex items-center justify-center mx-auto border border-amber-500/20">
         <i data-lucide="alert-triangle" class="w-6 h-6"></i>
@@ -308,35 +321,30 @@
     </div>
   </div>
 
-  <!-- Scripts -->
+  <!-- JavaScript -->
   <script>
-    // Inicializar Iconos
     lucide.createIcons();
 
-    // Abrir Modal
     function abrirModalNuevoLegajo() {
       document.getElementById('formNuevoLegajo').reset();
       cambiarTabLegajo('datos');
       document.getElementById('modalLegajo').classList.remove('hidden');
     }
 
-    // Cambiar de Pestaña en el Modal
     function cambiarTabLegajo(tab) {
       ['datos', 'avance', 'sanciones', 'asistencia'].forEach(t => {
         document.getElementById(`tabContent-${t}`).classList.add('hidden');
-        document.getElementById(`tabBtn-${t}`).className = "py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap";
+        document.getElementById(`tabBtn-${t}`).className = "py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap transition-colors flex items-center gap-2";
       });
       
       document.getElementById(`tabContent-${tab}`).classList.remove('hidden');
-      document.getElementById(`tabBtn-${tab}`).className = "py-3 px-3 border-b-2 border-cyan-500 font-medium text-cyan-400 text-xs sm:text-sm whitespace-nowrap";
+      document.getElementById(`tabBtn-${tab}`).className = "py-3 px-3 border-b-2 border-cyan-500 font-medium text-cyan-400 text-xs sm:text-sm whitespace-nowrap transition-colors flex items-center gap-2";
     }
 
-    // Control del Botón Cancelar con Alerta
     function intentarCerrarModalLegajo() {
       const nombre = document.getElementById('legajoNombre').value;
       const dni = document.getElementById('legajoDni').value;
       
-      // Si ingresó datos en Nombre o DNI, pregunta antes de descartar
       if (nombre.trim() !== '' || dni.trim() !== '') {
         document.getElementById('modalConfirmarCancelar').classList.remove('hidden');
       } else {
@@ -356,7 +364,6 @@
       document.getElementById('formNuevoLegajo').reset();
     }
 
-    // Guardar Legajo y agregar a la lista
     function guardarLegajo(e) {
       e.preventDefault();
       
@@ -366,7 +373,6 @@
       const profesor = document.getElementById('legajoProfesor').value || 'Sin asignar';
       const nivel = document.getElementById('legajoNivel').value;
 
-      // Insertar nueva fila en la tabla
       const tbody = document.getElementById('tablaAlumnosBody');
       const nuevaFila = document.createElement('tr');
       nuevaFila.className = "hover:bg-slate-800/40 transition-colors";
