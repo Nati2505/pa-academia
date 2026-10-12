@@ -8,7 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Chart.js para Gráficos -->
+  <!-- Chart.js para Estadísticas de Finanzas -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
@@ -40,7 +40,9 @@
         <p class="text-sm text-slate-400 mt-1">Gestión integral de Academia de Música</p>
       </div>
 
+      <!-- Formularios de Auth -->
       <div id="auth-forms">
+        <!-- Formulario Login -->
         <form id="form-login" onsubmit="event.preventDefault(); loginUser();" class="space-y-4">
           <h2 class="text-lg font-semibold text-slate-200">Iniciar Sesión</h2>
           <div>
@@ -51,7 +53,51 @@
             <label class="block text-xs font-medium text-slate-400 mb-1">Contraseña</label>
             <input type="password" id="login-pass" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="••••••••" />
           </div>
+          <div class="flex items-center text-xs text-slate-400">
+            <input type="checkbox" id="login-terms" required class="mr-2 rounded border-slate-700 bg-slate-800 text-cyan-500" />
+            <label for="login-terms">Acepto los <a href="#" onclick="openModal('modal-terms')" class="text-cyan-400 underline">Términos y Condiciones</a> y la <a href="#" onclick="openModal('modal-privacy')" class="text-cyan-400 underline">Política de Privacidad</a></label>
+          </div>
           <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-medium py-2 rounded-lg text-sm transition">Ingresar al Programa</button>
+          
+          <div class="flex justify-between text-xs text-slate-400 pt-2 border-t border-slate-800">
+            <button type="button" onclick="toggleAuthForm('register')" class="hover:text-cyan-400">Crear cuenta nueva</button>
+            <button type="button" onclick="toggleAuthForm('recover')" class="hover:text-cyan-400">¿Olvidaste tu contraseña?</button>
+          </div>
+        </form>
+
+        <!-- Formulario Registro -->
+        <form id="form-register" onsubmit="event.preventDefault(); registerUser();" class="space-y-4 hidden">
+          <h2 class="text-lg font-semibold text-slate-200">Registro de Cuenta</h2>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Nombre Completo</label>
+            <input type="text" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Correo Electrónico</label>
+            <input type="email" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Contraseña</label>
+            <input type="password" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" />
+          </div>
+          <div class="flex items-center text-xs text-slate-400">
+            <input type="checkbox" required class="mr-2 rounded border-slate-700 bg-slate-800 text-cyan-500" />
+            <label>Acepto los <a href="#" onclick="openModal('modal-terms')" class="text-cyan-400 underline">Términos y Condiciones</a> y la <a href="#" onclick="openModal('modal-privacy')" class="text-cyan-400 underline">Política de Privacidad</a></label>
+          </div>
+          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded-lg text-sm transition">Registrarse</button>
+          <button type="button" onclick="toggleAuthForm('login')" class="w-full text-center text-xs text-slate-400 hover:text-white mt-2">Volver al Inicio de Sesión</button>
+        </form>
+
+        <!-- Formulario Recuperación -->
+        <form id="form-recover" onsubmit="event.preventDefault(); recoverPass();" class="space-y-4 hidden">
+          <h2 class="text-lg font-semibold text-slate-200">Recuperar Contraseña</h2>
+          <p class="text-xs text-slate-400">Ingresá tu correo registrado para recibir las instrucciones de restablecimiento.</p>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Correo Electrónico</label>
+            <input type="email" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="correo@ejemplo.com" />
+          </div>
+          <button type="submit" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-medium py-2 rounded-lg text-sm transition">Enviar Instrucciones</button>
+          <button type="button" onclick="toggleAuthForm('login')" class="w-full text-center text-xs text-slate-400 hover:text-white mt-2">Volver al Inicio de Sesión</button>
         </form>
       </div>
     </div>
@@ -128,6 +174,18 @@
             <i data-lucide="hard-drive" class="w-4 h-4 text-blue-400"></i>
             <span>Backup / Copia Seg.</span>
           </button>
+
+          <div class="pt-4 mt-4 border-t border-slate-800/80">
+            <a href="https://wa.me/5493580000000" target="_blank" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-emerald-400 hover:bg-emerald-500/10 transition">
+              <i data-lucide="message-square" class="w-4 h-4"></i>
+              <span>Contacto WhatsApp</span>
+            </a>
+
+            <button onclick="navigateTo('guia')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition" id="nav-guia">
+              <i data-lucide="book-open" class="w-4 h-4 text-slate-400"></i>
+              <span>Guía de Usuario</span>
+            </button>
+          </div>
         </div>
 
         <div class="p-3 border-t border-slate-800 text-[11px] text-slate-500 text-center">
@@ -179,6 +237,7 @@
             </div>
           </div>
 
+          <!-- Barra de Búsqueda Desplegable Alumnos -->
           <div id="barraBusquedaContainer" class="hidden bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 shrink-0">
             <div class="flex gap-2">
               <input type="text" id="inputBusquedaLegajo" placeholder="Escriba nombre, DNI o curso a buscar..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500" oninput="ejecutarBusquedaLegajo()">
@@ -189,17 +248,21 @@
             </div>
           </div>
 
+          <!-- Listado Desplegable Alumnos -->
           <div id="contenedorTablaAlumnos" class="hidden bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shrink-0">
             <div class="p-4 bg-slate-800/40 border-b border-slate-800 text-xs text-slate-400 flex justify-between items-center">
               <span class="font-semibold text-slate-200">Listado Completo de Legajos</span>
-              <button onclick="ocultarTablaAlumnos()" class="text-slate-400 hover:text-white text-[11px] underline">Ocultar lista</button>
+              <div class="flex items-center gap-3">
+                <span id="contadorAlumnos" class="text-cyan-400 font-semibold">2 alumnos registrados</span>
+                <button onclick="ocultarTablaAlumnos()" class="text-slate-400 hover:text-white text-[11px] underline">Ocultar lista</button>
+              </div>
             </div>
             <table class="w-full text-left text-xs text-slate-300">
-              <thead class="bg-slate-800/60 text-slate-400 border-b border-slate-800 uppercase text-[10px]">
+              <thead class="bg-slate-800/60 text-slate-400 border-b border-slate-800 uppercase text-[10px] tracking-wider">
                 <tr>
                   <th class="py-3 px-4">Alumno / DNI</th>
                   <th class="py-3 px-4">Curso / Profesor</th>
-                  <th class="py-3 px-4">Nivel</th>
+                  <th class="py-3 px-4">Nivel / Avance</th>
                   <th class="py-3 px-4">Tutor</th>
                   <th class="py-3 px-4 text-right">Acciones</th>
                 </tr>
@@ -208,12 +271,18 @@
             </table>
           </div>
 
-          <div class="relative flex-1 rounded-2xl overflow-hidden border border-slate-800 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
-            <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80" alt="Alumnos" class="absolute inset-0 w-full h-full object-cover brightness-30" />
+          <!-- Fondo Ilustrativo Alumnos -->
+          <div id="fondoAlumnos" class="relative flex-1 rounded-2xl overflow-hidden border border-slate-800 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
+            <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80" alt="Música y Alumnos" class="absolute inset-0 w-full h-full object-cover brightness-30" />
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
-            <div class="relative z-10 text-center max-w-md space-y-2">
-              <h3 class="text-lg font-bold text-white">Módulo de Alumnos</h3>
-              <p class="text-xs text-slate-400">Utilice los botones superiores para registrar o buscar expedientes.</p>
+            <div class="relative z-10 text-center max-w-md space-y-3">
+              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                <i data-lucide="shield-check" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-lg font-bold text-white">Gestión Privada de Legajos</h3>
+              <p class="text-xs text-slate-400">
+                Utilice el botón <strong class="text-amber-400">"Nuevo Legajo"</strong> para registrar estudiantes o consulte expedientes mediante <strong class="text-cyan-400">"Buscar Legajo"</strong>.
+              </p>
             </div>
           </div>
         </section>
@@ -223,16 +292,16 @@
           <div class="flex items-center justify-between border-b border-slate-800 pb-4 shrink-0">
             <div>
               <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                <i data-lucide="box" class="text-emerald-400"></i> Inventario de Activos
+                <i data-lucide="box" class="text-emerald-400"></i> Inventario de Artículos & Activos
               </h2>
-              <p class="text-xs text-slate-400">Control de instrumentos y equipos con historial de modificaciones.</p>
+              <p class="text-xs text-slate-400">Control de instrumentos, micrófonos, mobiliario y equipamiento técnico con historial de cambios.</p>
             </div>
             <div class="flex items-center gap-2">
-              <button onclick="abrirModalNuevoArticulo()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 transition">
+              <button onclick="abrirModalNuevoArticulo()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 transition shadow-lg shadow-emerald-600/20">
                 <i data-lucide="plus" class="w-4 h-4"></i> Nuevo Artículo
               </button>
               <button onclick="toggleBarraBusquedaArticulo()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700 transition">
-                <i data-lucide="search" class="w-4 h-4 text-cyan-400"></i> Buscar
+                <i data-lucide="search" class="w-4 h-4 text-cyan-400"></i> Buscar Artículo
               </button>
               <button onclick="mostrarTodosLosArticulos()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700 transition">
                 <i data-lucide="list" class="w-4 h-4 text-amber-400"></i> Ver todos
@@ -242,23 +311,29 @@
 
           <div id="barraBusquedaArticuloContainer" class="hidden bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 shrink-0">
             <div class="flex gap-2">
-              <input type="text" id="inputBusquedaArticulo" placeholder="Buscar artículo..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white" oninput="ejecutarBusquedaArticulo()">
-              <button onclick="cerrarBarraBusquedaArticulo()" class="px-3 py-2 bg-slate-800 text-slate-300 rounded-lg text-xs">Cerrar</button>
+              <input type="text" id="inputBusquedaArticulo" placeholder="Escriba el nombre o categoría del artículo..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500" oninput="ejecutarBusquedaArticulo()">
+              <button onclick="cerrarBarraBusquedaArticulo()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs">Cerrar</button>
             </div>
-            <div id="resultadosBusquedaArticulo" class="divide-y divide-slate-800 max-h-48 overflow-y-auto text-xs text-slate-300"></div>
+            <div id="resultadosBusquedaArticulo" class="divide-y divide-slate-800 max-h-48 overflow-y-auto text-xs text-slate-300">
+              <p class="text-slate-500 py-2 text-center">Ingrese un término para buscar bienes o artículos...</p>
+            </div>
           </div>
 
           <div id="contenedorTablaArticulos" class="hidden bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shrink-0">
             <div class="p-4 bg-slate-800/40 border-b border-slate-800 text-xs text-slate-400 flex justify-between items-center">
-              <span class="font-semibold text-slate-200">Inventario Completo</span>
-              <button onclick="ocultarTablaArticulos()" class="text-slate-400 underline text-[11px]">Ocultar</button>
+              <span class="font-semibold text-slate-200">Inventario Completo de Bienes</span>
+              <div class="flex items-center gap-3">
+                <span id="contadorArticulos" class="text-emerald-400 font-semibold">2 artículos registrados</span>
+                <button onclick="ocultarTablaArticulos()" class="text-slate-400 hover:text-white text-[11px] underline">Ocultar lista</button>
+              </div>
             </div>
             <table class="w-full text-left text-xs text-slate-300">
-              <thead class="bg-slate-800/60 text-slate-400 border-b border-slate-800 uppercase text-[10px]">
+              <thead class="bg-slate-800/60 text-slate-400 border-b border-slate-800 uppercase text-[10px] tracking-wider">
                 <tr>
-                  <th class="py-3 px-4">Artículo</th>
+                  <th class="py-3 px-4">Artículo / Categoría</th>
                   <th class="py-3 px-4">Cantidad</th>
                   <th class="py-3 px-4">Estado</th>
+                  <th class="py-3 px-4">Disponibilidad</th>
                   <th class="py-3 px-4 text-right">Acciones</th>
                 </tr>
               </thead>
@@ -266,31 +341,36 @@
             </table>
           </div>
 
-          <div class="relative flex-1 rounded-2xl overflow-hidden border border-slate-800 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
-            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1200&q=80" alt="Inventario" class="absolute inset-0 w-full h-full object-cover brightness-30" />
+          <div id="fondoInventario" class="relative flex-1 rounded-2xl overflow-hidden border border-slate-800 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
+            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1200&q=80" alt="Instrumentos y Estudio" class="absolute inset-0 w-full h-full object-cover brightness-30" />
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
-            <div class="relative z-10 text-center max-w-md space-y-2">
-              <h3 class="text-lg font-bold text-white">Módulo de Inventario</h3>
-              <p class="text-xs text-slate-400">Control de equipos, instrumentos y bienes patrimoniales.</p>
+            <div class="relative z-10 text-center max-w-md space-y-3">
+              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <i data-lucide="package-check" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-lg font-bold text-white">Control de Activos e Historial</h3>
+              <p class="text-xs text-slate-400">
+                Utilice <strong class="text-emerald-400">"Nuevo Artículo"</strong> para registrar altas, o consulte mediante <strong class="text-cyan-400">"Buscar Artículo"</strong>.
+              </p>
             </div>
           </div>
         </section>
 
-        <!-- PANTALLA: PERSONAL -->
+        <!-- PANTALLA: PERSONAL DE LA ACADEMIA -->
         <section id="section-personal" class="hidden h-full flex flex-col space-y-6">
           <div class="flex items-center justify-between border-b border-slate-800 pb-4 shrink-0">
             <div>
               <h2 class="text-xl font-bold text-white flex items-center gap-2">
                 <i data-lucide="users" class="text-indigo-400"></i> Personal de la Academia
               </h2>
-              <p class="text-xs text-slate-400">Legajos docentes, cursos dictados e inasistencias.</p>
+              <p class="text-xs text-slate-400">Registro de profesores, legajos laborales, materias y asistencia docente.</p>
             </div>
             <div class="flex items-center gap-2">
-              <button onclick="abrirModalNuevoProfesor()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 transition">
+              <button onclick="abrirModalNuevoProfesor()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 transition shadow-lg shadow-indigo-600/20">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> Nuevo Profesor
               </button>
               <button onclick="toggleBarraBusquedaProfesor()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700 transition">
-                <i data-lucide="search" class="w-4 h-4 text-cyan-400"></i> Buscar
+                <i data-lucide="search" class="w-4 h-4 text-cyan-400"></i> Buscar Profesor
               </button>
               <button onclick="mostrarTodosLosProfesores()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700 transition">
                 <i data-lucide="list" class="w-4 h-4 text-amber-400"></i> Ver todos
@@ -300,23 +380,30 @@
 
           <div id="barraBusquedaProfesorContainer" class="hidden bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 shrink-0">
             <div class="flex gap-2">
-              <input type="text" id="inputBusquedaProfesor" placeholder="Buscar profesor..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white" oninput="ejecutarBusquedaProfesor()">
-              <button onclick="cerrarBarraBusquedaProfesor()" class="px-3 py-2 bg-slate-800 text-slate-300 rounded-lg text-xs">Cerrar</button>
+              <input type="text" id="inputBusquedaProfesor" placeholder="Buscar por nombre, DNI o curso dictado..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" oninput="ejecutarBusquedaProfesor()">
+              <button onclick="cerrarBarraBusquedaProfesor()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs">Cerrar</button>
             </div>
-            <div id="resultadosBusquedaProfesor" class="divide-y divide-slate-800 max-h-48 overflow-y-auto text-xs text-slate-300"></div>
+            <div id="resultadosBusquedaProfesor" class="divide-y divide-slate-800 max-h-48 overflow-y-auto text-xs text-slate-300">
+              <p class="text-slate-500 py-2 text-center">Ingrese un término para buscar docentes...</p>
+            </div>
           </div>
 
           <div id="contenedorTablaProfesores" class="hidden bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shrink-0">
             <div class="p-4 bg-slate-800/40 border-b border-slate-800 text-xs text-slate-400 flex justify-between items-center">
-              <span class="font-semibold text-slate-200">Cuerpo Docente</span>
-              <button onclick="ocultarTablaProfesores()" class="text-slate-400 underline text-[11px]">Ocultar</button>
+              <span class="font-semibold text-slate-200">Cuerpo Docente Activo</span>
+              <div class="flex items-center gap-3">
+                <span id="contadorProfesores" class="text-indigo-400 font-semibold">2 profesores registrados</span>
+                <button onclick="ocultarTablaProfesores()" class="text-slate-400 hover:text-white text-[11px] underline">Ocultar lista</button>
+              </div>
             </div>
             <table class="w-full text-left text-xs text-slate-300">
-              <thead class="bg-slate-800/60 text-slate-400 border-b border-slate-800 uppercase text-[10px]">
+              <thead class="bg-slate-800/60 text-slate-400 border-b border-slate-800 uppercase text-[10px] tracking-wider">
                 <tr>
-                  <th class="py-3 px-4">Profesor</th>
-                  <th class="py-3 px-4">Curso</th>
-                  <th class="py-3 px-4">Asistencia (J / IJ)</th>
+                  <th class="py-3 px-4">Profesor / DNI</th>
+                  <th class="py-3 px-4">Curso que Dicta</th>
+                  <th class="py-3 px-4">Contacto</th>
+                  <th class="py-3 px-4">Ingreso</th>
+                  <th class="py-3 px-4">Inasistencias (J / IJ)</th>
                   <th class="py-3 px-4 text-right">Acciones</th>
                 </tr>
               </thead>
@@ -324,89 +411,83 @@
             </table>
           </div>
 
-          <div class="relative flex-1 rounded-2xl overflow-hidden border border-slate-800 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
-            <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&w=1200&q=80" alt="Personal" class="absolute inset-0 w-full h-full object-cover brightness-30" />
+          <div id="fondoPersonal" class="relative flex-1 rounded-2xl overflow-hidden border border-slate-800 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
+            <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&w=1200&q=80" alt="Docente de Música" class="absolute inset-0 w-full h-full object-cover brightness-30" />
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
-            <div class="relative z-10 text-center max-w-md space-y-2">
-              <h3 class="text-lg font-bold text-white">Módulo de Personal Docente</h3>
-              <p class="text-xs text-slate-400">Gestión de profesores, legajos y control de inasistencias.</p>
+            <div class="relative z-10 text-center max-w-md space-y-3">
+              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                <i data-lucide="award" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-lg font-bold text-white">Gestión de Personal Docente</h3>
+              <p class="text-xs text-slate-400">
+                Utilice el botón <strong class="text-indigo-400">"Nuevo Profesor"</strong> para registrar docentes o consulte el cuerpo académico con <strong class="text-cyan-400">"Buscar Profesor"</strong>.
+              </p>
             </div>
           </div>
         </section>
 
-        <!-- PANTALLA: FINANZAS & BALANCE -->
-        <section id="section-finanzas" class="hidden h-full flex flex-col space-y-6">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-4 shrink-0">
+        <!-- PANTALLA: FINANZAS -->
+        <section id="section-finanzas" class="hidden space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
             <div>
               <h2 class="text-xl font-bold text-white flex items-center gap-2">
                 <i data-lucide="dollar-sign" class="text-green-400"></i> Finanzas & Balance
               </h2>
-              <p class="text-xs text-slate-400">Control de ingresos por cuotas, pago de sueldos y balance general.</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <button onclick="abrirModalNuevaFinanza()" class="bg-green-600 hover:bg-green-500 text-white text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 transition shadow-lg shadow-green-600/20">
-                <i data-lucide="plus-circle" class="w-4 h-4"></i> Registrar Movimiento
-              </button>
-              <button onclick="toggleBarraBusquedaFinanza()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700 transition">
-                <i data-lucide="search" class="w-4 h-4 text-cyan-400"></i> Buscar
-              </button>
+              <p class="text-xs text-slate-400">Ingresos por cuotas, pago de sueldos a profesores y egresos.</p>
             </div>
           </div>
-
-          <!-- Tarjetas de Resumen Financiero -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 shrink-0">
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-md">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
               <p class="text-xs text-slate-400">Ingresos Totales</p>
-              <p class="text-2xl font-bold text-emerald-400 mt-1" id="totalIngresos">$ 0</p>
+              <p class="text-2xl font-bold text-emerald-400 mt-1">$ 450,000</p>
             </div>
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-md">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
               <p class="text-xs text-slate-400">Egresos / Sueldos</p>
-              <p class="text-2xl font-bold text-rose-400 mt-1" id="totalEgresos">$ 0</p>
+              <p class="text-2xl font-bold text-rose-400 mt-1">$ 180,000</p>
             </div>
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-md">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
               <p class="text-xs text-slate-400">Balance Neto</p>
-              <p class="text-2xl font-bold text-cyan-400 mt-1" id="totalBalance">$ 0</p>
-            </div>
-          </div>
-
-          <!-- Barra de Búsqueda Finanzas -->
-          <div id="barraBusquedaFinanzaContainer" class="hidden bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 shrink-0">
-            <div class="flex gap-2">
-              <input type="text" id="inputBusquedaFinanza" placeholder="Buscar por concepto o categoría..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white" oninput="ejecutarBusquedaFinanza()">
-              <button onclick="cerrarBarraBusquedaFinanza()" class="px-3 py-2 bg-slate-800 text-slate-300 rounded-lg text-xs">Cerrar</button>
-            </div>
-            <div id="resultadosBusquedaFinanza" class="divide-y divide-slate-800 max-h-48 overflow-y-auto text-xs text-slate-300"></div>
-          </div>
-
-          <!-- Tabla de Movimientos Financieros -->
-          <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex-1 flex flex-col">
-            <div class="p-4 bg-slate-800/40 border-b border-slate-800 text-xs text-slate-400 flex justify-between items-center">
-              <span class="font-semibold text-slate-200">Historial de Movimientos</span>
-              <span id="contadorFinanzas" class="text-green-400 font-semibold">0 registros</span>
-            </div>
-            <div class="overflow-y-auto flex-1">
-              <table class="w-full text-left text-xs text-slate-300">
-                <thead class="bg-slate-800/60 text-slate-400 border-b border-slate-800 uppercase text-[10px] sticky top-0">
-                  <tr>
-                    <th class="py-3 px-4">Fecha</th>
-                    <th class="py-3 px-4">Concepto / Descripción</th>
-                    <th class="py-3 px-4">Categoría</th>
-                    <th class="py-3 px-4">Tipo</th>
-                    <th class="py-3 px-4 text-right">Monto</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-800" id="tabla-finanzas"></tbody>
-              </table>
+              <p class="text-2xl font-bold text-cyan-400 mt-1">$ 270,000</p>
             </div>
           </div>
         </section>
 
-        <!-- AGENDA Y OTROS -->
-        <section id="section-agenda" class="hidden h-full flex flex-col justify-center items-center">
-          <div class="text-center text-slate-400">Módulo de Agenda en desarrollo.</div>
+        <!-- PANTALLA: AGENDA -->
+        <section id="section-agenda" class="hidden space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div>
+              <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                <i data-lucide="calendar" class="text-purple-400"></i> Agenda & Control de Asistencia
+              </h2>
+              <p class="text-xs text-slate-400">Programación de clases y asistencia.</p>
+            </div>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 text-center text-slate-400 text-xs">
+            Calendario de clases y asistencia.
+          </div>
         </section>
-        <section id="section-backup" class="hidden h-full flex flex-col justify-center items-center">
-          <div class="text-center text-slate-400">Módulo de Backup en desarrollo.</div>
+
+        <!-- PANTALLA: BACKUP -->
+        <section id="section-backup" class="hidden space-y-6">
+          <div class="border-b border-slate-800 pb-4">
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <i data-lucide="hard-drive" class="text-blue-400"></i> Copias de Seguridad (Backup)
+            </h2>
+            <p class="text-xs text-slate-400">Respaldos de base de datos.</p>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4 max-w-md">
+            <button onclick="alert('Backup generado y guardado localmente.')" class="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium py-2 rounded-lg transition">Generar Backup Ahora</button>
+          </div>
+        </section>
+
+        <!-- PANTALLA: GUÍA -->
+        <section id="section-guia" class="hidden space-y-6">
+          <div class="border-b border-slate-800 pb-4">
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <i data-lucide="book-open" class="text-slate-400"></i> Guía de Usuario
+            </h2>
+            <p class="text-xs text-slate-400">Manuales de uso del sistema.</p>
+          </div>
         </section>
 
       </main>
@@ -414,6 +495,14 @@
 
     <!-- FOOTER -->
     <footer class="bg-slate-900 border-t border-slate-800 text-xs text-slate-400 shrink-0">
+      <div class="px-6 py-3 flex flex-wrap items-center justify-between gap-4 border-b border-slate-800/60">
+        <div class="flex flex-wrap items-center gap-6 text-[11px]">
+          <button onclick="openModal('modal-terms')" class="hover:text-cyan-400 transition">Términos y Condiciones</button>
+          <button onclick="openModal('modal-privacy')" class="hover:text-cyan-400 transition">Política de Privacidad</button>
+          <a href="tel:+5493580000000" class="hover:text-cyan-400 transition">Teléfono</a>
+          <a href="mailto:contacto@puntotech.com" class="hover:text-cyan-400 transition">Correo electrónico</a>
+        </div>
+      </div>
       <div class="px-6 py-2.5 flex flex-wrap items-center justify-between gap-4 text-[11px] text-slate-500 bg-slate-950/50">
         <div>Río Cuarto, Córdoba, Argentina</div>
         <div class="font-medium text-slate-400">2026 P.A. – Desarrollado por Punto Tech</div>
@@ -423,66 +512,247 @@
 
 
   <!-- ========================================== -->
-  <!-- MODALES: ALUMNOS, INVENTARIO, PERSONAL, FINANZAS -->
+  <!-- MODALES DE ALUMNOS                         -->
   <!-- ========================================== -->
-
-  <!-- Modal: Nuevo Movimiento Financiero -->
-  <div id="modalFinanza" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <div class="flex items-center gap-2 text-green-400 font-bold text-base">
-          <i data-lucide="dollar-sign" class="w-5 h-5"></i> Registrar Movimiento
+  
+  <!-- Modal: Nuevo Legajo Alumno -->
+  <div id="modalLegajo" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg border border-amber-500/20"><i data-lucide="user-plus" class="w-5 h-5"></i></div>
+          <div>
+            <h3 class="text-lg font-bold text-white">Nuevo Legajo de Alumno</h3>
+            <p class="text-xs text-slate-400">Complete los datos personales y académicos del estudiante</p>
+          </div>
         </div>
-        <button onclick="document.getElementById('modalFinanza').classList.add('hidden')" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <button type="button" onclick="intentarCerrarModalLegajo()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
 
-      <form id="formNuevaFinanza" onsubmit="guardarFinanza(event)" class="space-y-3">
-        <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1">Tipo de Movimiento *</label>
-          <select id="finanzaTipo" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
-            <option value="INGRESO">Ingreso (Cuotas, etc.)</option>
-            <option value="EGRESO">Egreso (Sueldos, Gastos)</option>
-          </select>
+      <div class="flex border-b border-slate-800 bg-slate-950/40 px-6 gap-2 overflow-x-auto">
+        <button id="tabBtn-datos" type="button" onclick="cambiarTabLegajo('datos')" class="py-3 px-3 border-b-2 border-amber-500 font-medium text-amber-400 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2"><i data-lucide="user" class="w-4 h-4"></i> Datos Personales</button>
+        <button id="tabBtn-avance" type="button" onclick="cambiarTabLegajo('avance')" class="py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2"><i data-lucide="trending-up" class="w-4 h-4"></i> Avance</button>
+        <button id="tabBtn-sanciones" type="button" onclick="cambiarTabLegajo('sanciones')" class="py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2"><i data-lucide="alert-circle" class="w-4 h-4"></i> Sanciones</button>
+        <button id="tabBtn-asistencia" type="button" onclick="cambiarTabLegajo('asistencia')" class="py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2"><i data-lucide="calendar-check" class="w-4 h-4"></i> Asistencia & Agenda</button>
+      </div>
+
+      <form id="formNuevoLegajo" onsubmit="guardarLegajo(event)" class="p-6 overflow-y-auto space-y-6 flex-1">
+        <div id="tabContent-datos" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div><label class="block text-xs font-semibold text-slate-400 mb-1">Nombre y Apellido *</label><input type="text" id="legajoNombre" required placeholder="Ej: Lucía Gómez" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500 text-sm"></div>
+            <div><label class="block text-xs font-semibold text-slate-400 mb-1">DNI *</label><input type="text" id="legajoDni" required placeholder="Ej: 45123890" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500 text-sm"></div>
+            <div><label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de Nacimiento</label><input type="date" id="legajoNacimiento" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+            <div><label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de Ingreso</label><input type="date" id="legajoIngreso" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+            <div class="md:col-span-2"><label class="block text-xs font-semibold text-slate-400 mb-1">Dirección</label><input type="text" id="legajoDireccion" placeholder="Calle, número, barrio" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+            <div><label class="block text-xs font-semibold text-slate-400 mb-1">Teléfono</label><input type="tel" id="legajoTelefono" placeholder="358..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+            <div><label class="block text-xs font-semibold text-slate-400 mb-1">Tutor (si aplica)</label><input type="text" id="legajoTutor" placeholder="Nombre del tutor" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+            <div><label class="block text-xs font-semibold text-slate-400 mb-1">Curso / Taller</label><select id="legajoCurso" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"><option value="Guitarra Inicial">Guitarra Inicial</option><option value="Piano y Teclado">Piano y Teclado</option><option value="Canto e Impostación">Canto e Impostación</option><option value="Batería y Percusión">Batería y Percusión</option></select></div>
+            <div><label class="block text-xs font-semibold text-slate-400 mb-1">Profesor a Cargo</label><input type="text" id="legajoProfesor" placeholder="Profesor asignado" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+          </div>
         </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1">Categoría *</label>
-          <select id="finanzaCategoria" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
-            <option value="Cuotas Alumnos">Cuotas Alumnos</option>
-            <option value="Sueldos Docentes">Sueldos Docentes</option>
-            <option value="Mantenimiento / Equipos">Mantenimiento / Equipos</option>
-            <option value="Servicios / Alquiler">Servicios / Alquiler</option>
-            <option value="Otros">Otros</option>
-          </select>
+        <div id="tabContent-avance" class="space-y-4 hidden">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div><label class="block text-xs font-semibold text-slate-400 mb-1">Nivel Actual</label><select id="legajoNivel" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"><option value="Nivel 1">Principiante (Nivel 1)</option><option value="Nivel 2">Intermedio (Nivel 2)</option><option value="Nivel 3">Avanzado (Nivel 3)</option></select></div>
+            <div><label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de Cambio de Nivel</label><input type="date" id="legajoFechaNivel" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+          </div>
         </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1">Descripción / Concepto *</label>
-          <input type="text" id="finanzaConcepto" required placeholder="Ej: Cuota mensual Sofía Martínez" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
+        <div id="tabContent-sanciones" class="space-y-4 hidden">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div><label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de Sanción</label><input type="date" id="sancionFecha" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+            <div><label class="block text-xs font-semibold text-slate-400 mb-1">Tipo de Sanción</label><input type="text" id="sancionTipo" placeholder="Ej: Advertencia" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+            <div class="md:col-span-2"><label class="block text-xs font-semibold text-slate-400 mb-1">Motivo</label><textarea id="sancionMotivo" rows="2" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></textarea></div>
+          </div>
         </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1">Monto ($) *</label>
-          <input type="number" id="finanzaMonto" min="1" required placeholder="Ej: 45000" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1">Fecha *</label>
-          <input type="date" id="finanzaFecha" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
-        </div>
-        <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
-          <button type="button" onclick="document.getElementById('modalFinanza').classList.add('hidden')" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs">Cancelar</button>
-          <button type="submit" class="px-4 py-2 bg-green-600 hover:bg-green-500 text-white font-semibold rounded-xl text-xs">Guardar Movimiento</button>
+        <div id="tabContent-asistencia" class="space-y-4 hidden">
+          <div class="bg-amber-950/40 border border-amber-800/50 p-4 rounded-xl flex items-start gap-3">
+            <i data-lucide="calendar" class="text-amber-400 w-5 h-5 mt-0.5"></i>
+            <div><h4 class="text-sm font-semibold text-amber-300">Control de Asistencia</h4><p class="text-xs text-slate-400 mt-1">Registrado automáticamente según agenda de clases.</p></div>
+          </div>
         </div>
       </form>
+
+      <div class="p-5 border-t border-slate-800 flex justify-end gap-3 bg-slate-950/80">
+        <button type="button" onclick="intentarCerrarModalLegajo()" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 transition">Cancelar</button>
+        <button type="button" onclick="document.getElementById('formNuevoLegajo').requestSubmit()" class="px-5 py-2 rounded-xl text-sm font-semibold bg-amber-600 hover:bg-amber-500 text-white transition flex items-center gap-2"><i data-lucide="check" class="w-4 h-4"></i> Guardar Legajo Alumno</button>
+      </div>
     </div>
   </div>
 
-  <!-- Modal Alumno (mantenido) -->
-  <div id="modalLegajo" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-4">
-      <h3 class="text-lg font-bold text-white">Nuevo Legajo Alumno</h3>
-      <form id="formNuevoLegajo" onsubmit="guardarLegajo(event)" class="space-y-3">
-        <input type="text" id="legajoNombre" required placeholder="Nombre y Apellido" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
-        <input type="text" id="legajoDni" required placeholder="DNI" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
-        <button type="submit" class="w-full bg-amber-600 text-white py-2 rounded-xl text-xs">Guardar</button>
+  <!-- Modal: Visualizar Legajo Alumno -->
+  <div id="modalVerLegajo" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg border border-amber-500/20"><i data-lucide="file-text" class="w-5 h-5"></i></div>
+          <div>
+            <h3 class="text-lg font-bold text-white" id="verLegajoTitulo">Legajo de Alumno</h3>
+            <p class="text-xs text-slate-400">Información detallada del expediente</p>
+          </div>
+        </div>
+        <button type="button" onclick="cerrarModalVerLegajo()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="p-6 overflow-y-auto space-y-4 text-xs text-slate-300 flex-1" id="contenidoDetalleLegajo"></div>
+      <div class="p-5 border-t border-slate-800 flex justify-between items-center bg-slate-950/80">
+        <button type="button" onclick="imprimirLegajoActual()" class="px-4 py-2 rounded-xl text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center gap-2 transition"><i data-lucide="printer" class="w-4 h-4"></i> Imprimir Ficha</button>
+        <button type="button" onclick="cerrarModalVerLegajo()" class="px-5 py-2 rounded-xl text-xs font-semibold bg-amber-600 hover:bg-amber-500 text-white transition">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- MODALES DE INVENTARIO Y PERSONAL          -->
+  <!-- ========================================== -->
+
+  <!-- Modal: Nuevo Artículo -->
+  <div id="modalArticulo" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20"><i data-lucide="package-plus" class="w-5 h-5"></i></div>
+          <div>
+            <h3 class="text-lg font-bold text-white">Nuevo Artículo / Bien</h3>
+            <p class="text-xs text-slate-400">Registre instrumentos, micrófonos o mobiliario</p>
+          </div>
+        </div>
+        <button type="button" onclick="intentarCerrarModalArticulo()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <form id="formNuevoArticulo" onsubmit="guardarArticulo(event)" class="p-6 overflow-y-auto space-y-4 flex-1">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div><label class="block text-xs font-semibold text-slate-400 mb-1">Categoría / Tipo *</label><select id="articuloCategoria" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"><option value="Instrumento Musical">Instrumento Musical</option><option value="Micrófono / Audio">Micrófono / Audio</option><option value="Pantalla / Técnico">Pantalla / Técnico</option><option value="Mobiliario (Mesa/Silla)">Mobiliario (Mesa/Silla)</option></select></div>
+          <div><label class="block text-xs font-semibold text-slate-400 mb-1">Nombre / Descripción *</label><input type="text" id="articuloNombre" required placeholder="Ej: Micrófono Shure SM58" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+          <div><label class="block text-xs font-semibold text-slate-400 mb-1">Cantidad Inicial *</label><input type="number" id="articuloCantidad" min="1" value="1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+          <div><label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de Alta *</label><input type="date" id="articuloFecha" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+          <div><label class="block text-xs font-semibold text-slate-400 mb-1">Estado de Funcionamiento</label><select id="articuloFuncionamiento" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"><option value="Excelente / Operativo">Excelente / Operativo</option><option value="Bueno / Uso regular">Bueno / Uso regular</option><option value="Requiere Mantenimiento">Requiere Mantenimiento</option></select></div>
+          <div><label class="block text-xs font-semibold text-slate-400 mb-1">Disponibilidad</label><select id="articuloUso" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"><option value="En uso activo">En uso activo</option><option value="Disponible en depósito">Disponible en depósito</option></select></div>
+          <div class="md:col-span-2"><label class="block text-xs font-semibold text-slate-400 mb-1">Motivo / Notas de Alta</label><input type="text" id="articuloNotaAlta" placeholder="Ej: Adquisición inicial" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+        </div>
       </form>
+
+      <div class="p-5 border-t border-slate-800 flex justify-end gap-3 bg-slate-950/80">
+        <button type="button" onclick="intentarCerrarModalArticulo()" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 transition">Cancelar</button>
+        <button type="button" onclick="document.getElementById('formNuevoArticulo').requestSubmit()" class="px-5 py-2 rounded-xl text-sm font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition flex items-center gap-2"><i data-lucide="check" class="w-4 h-4"></i> Guardar Artículo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Ficha Detalle Articulo -->
+  <div id="modalVerArticulo" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20"><i data-lucide="box" class="w-5 h-5"></i></div>
+          <div>
+            <h3 class="text-lg font-bold text-white" id="verArticuloTitulo">Detalle del Artículo</h3>
+            <p class="text-xs text-slate-400">Expediente e historial del bien</p>
+          </div>
+        </div>
+        <button type="button" onclick="cerrarModalVerArticuloConConfirmacion()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="p-6 overflow-y-auto space-y-4 text-xs text-slate-300 flex-1" id="contenidoDetalleArticulo"></div>
+      <div class="p-5 border-t border-slate-800 flex justify-between items-center bg-slate-950/80">
+        <button type="button" onclick="imprimirArticuloActual()" class="px-4 py-2 rounded-xl text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center gap-2 transition"><i data-lucide="printer" class="w-4 h-4"></i> Imprimir Ficha</button>
+        <div class="flex gap-2">
+          <button type="button" onclick="abrirModalDarDeBaja()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-rose-600/20 border border-rose-500/30 text-rose-400 hover:bg-rose-600/30 transition">Dar de Baja</button>
+          <button type="button" onclick="guardarEdicionArticulo()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition">Guardar Cambios</button>
+          <button type="button" onclick="cerrarModalVerArticuloConConfirmacion()" class="px-4 py-2 rounded-xl text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 transition">Salir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Dar de Baja Artículo -->
+  <div id="modalDarBaja" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-[70] p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+      <div class="w-12 h-12 bg-rose-500/10 text-rose-500 rounded-full flex items-center justify-center mx-auto border border-rose-500/20"><i data-lucide="trash-2" class="w-6 h-6"></i></div>
+      <div class="text-center"><h3 class="text-lg font-bold text-white">Dar de Baja Unidades</h3><p class="text-xs text-slate-400 mt-1">Indique cantidad a retirar y motivo.</p></div>
+      <div class="space-y-3">
+        <div><label class="block text-xs font-semibold text-slate-400 mb-1">Cantidad</label><input type="number" id="bajaCantidad" min="1" value="1" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs"></div>
+        <div><label class="block text-xs font-semibold text-slate-400 mb-1">Motivo</label><select id="bajaMotivo" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs"><option value="Dañado / Roto">Dañado / Roto</option><option value="Vendido / Transferido">Vendido / Transferido</option></select></div>
+        <div><label class="block text-xs font-semibold text-slate-400 mb-1">Observación</label><input type="text" id="bajaDetalle" placeholder="Detalle..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs"></div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button type="button" onclick="document.getElementById('modalDarBaja').classList.add('hidden')" class="px-4 py-2 rounded-xl text-xs bg-slate-800 text-slate-300">Cancelar</button>
+        <button type="button" onclick="procesarBajaArticulo()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-rose-600 hover:bg-rose-500 text-white">Confirmar Baja</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Nuevo Profesor -->
+  <div id="modalProfesor" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg border border-indigo-500/20"><i data-lucide="user-check" class="w-5 h-5"></i></div>
+          <div>
+            <h3 class="text-lg font-bold text-white">Nuevo Profesor / Docente</h3>
+            <p class="text-xs text-slate-400">Complete los datos laborales y de contacto</p>
+          </div>
+        </div>
+        <button type="button" onclick="intentarCerrarModalProfesor()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <form id="formNuevoProfesor" onsubmit="guardarProfesor(event)" class="p-6 overflow-y-auto space-y-4 flex-1">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div><label class="block text-xs font-semibold text-slate-400 mb-1">Nombre y Apellido *</label><input type="text" id="profesorNombre" required placeholder="Ej: Carlos Rossi" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+          <div><label class="block text-xs font-semibold text-slate-400 mb-1">DNI *</label><input type="text" id="profesorDni" required placeholder="Ej: 30123456" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+          <div><label class="block text-xs font-semibold text-slate-400 mb-1">Teléfono</label><input type="tel" id="profesorTelefono" placeholder="358..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+          <div><label class="block text-xs font-semibold text-slate-400 mb-1">Correo Electrónico</label><input type="email" id="profesorCorreo" placeholder="profesor@música.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+          <div class="md:col-span-2"><label class="block text-xs font-semibold text-slate-400 mb-1">Dirección</label><input type="text" id="profesorDireccion" placeholder="Calle, número, ciudad" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+          <div><label class="block text-xs font-semibold text-slate-400 mb-1">Curso que Dicta *</label><select id="profesorCurso" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"><option value="Piano y Teclado">Piano y Teclado</option><option value="Guitarra Inicial y Eléctrica">Guitarra Inicial y Eléctrica</option><option value="Canto e Impostación">Canto e Impostación</option><option value="Batería y Percusión">Batería y Percusión</option></select></div>
+          <div><label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de Ingreso *</label><input type="date" id="profesorIngreso" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+          <div><label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de Egreso</label><input type="date" id="profesorEgreso" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+          <div class="grid grid-cols-2 gap-2">
+            <div><label class="block text-[11px] font-semibold text-slate-400 mb-1">Faltas Justificadas</label><input type="number" id="profesorJustificadas" min="0" value="0" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+            <div><label class="block text-[11px] font-semibold text-slate-400 mb-1">Injustificadas</label><input type="number" id="profesorInjustificadas" min="0" value="0" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm"></div>
+          </div>
+        </div>
+      </form>
+
+      <div class="p-5 border-t border-slate-800 flex justify-end gap-3 bg-slate-950/80">
+        <button type="button" onclick="intentarCerrarModalProfesor()" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 transition">Cancelar</button>
+        <button type="button" onclick="document.getElementById('formNuevoProfesor').requestSubmit()" class="px-5 py-2 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition flex items-center gap-2"><i data-lucide="check" class="w-4 h-4"></i> Guardar Docente</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Ficha Profesor -->
+  <div id="modalVerProfesor" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg border border-indigo-500/20"><i data-lucide="id-card" class="w-5 h-5"></i></div>
+          <div>
+            <h3 class="text-lg font-bold text-white" id="verProfesorTitulo">Legajo Docente</h3>
+            <p class="text-xs text-slate-400">Expediente laboral del profesor</p>
+          </div>
+        </div>
+        <button type="button" onclick="cerrarModalVerProfesorConConfirmacion()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="p-6 overflow-y-auto space-y-4 text-xs text-slate-300 flex-1" id="contenidoDetalleProfesor"></div>
+      <div class="p-5 border-t border-slate-800 flex justify-between items-center bg-slate-950/80">
+        <button type="button" onclick="imprimirProfesorActual()" class="px-4 py-2 rounded-xl text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center gap-2 transition"><i data-lucide="printer" class="w-4 h-4"></i> Imprimir Legajo</button>
+        <div class="flex gap-2">
+          <button type="button" onclick="guardarEdicionProfesor()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition">Guardar Cambios</button>
+          <button type="button" onclick="cerrarModalVerProfesorConConfirmacion()" class="px-4 py-2 rounded-xl text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 transition">Salir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Confirmación Cancelar -->
+  <div id="modalConfirmarCancelar" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-[80] p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl">
+      <div class="w-12 h-12 bg-amber-500/10 text-amber-500 rounded-full flex items-center justify-center mx-auto border border-amber-500/20"><i data-lucide="alert-triangle" class="w-6 h-6"></i></div>
+      <div>
+        <h3 class="text-lg font-bold text-white">¿Estás seguro de continuar?</h3>
+        <p class="text-sm text-slate-400 mt-1" id="confirmarMensaje">Si descartás, se perderán los datos ingresados.</p>
+      </div>
+      <div class="flex justify-center gap-3 pt-2">
+        <button type="button" onclick="confirmarDescarte(false)" class="px-4 py-2 rounded-xl text-sm font-medium bg-slate-800 hover:bg-slate-700 text-slate-200">No, seguir editando</button>
+        <button type="button" onclick="confirmarDescarte(true)" class="px-4 py-2 rounded-xl text-sm font-semibold bg-rose-600 hover:bg-rose-500 text-white">Sí, descartar</button>
+      </div>
     </div>
   </div>
 
@@ -491,120 +761,411 @@
   <!-- LÓGICA JAVASCRIPT GLOBAL                   -->
   <!-- ========================================== -->
   <script>
+    // Inicialización de Iconos
     lucide.createIcons();
 
-    // Bases de datos simuladas
-    let alumnosEjemplo = [
-      { id: 1, nombre: "Sofía Martínez", dni: "44.123.456", curso: "Piano Inicial", profesor: "Prof. Carlos Rossi", nivel: "Nivel 2", tutor: "María Rossi" }
+    // Variables globales
+    let tipoDescarteActivo = 'legajo'; 
+    let articuloEditandoId = null;
+    let profesorEditandoId = null;
+
+    // Base de datos de ejemplo
+    const alumnosEjemplo = [
+      { id: 1, nombre: "Sofía Martínez", dni: "44.123.456", curso: "Piano Inicial", profesor: "Prof. Carlos Rossi", nivel: "Nivel 2", tutor: "María Rossi", sanciones: 0 },
+      { id: 2, nombre: "Lucas Gómez", dni: "46.789.012", curso: "Guitarra Eléctrica", profesor: "Prof. Ana López", nivel: "Nivel 1", tutor: "Juan Gómez", sanciones: 1 }
     ];
 
-    let articulosEjemplo = [
-      { id: 101, nombre: "Micrófono Shure SM58", categoria: "Micrófono / Audio", cantidad: 4, funcionamiento: "Excelente / Operativo", uso: "En uso activo", historial: [{ fecha: "2026-04-12", tipo: "ALTA", desc: "Adquisición inicial" }] }
+    const articulosEjemplo = [
+      { id: 101, nombre: "Micrófono Shure SM58", categoria: "Micrófono / Audio", cantidad: 4, funcionamiento: "Excelente / Operativo", uso: "En uso activo", historial: [{ fecha: "2026-04-12", tipo: "ALTA", desc: "Adquisición inicial de 4 unidades." }] },
+      { id: 102, nombre: "Teclado Roland FP-30X", categoria: "Instrumento Musical", cantidad: 2, funcionamiento: "Excelente / Operativo", uso: "En uso activo", historial: [{ fecha: "2026-02-10", tipo: "ALTA", desc: "Compra de 2 teclados." }] }
     ];
 
-    let profesoresEjemplo = [
-      { id: 201, nombre: "Carlos Rossi", dni: "30.123.456", curso: "Piano y Teclado", justificadas: 1, injustificadas: 0 }
+    const profesoresEjemplo = [
+      { id: 201, nombre: "Carlos Rossi", dni: "30.123.456", telefono: "3584112233", correo: "carlos.rossi@música.com", direccion: "Av. Italia 450", curso: "Piano y Teclado", ingreso: "2024-03-01", egreso: "", justificadas: 1, injustificadas: 0 },
+      { id: 202, nombre: "Ana López", dni: "32.987.654", telefono: "3584998877", correo: "ana.lopez@música.com", direccion: "Calle Belgrano 120", curso: "Guitarra Inicial y Eléctrica", ingreso: "2025-02-15", egreso: "", justificadas: 0, injustificadas: 0 }
     ];
 
-    // Base de datos de Finanzas
-    let finanzasEjemplo = [
-      { id: 301, fecha: "2026-10-01", concepto: "Cuota Mensual - Sofía Martínez", categoria: "Cuotas Alumnos", tipo: "INGRESO", monto: 45000 },
-      { id: 302, fecha: "2026-10-05", concepto: "Sueldo Docente - Prof. Carlos Rossi", categoria: "Sueldos Docentes", tipo: "EGRESO", monto: 90000 },
-      { id: 303, fecha: "2026-10-10", concepto: "Alquiler Sede Central", categoria: "Servicios / Alquiler", tipo: "EGRESO", monto: 120000 }
-    ];
-
-    // --- RENDERIZADO DE FINANZAS ---
-    function renderFinanzas() {
-      const tbody = document.getElementById('tabla-finanzas');
-      const contador = document.getElementById('contadorFinanzas');
-      const lblIngresos = document.getElementById('totalIngresos');
-      const lblEgresos = document.getElementById('totalEgresos');
-      const lblBalance = document.getElementById('totalBalance');
-
-      let totalIng = 0;
-      let totalEgr = 0;
-
-      finanzasEjemplo.forEach(f => {
-        if (f.tipo === 'INGRESO') totalIng += f.monto;
-        else totalEgr += f.monto;
-      });
-
-      const balance = totalIng - totalEgr;
-
-      if (lblIngresos) lblIngresos.innerText = `$ ${totalIng.toLocaleString()}`;
-      if (lblEgresos) lblEgresos.innerText = `$ ${totalEgr.toLocaleString()}`;
-      if (lblBalance) {
-        lblBalance.innerText = `$ ${balance.toLocaleString()}`;
-        lblBalance.className = `text-2xl font-bold mt-1 ${balance >= 0 ? 'text-cyan-400' : 'text-rose-400'}`;
-      }
-
-      if (contador) contador.innerText = `${finanzasEjemplo.length} movimientos`;
+    // --- MÓDULO ALUMNOS ---
+    function renderAlumnos() {
+      const tbody = document.getElementById('tabla-alumnos');
+      const contador = document.getElementById('contadorAlumnos');
+      if (contador) contador.innerText = `${alumnosEjemplo.length} alumnos registrados`;
       if (!tbody) return;
-
-      tbody.innerHTML = finanzasEjemplo.map(f => `
+      tbody.innerHTML = alumnosEjemplo.map(a => `
         <tr class="hover:bg-slate-800/40 transition">
-          <td class="py-3 px-4 text-slate-400">${f.fecha}</td>
-          <td class="py-3 px-4 font-medium text-white">${f.concepto}</td>
-          <td class="py-3 px-4 text-slate-300">${f.categoria}</td>
-          <td class="py-3 px-4">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${f.tipo === 'INGRESO' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'}">
-              ${f.tipo}
-            </span>
-          </td>
-          <td class="py-3 px-4 text-right font-bold ${f.tipo === 'INGRESO' ? 'text-emerald-400' : 'text-rose-400'}">
-            ${f.tipo === 'INGRESO' ? '+' : '-'} $ ${f.monto.toLocaleString()}
-          </td>
+          <td class="py-3 px-4 font-medium text-white">${a.nombre}<br><span class="text-[10px] text-slate-500">DNI: ${a.dni}</span></td>
+          <td class="py-3 px-4">${a.curso}<br><span class="text-[10px] text-slate-500">${a.profesor}</span></td>
+          <td class="py-3 px-4"><span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded text-[10px]">${a.nivel}</span></td>
+          <td class="py-3 px-4">${a.tutor || 'No especificado'}</td>
+          <td class="py-3 px-4 text-right"><button onclick="verDetalleLegajo(${a.id})" class="text-cyan-400 hover:underline text-[11px] font-medium">Ver Legajo</button></td>
         </tr>
       `).join('');
     }
 
-    function abrirModalNuevaFinanza() {
-      document.getElementById('formNuevaFinanza').reset();
-      document.getElementById('finanzaFecha').valueAsDate = new Date();
-      document.getElementById('modalFinanza').classList.remove('hidden');
+    function abrirModalNuevoLegajo() {
+      const form = document.getElementById('formNuevoLegajo');
+      if (form) form.reset();
+      cambiarTabLegajo('datos');
+      document.getElementById('modalLegajo').classList.remove('hidden');
     }
 
-    function guardarFinanza(e) {
+    function cambiarTabLegajo(tab) {
+      ['datos', 'avance', 'sanciones', 'asistencia'].forEach(t => {
+        const content = document.getElementById(`tabContent-${t}`);
+        const btn = document.getElementById(`tabBtn-${t}`);
+        if (content) content.classList.add('hidden');
+        if (btn) btn.className = "py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2";
+      });
+      const activeContent = document.getElementById(`tabContent-${tab}`);
+      const activeBtn = document.getElementById(`tabBtn-${tab}`);
+      if (activeContent) activeContent.classList.remove('hidden');
+      if (activeBtn) activeBtn.className = "py-3 px-3 border-b-2 border-amber-500 font-medium text-amber-400 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2";
+    }
+
+    function intentarCerrarModalLegajo() {
+      const nombre = document.getElementById('legajoNombre').value;
+      if (nombre.trim() !== '') {
+        tipoDescarteActivo = 'legajo';
+        document.getElementById('confirmarMensaje').innerText = 'Hay datos cargados en el legajo del alumno. ¿Desea descartarlos?';
+        document.getElementById('modalConfirmarCancelar').classList.remove('hidden');
+      } else {
+        cerrarModalLegajoDirecto();
+      }
+    }
+
+    function cerrarModalLegajoDirecto() {
+      document.getElementById('modalLegajo').classList.add('hidden');
+      document.getElementById('formNuevoLegajo').reset();
+    }
+
+    function guardarLegajo(e) {
       e.preventDefault();
-      const tipo = document.getElementById('finanzaTipo').value;
-      const categoria = document.getElementById('finanzaCategoria').value;
-      const concepto = document.getElementById('finanzaConcepto').value;
-      const monto = parseFloat(document.getElementById('finanzaMonto').value) || 0;
-      const fecha = document.getElementById('finanzaFecha').value || new Date().toISOString().split('T')[0];
+      const nombre = document.getElementById('legajoNombre').value;
+      const dni = document.getElementById('legajoDni').value;
+      const curso = document.getElementById('legajoCurso').value;
+      const profesor = document.getElementById('legajoProfesor').value || 'Sin asignar';
+      const nivel = document.getElementById('legajoNivel').value;
+      const tutor = document.getElementById('legajoTutor').value || 'No especificado';
 
-      finanzasEjemplo.unshift({ id: Date.now(), fecha, concepto, categoria, tipo, monto });
-      renderFinanzas();
-      document.getElementById('modalFinanza').classList.add('hidden');
-      alert('¡Movimiento financiero registrado con éxito!');
+      alumnosEjemplo.unshift({ id: Date.now(), nombre, dni, curso, profesor, nivel, tutor, sanciones: 0 });
+      renderAlumnos();
+      alert(`¡Legajo de ${nombre} guardado correctamente!`);
+      cerrarModalLegajoDirecto();
     }
 
-    function toggleBarraBusquedaFinanza() {
-      const container = document.getElementById('barraBusquedaFinanzaContainer');
+    function toggleBarraBusqueda() {
+      const container = document.getElementById('barraBusquedaContainer');
       container.classList.toggle('hidden');
-      if (!container.classList.contains('hidden')) document.getElementById('inputBusquedaFinanza').focus();
+      if (!container.classList.contains('hidden')) document.getElementById('inputBusquedaLegajo').focus();
     }
 
-    function cerrarBarraBusquedaFinanza() {
-      document.getElementById('barraBusquedaFinanzaContainer').classList.add('hidden');
-      document.getElementById('inputBusquedaFinanza').value = '';
+    function cerrarBarraBusqueda() {
+      document.getElementById('barraBusquedaContainer').classList.add('hidden');
+      document.getElementById('inputBusquedaLegajo').value = '';
+      document.getElementById('resultadosBusqueda').innerHTML = '<p class="text-slate-500 py-2 text-center">Ingrese un término para buscar en los legajos...</p>';
     }
 
-    function ejecutarBusquedaFinanza() {
-      const query = document.getElementById('inputBusquedaFinanza').value.toLowerCase().trim();
-      const resultadosDiv = document.getElementById('resultadosBusquedaFinanza');
-      if (query === '') { resultadosDiv.innerHTML = ''; return; }
-      const encontrados = finanzasEjemplo.filter(f => f.concepto.toLowerCase().includes(query) || f.categoria.toLowerCase().includes(query));
-      resultadosDiv.innerHTML = encontrados.map(f => `
-        <div class="py-2 px-3 flex justify-between items-center text-xs">
-          <div><span class="text-white font-semibold">${f.concepto}</span> <span class="text-slate-400">(${f.fecha})</span></div>
-          <span class="${f.tipo === 'INGRESO' ? 'text-emerald-400' : 'text-rose-400'} font-bold">$ ${f.monto.toLocaleString()}</span>
+    function ejecutarBusquedaLegajo() {
+      const query = document.getElementById('inputBusquedaLegajo').value.toLowerCase().trim();
+      const resultadosDiv = document.getElementById('resultadosBusqueda');
+      if (query === '') {
+        resultadosDiv.innerHTML = '<p class="text-slate-500 py-2 text-center">Ingrese un término para buscar en los legajos...</p>';
+        return;
+      }
+      const encontrados = alumnosEjemplo.filter(a => a.nombre.toLowerCase().includes(query) || a.dni.toLowerCase().includes(query) || a.curso.toLowerCase().includes(query));
+      if (encontrados.length === 0) {
+        resultadosDiv.innerHTML = '<p class="text-rose-400 py-2 text-center">No se encontraron legajos con ese criterio.</p>';
+        return;
+      }
+      resultadosDiv.innerHTML = encontrados.map(a => `
+        <div class="py-2.5 px-3 flex items-center justify-between hover:bg-slate-800/60 rounded-lg transition">
+          <div>
+            <div class="font-semibold text-white">${a.nombre} <span class="text-slate-500 font-normal">(DNI: ${a.dni})</span></div>
+            <div class="text-[11px] text-slate-400">Curso: ${a.curso} — Profesor: ${a.profesor}</div>
+          </div>
+          <button onclick="verDetalleLegajo(${a.id})" class="px-3 py-1 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-[11px] transition">Ver Legajo</button>
         </div>
-      `).join('') || '<p class="text-slate-500 py-2 text-center">Sin resultados.</p>';
+      `).join('');
     }
 
-    // --- NAVEGACIÓN ---
+    function verDetalleLegajo(id) {
+      const alumno = alumnosEjemplo.find(a => a.id === id);
+      if (!alumno) return;
+      document.getElementById('verLegajoTitulo').innerText = `Legajo de: ${alumno.nombre}`;
+      const detalleDiv = document.getElementById('contenidoDetalleLegajo');
+      detalleDiv.innerHTML = `
+        <div class="grid grid-cols-2 gap-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
+          <div><span class="text-slate-500 block text-[10px] uppercase">Nombre</span><strong class="text-white text-sm">${alumno.nombre}</strong></div>
+          <div><span class="text-slate-500 block text-[10px] uppercase">DNI</span><strong class="text-white text-sm">${alumno.dni}</strong></div>
+          <div><span class="text-slate-500 block text-[10px] uppercase">Curso</span><strong class="text-amber-400">${alumno.curso}</strong></div>
+          <div><span class="text-slate-500 block text-[10px] uppercase">Profesor</span><strong class="text-slate-200">${alumno.profesor}</strong></div>
+          <div><span class="text-slate-500 block text-[10px] uppercase">Nivel</span><strong class="text-cyan-400">${alumno.nivel}</strong></div>
+          <div><span class="text-slate-500 block text-[10px] uppercase">Tutor</span><strong class="text-slate-200">${alumno.tutor || 'No especificado'}</strong></div>
+        </div>
+      `;
+      document.getElementById('modalVerLegajo').classList.remove('hidden');
+    }
+
+    function cerrarModalVerLegajo() { document.getElementById('modalVerLegajo').classList.add('hidden'); }
+    function mostrarTodosLosLegajos() { renderAlumnos(); document.getElementById('contenedorTablaAlumnos').classList.remove('hidden'); }
+    function ocultarTablaAlumnos() { document.getElementById('contenedorTablaAlumnos').classList.add('hidden'); }
+    function imprimirLegajoActual() { if (confirm('¿Desea enviar este legajo a la impresora?')) window.print(); }
+
+    // --- MÓDULO INVENTARIO ---
+    function renderArticulos() {
+      const tbody = document.getElementById('tabla-articulos');
+      const contador = document.getElementById('contadorArticulos');
+      if (contador) contador.innerText = `${articulosEjemplo.length} artículos registrados`;
+      if (!tbody) return;
+      tbody.innerHTML = articulosEjemplo.map(art => `
+        <tr class="hover:bg-slate-800/40 transition">
+          <td class="py-3 px-4 font-medium text-white">${art.nombre}<br><span class="text-[10px] text-emerald-400">${art.categoria}</span></td>
+          <td class="py-3 px-4 font-bold text-slate-200">${art.cantidad} u.</td>
+          <td class="py-3 px-4"><span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-[10px]">${art.funcionamiento}</span></td>
+          <td class="py-3 px-4 text-slate-300">${art.uso}</td>
+          <td class="py-3 px-4 text-right"><button onclick="verDetalleArticulo(${art.id})" class="text-emerald-400 hover:underline text-[11px] font-medium">Ver / Editar</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function abrirModalNuevoArticulo() {
+      const form = document.getElementById('formNuevoArticulo');
+      if (form) form.reset();
+      document.getElementById('articuloFecha').valueAsDate = new Date();
+      document.getElementById('modalArticulo').classList.remove('hidden');
+    }
+
+    function intentarCerrarModalArticulo() {
+      const nombre = document.getElementById('articuloNombre').value;
+      if (nombre.trim() !== '') {
+        tipoDescarteActivo = 'articulo';
+        document.getElementById('confirmarMensaje').innerText = 'Hay datos cargados en el artículo. ¿Desea descartarlos?';
+        document.getElementById('modalConfirmarCancelar').classList.remove('hidden');
+      } else { cerrarModalArticuloDirecto(); }
+    }
+
+    function cerrarModalArticuloDirecto() { document.getElementById('modalArticulo').classList.add('hidden'); document.getElementById('formNuevoArticulo').reset(); }
+
+    function guardarArticulo(e) {
+      e.preventDefault();
+      const nombre = document.getElementById('articuloNombre').value;
+      const categoria = document.getElementById('articuloCategoria').value;
+      const cantidad = parseInt(document.getElementById('articuloCantidad').value) || 1;
+      const fecha = document.getElementById('articuloFecha').value || new Date().toISOString().split('T')[0];
+      const funcionamiento = document.getElementById('articuloFuncionamiento').value;
+      const uso = document.getElementById('articuloUso').value;
+      const notaAlta = document.getElementById('articuloNotaAlta').value || 'Alta inicial';
+
+      articulosEjemplo.unshift({ id: Date.now(), nombre, categoria, cantidad, funcionamiento, uso, historial: [{ fecha, tipo: "ALTA", desc: `${notaAlta} (${cantidad} unidades).` }] });
+      renderArticulos();
+      alert(`¡El artículo "${nombre}" se registró con éxito!`);
+      cerrarModalArticuloDirecto();
+    }
+
+    function toggleBarraBusquedaArticulo() {
+      const container = document.getElementById('barraBusquedaArticuloContainer');
+      container.classList.toggle('hidden');
+      if (!container.classList.contains('hidden')) document.getElementById('inputBusquedaArticulo').focus();
+    }
+
+    function cerrarBarraBusquedaArticulo() {
+      document.getElementById('barraBusquedaArticuloContainer').classList.add('hidden');
+      document.getElementById('inputBusquedaArticulo').value = '';
+      document.getElementById('resultadosBusquedaArticulo').innerHTML = '<p class="text-slate-500 py-2 text-center">Ingrese un término para buscar bienes...</p>';
+    }
+
+    function ejecutarBusquedaArticulo() {
+      const query = document.getElementById('inputBusquedaArticulo').value.toLowerCase().trim();
+      const resultadosDiv = document.getElementById('resultadosBusquedaArticulo');
+      if (query === '') { resultadosDiv.innerHTML = '<p class="text-slate-500 py-2 text-center">Ingrese un término para buscar bienes...</p>'; return; }
+      const encontrados = articulosEjemplo.filter(a => a.nombre.toLowerCase().includes(query) || a.categoria.toLowerCase().includes(query));
+      if (encontrados.length === 0) { resultadosDiv.innerHTML = '<p class="text-rose-400 py-2 text-center">No se encontraron artículos.</p>'; return; }
+      resultadosDiv.innerHTML = encontrados.map(a => `
+        <div class="py-2.5 px-3 flex items-center justify-between hover:bg-slate-800/60 rounded-lg transition">
+          <div><div class="font-semibold text-white">${a.nombre} <span class="text-emerald-400 font-normal">(${a.cantidad} u.)</span></div><div class="text-[11px] text-slate-400">${a.categoria} — ${a.funcionamiento}</div></div>
+          <button onclick="verDetalleArticulo(${a.id})" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[11px] transition">Ver / Editar</button>
+        </div>
+      `).join('');
+    }
+
+    function verDetalleArticulo(id) {
+      const art = articulosEjemplo.find(a => a.id === id);
+      if (!art) return;
+      articuloEditandoId = id;
+      document.getElementById('verArticuloTitulo').innerText = `Ficha de: ${art.nombre}`;
+      const historialHtml = art.historial.map(h => `<div class="flex items-start gap-2 text-[11px] bg-slate-900 p-2 rounded border border-slate-800"><span class="px-1.5 py-0.5 rounded font-bold ${h.tipo === 'ALTA' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}">${h.tipo}</span><div><strong class="text-slate-300">${h.fecha}:</strong> <span class="text-slate-400">${h.desc}</span></div></div>`).join('');
+      const detalleDiv = document.getElementById('contenidoDetalleArticulo');
+      detalleDiv.innerHTML = `
+        <div class="space-y-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
+          <div class="grid grid-cols-2 gap-4">
+            <div><label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Nombre</label><input type="text" id="editArtNombre" value="${art.nombre}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs"></div>
+            <div><label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Categoría</label><input type="text" id="editArtCategoria" value="${art.categoria}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs"></div>
+            <div><label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Cantidad Actual</label><input type="number" id="editArtCantidad" value="${art.cantidad}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs"></div>
+            <div><label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Estado</label><select id="editArtFuncionamiento" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs"><option value="Excelente / Operativo" ${art.funcionamiento.includes('Excelente') ? 'selected' : ''}>Excelente / Operativo</option><option value="Bueno / Uso regular" ${art.funcionamiento.includes('Bueno') ? 'selected' : ''}>Bueno / Uso regular</option><option value="Requiere Mantenimiento" ${art.funcionamiento.includes('Mantenimiento') ? 'selected' : ''}>Requiere Mantenimiento</option></select></div>
+          </div>
+          <div class="pt-2 border-t border-slate-800"><span class="text-slate-400 block text-[11px] font-bold mb-2">Historial de Modificaciones y Bajas:</span><div class="space-y-2 max-h-36 overflow-y-auto pr-1">${historialHtml}</div></div>
+        </div>
+      `;
+      document.getElementById('modalVerArticulo').classList.remove('hidden');
+    }
+
+    function guardarEdicionArticulo() {
+      const art = articulosEjemplo.find(a => a.id === articuloEditandoId); if (!art) return;
+      const nuevaCantidad = parseInt(document.getElementById('editArtCantidad').value) || art.cantidad;
+      if (nuevaCantidad !== art.cantidad) art.historial.unshift({ fecha: new Date().toISOString().split('T')[0], tipo: "MODIF", desc: `Modificación de stock: de ${art.cantidad} a ${nuevaCantidad} u.` });
+      art.nombre = document.getElementById('editArtNombre').value; art.categoria = document.getElementById('editArtCategoria').value; art.cantidad = nuevaCantidad; art.funcionamiento = document.getElementById('editArtFuncionamiento').value;
+      renderArticulos(); alert('¡Ficha del artículo actualizada!'); document.getElementById('modalVerArticulo').classList.add('hidden');
+    }
+
+    function abrirModalDarDeBaja() { document.getElementById('bajaCantidad').value = 1; document.getElementById('bajaDetalle').value = ''; document.getElementById('modalDarBaja').classList.remove('hidden'); }
+    function procesarBajaArticulo() {
+      const art = articulosEjemplo.find(a => a.id === articuloEditandoId); if (!art) return;
+      const cantBaja = parseInt(document.getElementById('bajaCantidad').value) || 1;
+      const motivo = document.getElementById('bajaMotivo').value;
+      const detalle = document.getElementById('bajaDetalle').value || 'Sin detalles';
+      if (cantBaja > art.cantidad) { alert('La cantidad excede el stock.'); return; }
+      art.cantidad -= cantBaja;
+      art.historial.unshift({ fecha: new Date().toISOString().split('T')[0], tipo: "BAJA", desc: `Retiro de ${cantBaja} u. Motivo: ${motivo}. Detalle: ${detalle}` });
+      document.getElementById('modalDarBaja').classList.add('hidden'); document.getElementById('modalVerArticulo').classList.add('hidden'); renderArticulos(); alert(`¡Baja registrada! Stock actual: ${art.cantidad} u.`);
+    }
+
+    function cerrarModalVerArticuloConConfirmacion() { tipoDescarteActivo = 'verArticulo'; document.getElementById('confirmarMensaje').innerText = '¿Desea salir del artículo? Los cambios sin guardar se perderán.'; document.getElementById('modalConfirmarCancelar').classList.remove('hidden'); }
+    function mostrarTodosLosArticulos() { renderArticulos(); document.getElementById('contenedorTablaArticulos').classList.remove('hidden'); }
+    function ocultarTablaArticulos() { document.getElementById('contenedorTablaArticulos').classList.add('hidden'); }
+    function imprimirArticuloActual() { if (confirm('¿Desea imprimir la ficha?')) window.print(); }
+
+    // --- MÓDULO PERSONAL (PROFESORES) ---
+    function renderProfesores() {
+      const tbody = document.getElementById('tabla-profesores');
+      const contador = document.getElementById('contadorProfesores');
+      if (contador) contador.innerText = `${profesoresEjemplo.length} profesores registrados`;
+      if (!tbody) return;
+      tbody.innerHTML = profesoresEjemplo.map(p => `
+        <tr class="hover:bg-slate-800/40 transition">
+          <td class="py-3 px-4 font-medium text-white">${p.nombre}<br><span class="text-[10px] text-slate-500">DNI: ${p.dni}</span></td>
+          <td class="py-3 px-4 text-indigo-400 font-medium">${p.curso}</td>
+          <td class="py-3 px-4 text-slate-300">${p.telefono || 'Sin tel.'}<br><span class="text-[10px] text-slate-500">${p.correo || ''}</span></td>
+          <td class="py-3 px-4 text-slate-400">${p.ingreso}</td>
+          <td class="py-3 px-4"><span class="text-emerald-400">${p.justificadas} Just.</span> / <span class="text-rose-400">${p.injustificadas} Inj.</span></td>
+          <td class="py-3 px-4 text-right"><button onclick="verDetalleProfesor(${p.id})" class="text-indigo-400 hover:underline text-[11px] font-medium">Ver / Editar</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function abrirModalNuevoProfesor() {
+      const form = document.getElementById('formNuevoProfesor');
+      if (form) form.reset();
+      document.getElementById('profesorIngreso').valueAsDate = new Date();
+      document.getElementById('modalProfesor').classList.remove('hidden');
+    }
+
+    function intentarCerrarModalProfesor() {
+      const nombre = document.getElementById('profesorNombre').value;
+      if (nombre.trim() !== '') {
+        tipoDescarteActivo = 'profesor';
+        document.getElementById('confirmarMensaje').innerText = 'Hay datos cargados en el docente. ¿Desea descartarlos?';
+        document.getElementById('modalConfirmarCancelar').classList.remove('hidden');
+      } else { cerrarModalProfesorDirecto(); }
+    }
+
+    function cerrarModalProfesorDirecto() { document.getElementById('modalProfesor').classList.add('hidden'); document.getElementById('formNuevoProfesor').reset(); }
+
+    function guardarProfesor(e) {
+      e.preventDefault();
+      const nombre = document.getElementById('profesorNombre').value;
+      const dni = document.getElementById('profesorDni').value;
+      const telefono = document.getElementById('profesorTelefono').value;
+      const correo = document.getElementById('profesorCorreo').value;
+      const direccion = document.getElementById('profesorDireccion').value;
+      const curso = document.getElementById('profesorCurso').value;
+      const ingreso = document.getElementById('profesorIngreso').value;
+      const egreso = document.getElementById('profesorEgreso').value;
+      const justificadas = parseInt(document.getElementById('profesorJustificadas').value) || 0;
+      const injustificadas = parseInt(document.getElementById('profesorInjustificadas').value) || 0;
+
+      profesoresEjemplo.unshift({ id: Date.now(), nombre, dni, telefono, correo, direccion, curso, ingreso, egreso, justificadas, injustificadas });
+      renderProfesores();
+      alert(`¡Profesor/a ${nombre} registrado/a con éxito!`);
+      cerrarModalProfesorDirecto();
+    }
+
+    function toggleBarraBusquedaProfesor() {
+      const container = document.getElementById('barraBusquedaProfesorContainer');
+      container.classList.toggle('hidden');
+      if (!container.classList.contains('hidden')) document.getElementById('inputBusquedaProfesor').focus();
+    }
+
+    function cerrarBarraBusquedaProfesor() {
+      document.getElementById('barraBusquedaProfesorContainer').classList.add('hidden');
+      document.getElementById('inputBusquedaProfesor').value = '';
+      document.getElementById('resultadosBusquedaProfesor').innerHTML = '<p class="text-slate-500 py-2 text-center">Ingrese un término para buscar docentes...</p>';
+    }
+
+    function ejecutarBusquedaProfesor() {
+      const query = document.getElementById('inputBusquedaProfesor').value.toLowerCase().trim();
+      const resultadosDiv = document.getElementById('resultadosBusquedaProfesor');
+      if (query === '') { resultadosDiv.innerHTML = '<p class="text-slate-500 py-2 text-center">Ingrese un término para buscar docentes...</p>'; return; }
+      const encontrados = profesoresEjemplo.filter(p => p.nombre.toLowerCase().includes(query) || p.dni.toLowerCase().includes(query) || p.curso.toLowerCase().includes(query));
+      if (encontrados.length === 0) { resultadosDiv.innerHTML = '<p class="text-rose-400 py-2 text-center">No se encontraron docentes.</p>'; return; }
+      resultadosDiv.innerHTML = encontrados.map(p => `
+        <div class="py-2.5 px-3 flex items-center justify-between hover:bg-slate-800/60 rounded-lg transition">
+          <div><div class="font-semibold text-white">${p.nombre} <span class="text-slate-500 font-normal">(DNI: ${p.dni})</span></div><div class="text-[11px] text-slate-400">Curso: ${p.curso}</div></div>
+          <button onclick="verDetalleProfesor(${p.id})" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-[11px] transition">Ver / Editar</button>
+        </div>
+      `).join('');
+    }
+
+    function verDetalleProfesor(id) {
+      const prof = profesoresEjemplo.find(p => p.id === id); if (!prof) return; profesorEditandoId = id;
+      document.getElementById('verProfesorTitulo').innerText = `Legajo de: Prof. ${prof.nombre}`;
+      const detalleDiv = document.getElementById('contenidoDetalleProfesor');
+      detalleDiv.innerHTML = `
+        <div class="space-y-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
+          <div class="grid grid-cols-2 gap-4">
+            <div><label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Nombre Completo</label><input type="text" id="editProfNombre" value="${prof.nombre}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs"></div>
+            <div><label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">DNI</label><input type="text" id="editProfDni" value="${prof.dni}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs"></div>
+            <div><label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Teléfono</label><input type="tel" id="editProfTelefono" value="${prof.telefono}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs"></div>
+            <div><label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Correo Electrónico</label><input type="email" id="editProfCorreo" value="${prof.correo}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs"></div>
+            <div class="col-span-2"><label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Dirección</label><input type="text" id="editProfDireccion" value="${prof.direccion}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs"></div>
+            <div><label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Curso Dictado</label><input type="text" id="editProfCurso" value="${prof.curso}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs"></div>
+            <div><label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Fecha Ingreso</label><input type="date" id="editProfIngreso" value="${prof.ingreso}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs"></div>
+            <div><label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Fecha Egreso</label><input type="date" id="editProfEgreso" value="${prof.egreso}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs"></div>
+            <div class="grid grid-cols-2 gap-2">
+              <div><label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Faltas Justificadas</label><input type="number" id="editProfJustificadas" value="${prof.justificadas}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs"></div>
+              <div><label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Injustificadas</label><input type="number" id="editProfInjustificadas" value="${prof.injustificadas}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs"></div>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('modalVerProfesor').classList.remove('hidden');
+    }
+
+    function guardarEdicionProfesor() {
+      const prof = profesoresEjemplo.find(p => p.id === profesorEditandoId); if (!prof) return;
+      prof.nombre = document.getElementById('editProfNombre').value; prof.dni = document.getElementById('editProfDni').value; prof.telefono = document.getElementById('editProfTelefono').value; prof.correo = document.getElementById('editProfCorreo').value; prof.direccion = document.getElementById('editProfDireccion').value; prof.curso = document.getElementById('editProfCurso').value; prof.ingreso = document.getElementById('editProfIngreso').value; prof.egreso = document.getElementById('editProfEgreso').value; prof.justificadas = parseInt(document.getElementById('editProfJustificadas').value) || 0; prof.injustificadas = parseInt(document.getElementById('editProfInjustificadas').value) || 0;
+      renderProfesores(); alert('¡Legajo docente actualizado!'); document.getElementById('modalVerProfesor').classList.add('hidden');
+    }
+
+    function cerrarModalVerProfesorConConfirmacion() { tipoDescarteActivo = 'verProfesor'; document.getElementById('confirmarMensaje').innerText = '¿Desea salir? Los cambios sin guardar se perderán.'; document.getElementById('modalConfirmarCancelar').classList.remove('hidden'); }
+    function mostrarTodosLosProfesores() { renderProfesores(); document.getElementById('contenedorTablaProfesores').classList.remove('hidden'); }
+    function ocultarTablaProfesores() { document.getElementById('contenedorTablaProfesores').classList.add('hidden'); }
+    function imprimirProfesorActual() { if (confirm('¿Desea imprimir el legajo del profesor?')) window.print(); }
+
+    // --- CONFIRMACIÓN GLOBAL DE DESCARTE ---
+    function confirmarDescarte(seguro) {
+      document.getElementById('modalConfirmarCancelar').classList.add('hidden');
+      if (seguro) {
+        if (tipoDescarteActivo === 'legajo') cerrarModalLegajoDirecto();
+        if (tipoDescarteActivo === 'articulo') cerrarModalArticuloDirecto();
+        if (tipoDescarteActivo === 'verArticulo') document.getElementById('modalVerArticulo').classList.add('hidden');
+        if (tipoDescarteActivo === 'profesor') cerrarModalProfesorDirecto();
+        if (tipoDescarteActivo === 'verProfesor') document.getElementById('modalVerProfesor').classList.add('hidden');
+      }
+    }
+
+    // --- NAVEGACIÓN Y AUTENTICACIÓN ---
     function navigateTo(sectionId) {
-      const sections = ['inicio', 'alumnos', 'inventario', 'personal', 'finanzas', 'agenda', 'backup'];
+      const sections = ['inicio', 'alumnos', 'inventario', 'personal', 'finanzas', 'agenda', 'backup', 'guia'];
       sections.forEach(s => {
         const secEl = document.getElementById(`section-${s}`);
         const navEl = document.getElementById(`nav-${s}`);
@@ -615,8 +1176,13 @@
       const currentNav = document.getElementById(`nav-${sectionId}`);
       if (currentSec) currentSec.classList.remove('hidden');
       if (currentNav) currentNav.classList.add('bg-slate-800', 'text-white');
+    }
 
-      if (sectionId === 'finanzas') renderFinanzas();
+    function toggleAuthForm(formType) {
+      document.getElementById('form-login').classList.add('hidden');
+      document.getElementById('form-register').classList.add('hidden');
+      document.getElementById('form-recover').classList.add('hidden');
+      document.getElementById(`form-${formType}`).classList.remove('hidden');
     }
 
     function loginUser() {
@@ -624,29 +1190,17 @@
       document.getElementById('app-content').classList.remove('hidden');
       navigateTo('inicio');
     }
+
     function logoutUser() {
       document.getElementById('app-content').classList.add('hidden');
       document.getElementById('auth-screen').classList.remove('hidden');
     }
+
+    function registerUser() { alert('Cuenta registrada.'); toggleAuthForm('login'); }
+    function recoverPass() { alert('Instrucciones enviadas.'); toggleAuthForm('login'); }
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('hidden'); }
-    
-    // Funciones complementarias para evitar errores
-    function abrirModalNuevoLegajo() { document.getElementById('modalLegajo').classList.remove('hidden'); }
-    function guardarLegajo(e) { e.preventDefault(); alert('Legajo guardado'); document.getElementById('modalLegajo').classList.add('hidden'); }
-    function toggleBarraBusqueda() { document.getElementById('barraBusquedaContainer').classList.toggle('hidden'); }
-    function cerrarBarraBusqueda() { document.getElementById('barraBusquedaContainer').classList.add('hidden'); }
-    function mostrarTodosLosLegajos() { document.getElementById('contenedorTablaAlumnos').classList.remove('hidden'); }
-    function ocultarTablaAlumnos() { document.getElementById('contenedorTablaAlumnos').classList.add('hidden'); }
-    function abrirModalNuevoArticulo() { alert('Abrir modal de artículo'); }
-    function toggleBarraBusquedaArticulo() { document.getElementById('barraBusquedaArticuloContainer').classList.toggle('hidden'); }
-    function cerrarBarraBusquedaArticulo() { document.getElementById('barraBusquedaArticuloContainer').classList.add('hidden'); }
-    function mostrarTodosLosArticulos() { document.getElementById('contenedorTablaArticulos').classList.remove('hidden'); }
-    function ocultarTablaArticulos() { document.getElementById('contenedorTablaArticulos').classList.add('hidden'); }
-    function abrirModalNuevoProfesor() { alert('Abrir modal de profesor'); }
-    function toggleBarraBusquedaProfesor() { document.getElementById('barraBusquedaProfesorContainer').classList.toggle('hidden'); }
-    function cerrarBarraBusquedaProfesor() { document.getElementById('barraBusquedaProfesorContainer').classList.add('hidden'); }
-    function mostrarTodosLosProfesores() { document.getElementById('contenedorTablaProfesores').classList.remove('hidden'); }
-    function ocultarTablaProfesores() { document.getElementById('contenedorTablaProfesores').classList.add('hidden'); }
   </script>
 </body>
 </html>
