@@ -888,6 +888,145 @@
   </div>
 </div>
 
+<!-- Modal: Registrar Ingreso -->
+<div id="modalIngreso" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+  <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+    <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
+      <div class="flex items-center gap-3">
+        <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20"><i data-lucide="arrow-down-left" class="w-5 h-5"></i></div>
+        <div>
+          <h3 class="text-lg font-bold text-white">Registrar Ingreso</h3>
+          <p class="text-xs text-slate-400">Complete los datos del cobro o cuota</p>
+        </div>
+      </div>
+      <button onclick="document.getElementById('modalIngreso').classList.add('hidden')" class="p-1 text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+
+    <form id="formIngreso" onsubmit="guardarIngreso(event)" class="p-6 overflow-y-auto space-y-4 flex-1">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Tipo de Ingreso *</label>
+          <select id="ingresoSubtipo" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
+            <option value="Cuota mensual">Cuota mensual</option>
+            <option value="NC de proveedor">NC de proveedor</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Categoría *</label>
+          <select id="ingresoCategoria" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
+            <option value="Alumno">Alumno</option>
+            <option value="Proveedor">Proveedor</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Nombre y Apellido *</label>
+          <input type="text" id="ingresoNombre" required placeholder="Ej: Sofía Martínez" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de Pago *</label>
+          <input type="date" id="ingresoFecha" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Forma de Pago *</label>
+          <select id="ingresoFormaPago" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
+            <option value="Efectivo">Efectivo</option>
+            <option value="Débito">Débito</option>
+            <option value="Crédito">Crédito</option>
+            <option value="Transferencia">Transferencia</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Moneda *</label>
+          <select id="ingresoMoneda" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
+            <option value="ARS">ARS ($ - Pesos)</option>
+            <option value="USD">USD (US$ - Dólares)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Monto *</label>
+          <input type="number" id="ingresoMonto" min="1" required placeholder="Ej: 45000" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-4 border-t border-slate-800">
+        <button type="button" onclick="document.getElementById('modalIngreso').classList.add('hidden')" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs">Cancelar</button>
+        <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl text-xs">Guardar Ingreso</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Registrar Egreso -->
+<div id="modalEgreso" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+  <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+    <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
+      <div class="flex items-center gap-3">
+        <div class="p-2 bg-rose-500/10 text-rose-400 rounded-lg border border-rose-500/20"><i data-lucide="arrow-up-right" class="w-5 h-5"></i></div>
+        <div>
+          <h3 class="text-lg font-bold text-white">Registrar Egreso</h3>
+          <p class="text-xs text-slate-400">Complete los datos del pago o gasto</p>
+        </div>
+      </div>
+      <button onclick="document.getElementById('modalEgreso').classList.add('hidden')" class="p-1 text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+
+    <form id="formEgreso" onsubmit="guardarEgreso(event)" class="p-6 overflow-y-auto space-y-4 flex-1">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="md:col-span-2">
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Nombre de quien recibe el dinero *</label>
+          <input type="text" id="egresoRecibe" required placeholder="Ej: Prof. Carlos Rossi o Proveedor" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Rubro / Sección *</label>
+          <select id="egresoRubro" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
+            <option value="Pago docente">Pago docente</option>
+            <option value="Pago a proveedor">Pago a proveedor</option>
+            <option value="Pago de servicios">Pago de servicios</option>
+            <option value="Impuestos">Impuestos</option>
+            <option value="Compra de insumos">Compra de insumos</option>
+            <option value="Compra de material">Compra de material</option>
+            <option value="Compra de instrumentos">Compra de instrumentos</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de Pago *</label>
+          <input type="date" id="egresoFecha" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Forma de Pago *</label>
+          <select id="egresoFormaPago" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
+            <option value="Efectivo">Efectivo</option>
+            <option value="Transferencia">Transferencia</option>
+            <option value="Débito">Débito</option>
+            <option value="Crédito">Crédito</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Moneda *</label>
+          <select id="egresoMoneda" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
+            <option value="ARS">ARS ($ - Pesos)</option>
+            <option value="USD">USD (US$ - Dólares)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Monto *</label>
+          <input type="number" id="egresoMonto" min="1" required placeholder="Ej: 50000" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Detalle / Observación</label>
+          <input type="text" id="egresoDetalle" placeholder="Detalle adicional..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-4 border-t border-slate-800">
+        <button type="button" onclick="document.getElementById('modalEgreso').classList.add('hidden')" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs">Cancelar</button>
+        <button type="submit" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-semibold rounded-xl text-xs">Guardar Egreso</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 
   <!-- ========================================== -->
   <!-- LÓGICA JAVASCRIPT GLOBAL                   -->
@@ -1429,6 +1568,75 @@ function abrirModalIngreso() {
 function abrirModalEgreso() {
   cerrarModalSelectorMovimiento();
   alert('Formulario de Registro de Egresos en preparación.');
+}
+
+let movimientosFinancieros = [
+  { id: 1, tipo: 'INGRESO', subtipo: 'Cuota mensual', categoria: 'Alumno', nombre: 'Sofía Martínez', fecha: '2026-10-01', formaPago: 'Transferencia', moneda: 'ARS', monto: 45000 },
+  { id: 2, tipo: 'EGRESO', rubro: 'Pago docente', recibe: 'Carlos Rossi', fecha: '2026-10-05', formaPago: 'Transferencia', moneda: 'ARS', monto: 90000, detalle: 'Sueldo octubre' }
+];
+
+function abrirModalIngreso() {
+  cerrarModalSelectorMovimiento();
+  document.getElementById('formIngreso').reset();
+  document.getElementById('ingresoFecha').valueAsDate = new Date();
+  document.getElementById('modalIngreso').classList.remove('hidden');
+}
+
+function abrirModalEgreso() {
+  cerrarModalSelectorMovimiento();
+  document.getElementById('formEgreso').reset();
+  document.getElementById('egresoFecha').valueAsDate = new Date();
+  document.getElementById('modalEgreso').classList.remove('hidden');
+}
+
+function guardarIngreso(e) {
+  e.preventDefault();
+  const subtipo = document.getElementById('ingresoSubtipo').value;
+  const categoria = document.getElementById('ingresoCategoria').value;
+  const nombre = document.getElementById('ingresoNombre').value.trim();
+  const fecha = document.getElementById('ingresoFecha').value;
+  const formaPago = document.getElementById('ingresoFormaPago').value;
+  const moneda = document.getElementById('ingresoMoneda').value;
+  const monto = parseFloat(document.getElementById('ingresoMonto').value) || 0;
+
+  movimientosFinancieros.unshift({ id: Date.now(), tipo: 'INGRESO', subtipo, categoria, nombre, fecha, formaPago, moneda, monto });
+
+  // Si es alumno, vinculamos al legajo si existe en la lista
+  if (categoria === 'Alumno' && typeof alumnosEjemplo !== 'undefined') {
+    const alumnoEncontrado = alumnosEjemplo.find(a => a.nombre.toLowerCase() === nombre.toLowerCase());
+    if (alumnoEncontrado) {
+      if (!alumnoEncontrado.pagos) alumnoEncontrado.pagos = [];
+      alumnoEncontrado.pagos.push({ fecha, monto, moneda, subtipo });
+    }
+  }
+
+  document.getElementById('modalIngreso').classList.add('hidden');
+  alert(`¡Ingreso registrado correctamente para ${nombre}!`);
+}
+
+function guardarEgreso(e) {
+  e.preventDefault();
+  const recibe = document.getElementById('egresoRecibe').value.trim();
+  const rubro = document.getElementById('egresoRubro').value;
+  const fecha = document.getElementById('egresoFecha').value;
+  const formaPago = document.getElementById('egresoFormaPago').value;
+  const moneda = document.getElementById('egresoMoneda').value;
+  const monto = parseFloat(document.getElementById('egresoMonto').value) || 0;
+  const detalle = document.getElementById('egresoDetalle').value;
+
+  movimientosFinancieros.unshift({ id: Date.now(), tipo: 'EGRESO', rubro, recibe, fecha, formaPago, moneda, monto, detalle });
+
+  // Si es pago docente, vinculamos al legajo del profesor si existe
+  if (rubro === 'Pago docente' && typeof profesoresEjemplo !== 'undefined') {
+    const profEncontrado = profesoresEjemplo.find(p => p.nombre.toLowerCase() === recibe.toLowerCase());
+    if (profEncontrado) {
+      if (!profEncontrado.pagosSueldo) profEncontrado.pagosSueldo = [];
+      profEncontrado.pagosSueldo.push({ fecha, monto, moneda, detalle });
+    }
+  }
+
+  document.getElementById('modalEgreso').classList.add('hidden');
+  alert(`¡Egreso registrado correctamente a favor de ${recibe}!`);
 }
   
   </script>
