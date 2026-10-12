@@ -103,8 +103,9 @@
     </div>
   </div>
 
+
   <!-- ========================================== -->
-  <!-- SISTEMA PRINCIPAL (BLOQUES 2, 3 Y 4)       -->
+  <!-- SISTEMA PRINCIPAL (BLOQUES 2, 3 Y 4)      -->
   <!-- ========================================== -->
   <div id="app-content" class="flex flex-col h-full hidden">
     
@@ -227,8 +228,8 @@
               <p class="text-xs text-slate-400">Registro de datos personales, avance pedagógico, sanciones y asistencia.</p>
             </div>
             <button onclick="abrirModalNuevoLegajo()" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
-               <i data-lucide="plus" class="w-4 h-4"></i> Nuevo Legajo
-</button>
+              <i data-lucide="user-plus" class="w-4 h-4"></i> Nuevo Legajo
+            </button>
           </div>
 
           <div class="flex gap-3">
@@ -388,8 +389,9 @@
 
   </div>
 
+
   <!-- ========================================== -->
-  <!-- MODALES DE APOYO                           -->
+  <!-- MODALES DE APOYO Y NUEVO LEGAJO          -->
   <!-- ========================================== -->
   <div id="modal-terms" class="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 max-w-lg w-full">
@@ -406,6 +408,190 @@
       <button onclick="closeModal('modal-privacy')" class="bg-slate-800 hover:bg-slate-700 text-white text-xs px-4 py-2 rounded-lg">Cerrar</button>
     </div>
   </div>
+
+  <!-- Modal: Nuevo Legajo -->
+  <div id="modalLegajo" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      
+      <!-- Encabezado del Modal -->
+      <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-cyan-500/10 text-cyan-400 rounded-lg border border-cyan-500/20">
+            <i data-lucide="user-plus" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white">Nuevo Legajo de Alumno</h3>
+            <p class="text-xs text-slate-400">Complete los datos en las secciones correspondientes</p>
+          </div>
+        </div>
+        <button type="button" onclick="intentarCerrarModalLegajo()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Pestañas -->
+      <div class="flex border-b border-slate-800 bg-slate-950/40 px-6 gap-2 overflow-x-auto">
+        <button id="tabBtn-datos" type="button" onclick="cambiarTabLegajo('datos')" class="py-3 px-3 border-b-2 border-cyan-500 font-medium text-cyan-400 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2">
+          <i data-lucide="user" class="w-4 h-4"></i> Datos Personales
+        </button>
+        <button id="tabBtn-avance" type="button" onclick="cambiarTabLegajo('avance')" class="py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2">
+          <i data-lucide="trending-up" class="w-4 h-4"></i> Avance
+        </button>
+        <button id="tabBtn-sanciones" type="button" onclick="cambiarTabLegajo('sanciones')" class="py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2">
+          <i data-lucide="alert-circle" class="w-4 h-4"></i> Sanciones
+        </button>
+        <button id="tabBtn-asistencia" type="button" onclick="cambiarTabLegajo('asistencia')" class="py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2">
+          <i data-lucide="calendar-check" class="w-4 h-4"></i> Asistencia & Agenda
+        </button>
+      </div>
+
+      <!-- Formulario -->
+      <form id="formNuevoLegajo" onsubmit="guardarLegajo(event)" class="p-6 overflow-y-auto space-y-6 flex-1">
+        
+        <!-- Tab 1: Datos Personales -->
+        <div id="tabContent-datos" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Nombre y Apellido *</label>
+              <input type="text" id="legajoNombre" required placeholder="Ej: Lucía Gómez" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">DNI *</label>
+              <input type="text" id="legajoDni" required placeholder="Ej: 45123890" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de Nacimiento</label>
+              <input type="date" id="legajoNacimiento" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de Ingreso</label>
+              <input type="date" id="legajoIngreso" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Dirección</label>
+              <input type="text" id="legajoDireccion" placeholder="Calle, número, barrio" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Teléfono</label>
+              <input type="tel" id="legajoTelefono" placeholder="358..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Tutor (si aplica)</label>
+              <input type="text" id="legajoTutor" placeholder="Nombre del padre/madre/tutor" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Contacto de Emergencia</label>
+              <input type="text" id="legajoEmergencia" placeholder="Nombre y Teléfono de contacto" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Curso / Taller</label>
+              <select id="legajoCurso" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+                <option value="Guitarra Inicial">Guitarra Inicial</option>
+                <option value="Piano y Teclado">Piano y Teclado</option>
+                <option value="Canto e Impostación">Canto e Impostación</option>
+                <option value="Batería y Percusión">Batería y Percusión</option>
+                <option value="Iniciación Musical">Iniciación Musical</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Profesor a Cargo</label>
+              <input type="text" id="legajoProfesor" placeholder="Profesor asignado" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Avance -->
+        <div id="tabContent-avance" class="space-y-4 hidden">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Nivel en el que se encuentra</label>
+              <select id="legajoNivel" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+                <option value="Nivel 1">Principiante (Nivel 1)</option>
+                <option value="Nivel 2">Intermedio (Nivel 2)</option>
+                <option value="Nivel 3">Avanzado (Nivel 3)</option>
+                <option value="Especialización">Especialización</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de Cambio de Nivel</label>
+              <input type="date" id="legajoFechaNivel" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm">
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Sanciones -->
+        <div id="tabContent-sanciones" class="space-y-4 hidden">
+          <p class="text-xs text-slate-400">Sanciones aplicadas:</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de la Sanción</label>
+              <input type="date" id="sancionFecha" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Sanción / Apercibimiento</label>
+              <input type="text" id="sancionTipo" placeholder="Ej: Advertencia escrita" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Motivo</label>
+              <textarea id="sancionMotivo" rows="3" placeholder="Detalle el motivo de la sanción..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-cyan-500"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: Asistencia -->
+        <div id="tabContent-asistencia" class="space-y-4 hidden">
+          <div class="bg-cyan-950/40 border border-cyan-800/50 p-4 rounded-xl flex items-start gap-3">
+            <i data-lucide="calendar" class="text-cyan-400 w-5 h-5 mt-0.5"></i>
+            <div>
+              <h4 class="text-sm font-semibold text-cyan-300">Vinculación con la Agenda</h4>
+              <p class="text-xs text-slate-400 mt-1">Este legajo linkea con la agenda para saber si el alumno asiste o no y dejar registro de asistencia e inasistencia.</p>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Estado de Asistencia Inicial</label>
+            <select id="legajoAsistenciaEstado" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-cyan-500">
+              <option value="Regular">Regular (Sin inasistencias)</option>
+              <option value="En observación">En observación por faltas</option>
+            </select>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Botones Guardar y Cancelar -->
+      <div class="p-5 border-t border-slate-800 flex justify-end gap-3 bg-slate-950/80">
+        <button type="button" onclick="intentarCerrarModalLegajo()" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 transition">
+          Cancelar
+        </button>
+        <button type="button" onclick="document.getElementById('formNuevoLegajo').requestSubmit()" class="px-5 py-2 rounded-xl text-sm font-semibold bg-cyan-600 hover:bg-cyan-500 text-white transition flex items-center gap-2">
+          <i data-lucide="check" class="w-4 h-4"></i> Guardar Legajo
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Cartel de Alerta de Confirmación al Cancelar -->
+  <div id="modalConfirmarCancelar" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-[60] p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl">
+      <div class="w-12 h-12 bg-amber-500/10 text-amber-500 rounded-full flex items-center justify-center mx-auto border border-amber-500/20">
+        <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold text-white">¿Estás seguro de continuar?</h3>
+        <p class="text-sm text-slate-400 mt-1">Si descartás, se perderán todos los datos cargados en el legajo.</p>
+      </div>
+      <div class="flex justify-center gap-3 pt-2">
+        <button type="button" onclick="confirmarDescarte(false)" class="px-4 py-2 rounded-xl text-sm font-medium bg-slate-800 hover:bg-slate-700 text-slate-200">
+          No, seguir editando
+        </button>
+        <button type="button" onclick="confirmarDescarte(true)" class="px-4 py-2 rounded-xl text-sm font-semibold bg-rose-600 hover:bg-rose-500 text-white">
+          Sí, descartar datos
+        </button>
+      </div>
+    </div>
+  </div>
+
 
   <!-- ========================================== -->
   <!-- LÓGICA JAVASCRIPT                          -->
@@ -427,13 +613,85 @@
           <td class="py-3 px-4 font-medium text-white">${a.nombre}<br><span class="text-[10px] text-slate-500">DNI: ${a.dni}</span></td>
           <td class="py-3 px-4">${a.curso}<br><span class="text-[10px] text-slate-500">${a.profesor}</span></td>
           <td class="py-3 px-4"><span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded text-[10px]">${a.nivel}</span></td>
-          <td class="py-3 px-4">${a.tutor}</td>
+          <td class="py-3 px-4">${a.tutor || 'No especificado'}</td>
           <td class="py-3 px-4">${a.sanciones > 0 ? `<span class="text-rose-400 font-bold">${a.sanciones} aplicada(s)</span>` : '<span class="text-slate-500">Sin sanciones</span>'}</td>
           <td class="py-3 px-4 text-right">
             <button onclick="window.print()" class="text-cyan-400 hover:underline text-[11px]">Ver Legajo / Imprimir</button>
           </td>
         </tr>
       `).join('');
+    }
+
+    // Funciones del Modal de Nuevo Legajo
+    function abrirModalNuevoLegajo() {
+      const form = document.getElementById('formNuevoLegajo');
+      if (form) form.reset();
+      cambiarTabLegajo('datos');
+      const modal = document.getElementById('modalLegajo');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function cambiarTabLegajo(tab) {
+      ['datos', 'avance', 'sanciones', 'asistencia'].forEach(t => {
+        const content = document.getElementById(`tabContent-${t}`);
+        const btn = document.getElementById(`tabBtn-${t}`);
+        if (content) content.classList.add('hidden');
+        if (btn) btn.className = "py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2";
+      });
+      
+      const activeContent = document.getElementById(`tabContent-${tab}`);
+      const activeBtn = document.getElementById(`tabBtn-${tab}`);
+      if (activeContent) activeContent.classList.remove('hidden');
+      if (activeBtn) activeBtn.className = "py-3 px-3 border-b-2 border-cyan-500 font-medium text-cyan-400 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2";
+    }
+
+    function intentarCerrarModalLegajo() {
+      const nombre = document.getElementById('legajoNombre').value;
+      const dni = document.getElementById('legajoDni').value;
+      
+      if (nombre.trim() !== '' || dni.trim() !== '') {
+        document.getElementById('modalConfirmarCancelar').classList.remove('hidden');
+      } else {
+        cerrarModalLegajoDirecto();
+      }
+    }
+
+    function confirmarDescarte(seguro) {
+      document.getElementById('modalConfirmarCancelar').classList.add('hidden');
+      if (seguro) {
+        cerrarModalLegajoDirecto();
+      }
+    }
+
+    function cerrarModalLegajoDirecto() {
+      document.getElementById('modalLegajo').classList.add('hidden');
+      document.getElementById('formNuevoLegajo').reset();
+    }
+
+    function guardarLegajo(e) {
+      e.preventDefault();
+      
+      const nombre = document.getElementById('legajoNombre').value;
+      const dni = document.getElementById('legajoDni').value;
+      const curso = document.getElementById('legajoCurso').value;
+      const profesor = document.getElementById('legajoProfesor').value || 'Sin asignar';
+      const nivel = document.getElementById('legajoNivel').value;
+      const tutor = document.getElementById('legajoTutor').value || 'No especificado';
+
+      alumnosEjemplo.unshift({
+        id: Date.now(),
+        nombre,
+        dni,
+        curso,
+        profesor,
+        nivel,
+        tutor,
+        sanciones: 0
+      });
+
+      renderAlumnos();
+      alert(`¡Legajo de ${nombre} guardado correctamente!`);
+      cerrarModalLegajoDirecto();
     }
 
     // Cambios de pantallas / Navegación
@@ -493,86 +751,6 @@
       const sb = document.getElementById('sidebar');
       sb.classList.toggle('hidden');
     }
-
-
-function abrirModalNuevoLegajo() {
-  const form = document.getElementById('formNuevoLegajo');
-  if (form) form.reset();
-  cambiarTabLegajo('datos');
-  const modal = document.getElementById('modalLegajo');
-  if (modal) modal.classList.remove('hidden');
-}
-
-function cambiarTabLegajo(tab) {
-  ['datos', 'avance', 'sanciones', 'asistencia'].forEach(t => {
-    const content = document.getElementById(`tabContent-${t}`);
-    const btn = document.getElementById(`tabBtn-${t}`);
-    if (content) content.classList.add('hidden');
-    if (btn) btn.className = "py-3 px-3 border-b-2 border-transparent font-medium text-slate-400 hover:text-slate-200 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2";
-  });
-  
-  const activeContent = document.getElementById(`tabContent-${tab}`);
-  const activeBtn = document.getElementById(`tabBtn-${tab}`);
-  if (activeContent) activeContent.classList.remove('hidden');
-  if (activeBtn) activeBtn.className = "py-3 px-3 border-b-2 border-cyan-500 font-medium text-cyan-400 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2";
-}
-
-function intentarCerrarModalLegajo() {
-  const nombre = document.getElementById('legajoNombre').value;
-  const dni = document.getElementById('legajoDni').value;
-  
-  // Si hay algún dato escrito, muestra la alerta
-  if (nombre.trim() !== '' || dni.trim() !== '') {
-    document.getElementById('modalConfirmarCancelar').classList.remove('hidden');
-  } else {
-    cerrarModalLegajoDirecto();
-  }
-}
-
-function confirmarDescarte(seguro) {
-  document.getElementById('modalConfirmarCancelar').classList.add('hidden');
-  if (seguro) {
-    cerrarModalLegajoDirecto(); // Sí: descarta los datos
-  }
-  // No: no hace nada, se queda editando el nuevo legajo
-}
-
-function cerrarModalLegajoDirecto() {
-  document.getElementById('modalLegajo').classList.add('hidden');
-  document.getElementById('formNuevoLegajo').reset();
-}
-
-function guardarLegajo(e) {
-  e.preventDefault();
-  
-  const nombre = document.getElementById('legajoNombre').value;
-  const dni = document.getElementById('legajoDni').value;
-  const curso = document.getElementById('legajoCurso').value;
-  const profesor = document.getElementById('legajoProfesor').value || 'Sin asignar';
-  const nivel = document.getElementById('legajoNivel').value;
-  const tutor = document.getElementById('legajoTutor').value || 'No especificado';
-
-  // Añade el alumno nuevo al listado existente
-  alumnosEjemplo.unshift({
-    id: Date.now(),
-    nombre,
-    dni,
-    curso,
-    profesor,
-    nivel,
-    tutor,
-    sanciones: 0
-  });
-
-  renderAlumnos();
-  alert(`¡Legajo de ${nombre} guardado correctamente!`);
-  cerrarModalLegajoDirecto();
-}
-
   </script>
-
-
-
 </body>
 </html>
-
