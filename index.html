@@ -252,7 +252,7 @@
             </div>
           </div>
 
-          <!-- Listado Desplegable con todos los legajos (Oculto por defecto) -->
+          <!-- Listado Desplegable con todos los legajos -->
           <div id="contenedorTablaAlumnos" class="hidden bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shrink-0">
             <div class="p-4 bg-slate-800/40 border-b border-slate-800 text-xs text-slate-400 flex justify-between items-center">
               <span class="font-semibold text-slate-200">Listado Completo de Legajos</span>
@@ -294,21 +294,78 @@
           </div>
         </section>
 
-        <!-- PANTALLA: INVENTARIO -->
-        <section id="section-inventario" class="hidden space-y-6">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <!-- PANTALLA: INVENTARIO DE ARTÍCULOS Y BIENES -->
+        <section id="section-inventario" class="hidden h-full flex flex-col space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4 shrink-0">
             <div>
               <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                <i data-lucide="box" class="text-emerald-400"></i> Inventario de Instrumentos y Mobiliario
+                <i data-lucide="box" class="text-emerald-400"></i> Inventario de Artículos & Activos
               </h2>
-              <p class="text-xs text-slate-400">Carga, estado de funcionamiento y disponibilidad de activos.</p>
+              <p class="text-xs text-slate-400">Control de instrumentos, micrófonos, mobiliario y equipamiento técnico.</p>
             </div>
-            <button class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-2 rounded-lg flex items-center gap-1.5 transition">
-              <i data-lucide="plus" class="w-4 h-4"></i> Cargar Artículo
-            </button>
+            <div class="flex items-center gap-2">
+              <button onclick="abrirModalNuevoArticulo()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 transition shadow-lg shadow-emerald-600/20">
+                <i data-lucide="plus" class="w-4 h-4"></i> Nuevo Artículo
+              </button>
+              <button onclick="toggleBarraBusquedaArticulo()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700 transition">
+                <i data-lucide="search" class="w-4 h-4 text-cyan-400"></i> Buscar Artículo
+              </button>
+              <button onclick="mostrarTodosLosArticulos()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700 transition">
+                <i data-lucide="list" class="w-4 h-4 text-amber-400"></i> Ver todos
+              </button>
+            </div>
           </div>
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 text-center text-slate-400 text-xs">
-            Gestión de Inventario lista para conectar registros.
+
+          <!-- Búsqueda Desplegable de Inventario -->
+          <div id="barraBusquedaArticuloContainer" class="hidden bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 shrink-0">
+            <div class="flex gap-2">
+              <input type="text" id="inputBusquedaArticulo" placeholder="Escriba el nombre o categoría del artículo..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500" oninput="ejecutarBusquedaArticulo()">
+              <button onclick="cerrarBarraBusquedaArticulo()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs">Cerrar</button>
+            </div>
+            <div id="resultadosBusquedaArticulo" class="divide-y divide-slate-800 max-h-48 overflow-y-auto text-xs text-slate-300">
+              <p class="text-slate-500 py-2 text-center">Ingrese un término para buscar bienes o artículos...</p>
+            </div>
+          </div>
+
+          <!-- Listado Desplegable del Inventario Completo -->
+          <div id="contenedorTablaArticulos" class="hidden bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shrink-0">
+            <div class="p-4 bg-slate-800/40 border-b border-slate-800 text-xs text-slate-400 flex justify-between items-center">
+              <span class="font-semibold text-slate-200">Inventario Completo de Bienes</span>
+              <div class="flex items-center gap-3">
+                <span id="contadorArticulos" class="text-emerald-400 font-semibold">3 artículos registrados</span>
+                <button onclick="ocultarTablaArticulos()" class="text-slate-400 hover:text-white text-[11px] underline">Ocultar lista</button>
+              </div>
+            </div>
+            <table class="w-full text-left text-xs text-slate-300">
+              <thead class="bg-slate-800/60 text-slate-400 border-b border-slate-800 uppercase text-[10px] tracking-wider">
+                <tr>
+                  <th class="py-3 px-4">Artículo / Categoría</th>
+                  <th class="py-3 px-4">Cantidad</th>
+                  <th class="py-3 px-4">Estado de Funcionamiento</th>
+                  <th class="py-3 px-4">Uso / Disponibilidad</th>
+                  <th class="py-3 px-4 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800" id="tabla-articulos">
+                <!-- Se llena dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Fondo Ilustrativo de Equipamiento e Instrumentos -->
+          <div id="fondoInventario" class="relative flex-1 rounded-2xl overflow-hidden border border-slate-800 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
+            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1200&q=80" alt="Instrumentos y Estudio" class="absolute inset-0 w-full h-full object-cover brightness-30" />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
+
+            <div class="relative z-10 text-center max-w-md space-y-3">
+              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <i data-lucide="package-check" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-lg font-bold text-white">Control de Activos de la Academia</h3>
+              <p class="text-xs text-slate-400">
+                Utilice el botón <strong class="text-emerald-400">"Nuevo Artículo"</strong> para agregar bienes, o navegue mediante <strong class="text-cyan-400">"Buscar Artículo"</strong> y <strong class="text-amber-400">"Ver todos"</strong>.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -427,7 +484,7 @@
 
 
   <!-- ========================================== -->
-  <!-- MODALES DE APOYO Y NUEVO LEGAJO          -->
+  <!-- MODALES DE APOYO Y ALUMNOS                 -->
   <!-- ========================================== -->
   <div id="modal-terms" class="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 max-w-lg w-full">
@@ -445,11 +502,9 @@
     </div>
   </div>
 
-  <!-- Modal: Nuevo Legajo -->
+  <!-- Modal: Nuevo Legajo Alumno -->
   <div id="modalLegajo" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
-      
-      <!-- Encabezado del Modal -->
       <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
         <div class="flex items-center gap-3">
           <div class="p-2 bg-cyan-500/10 text-cyan-400 rounded-lg border border-cyan-500/20">
@@ -465,7 +520,6 @@
         </button>
       </div>
 
-      <!-- Pestañas -->
       <div class="flex border-b border-slate-800 bg-slate-950/40 px-6 gap-2 overflow-x-auto">
         <button id="tabBtn-datos" type="button" onclick="cambiarTabLegajo('datos')" class="py-3 px-3 border-b-2 border-cyan-500 font-medium text-cyan-400 text-xs sm:text-sm whitespace-nowrap transition flex items-center gap-2">
           <i data-lucide="user" class="w-4 h-4"></i> Datos Personales
@@ -481,10 +535,7 @@
         </button>
       </div>
 
-      <!-- Formulario -->
       <form id="formNuevoLegajo" onsubmit="guardarLegajo(event)" class="p-6 overflow-y-auto space-y-6 flex-1">
-        
-        <!-- Tab 1: Datos Personales -->
         <div id="tabContent-datos" class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -536,7 +587,6 @@
           </div>
         </div>
 
-        <!-- Tab 2: Avance -->
         <div id="tabContent-avance" class="space-y-4 hidden">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -555,7 +605,6 @@
           </div>
         </div>
 
-        <!-- Tab 3: Sanciones -->
         <div id="tabContent-sanciones" class="space-y-4 hidden">
           <p class="text-xs text-slate-400">Sanciones aplicadas:</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -574,7 +623,6 @@
           </div>
         </div>
 
-        <!-- Tab 4: Asistencia -->
         <div id="tabContent-asistencia" class="space-y-4 hidden">
           <div class="bg-cyan-950/40 border border-cyan-800/50 p-4 rounded-xl flex items-start gap-3">
             <i data-lucide="calendar" class="text-cyan-400 w-5 h-5 mt-0.5"></i>
@@ -591,10 +639,8 @@
             </select>
           </div>
         </div>
-
       </form>
 
-      <!-- Botones Guardar y Cancelar -->
       <div class="p-5 border-t border-slate-800 flex justify-end gap-3 bg-slate-950/80">
         <button type="button" onclick="intentarCerrarModalLegajo()" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 transition">
           Cancelar
@@ -603,14 +649,12 @@
           <i data-lucide="check" class="w-4 h-4"></i> Guardar Legajo
         </button>
       </div>
-
     </div>
   </div>
 
-  <!-- Modal: Visualizar Legajo -->
+  <!-- Modal: Visualizar Legajo Alumno -->
   <div id="modalVerLegajo" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
-      
       <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
         <div class="flex items-center gap-3">
           <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg border border-amber-500/20">
@@ -625,13 +669,7 @@
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
-
-      <!-- Contenido del Legajo -->
-      <div class="p-6 overflow-y-auto space-y-4 text-xs text-slate-300 flex-1" id="contenidoDetalleLegajo">
-        <!-- Se carga dinámicamente -->
-      </div>
-
-      <!-- Footer con opción de imprimir bajo confirmación -->
+      <div class="p-6 overflow-y-auto space-y-4 text-xs text-slate-300 flex-1" id="contenidoDetalleLegajo"></div>
       <div class="p-5 border-t border-slate-800 flex justify-between items-center bg-slate-950/80">
         <button type="button" onclick="imprimirLegajoActual()" class="px-4 py-2 rounded-xl text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center gap-2 transition">
           <i data-lucide="printer" class="w-4 h-4"></i> Imprimir Ficha
@@ -640,11 +678,132 @@
           Cerrar
         </button>
       </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- MODALES DE INVENTARIO / ARTÍCULOS          -->
+  <!-- ========================================== -->
+
+  <!-- Modal: Cargar Nuevo Artículo -->
+  <div id="modalArticulo" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      
+      <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20">
+            <i data-lucide="package-plus" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white">Nuevo Artículo / Bien</h3>
+            <p class="text-xs text-slate-400">Registre instrumentos, micrófonos, mobiliario o equipo técnico</p>
+          </div>
+        </div>
+        <button type="button" onclick="intentarCerrarModalArticulo()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="formNuevoArticulo" onsubmit="guardarArticulo(event)" class="p-6 overflow-y-auto space-y-4 flex-1">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Categoría / Tipo *</label>
+            <select id="articuloCategoria" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500 text-sm">
+              <option value="Instrumento Musical">Instrumento Musical</option>
+              <option value="Micrófono / Audio">Micrófono / Audio</option>
+              <option value="Pantalla / Técnico">Pantalla / Técnico</option>
+              <option value="Mobiliario (Mesa/Silla)">Mobiliario (Mesa/Silla)</option>
+              <option value="Accesorios">Accesorios</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Nombre / Descripción *</label>
+            <input type="text" id="articuloNombre" required placeholder="Ej: Micrófono Shure SM58 / Silla Plegable" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Cantidad *</label>
+            <input type="number" id="articuloCantidad" min="1" value="1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Estado de Funcionamiento</label>
+            <select id="articuloFuncionamiento" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500 text-sm">
+              <option value="Excelente / Operativo">Excelente / Operativo</option>
+              <option value="Bueno / Uso regular">Bueno / Uso regular</option>
+              <option value="Requiere Mantenimiento">Requiere Mantenimiento</option>
+              <option value="Fuera de servicio">Fuera de servicio</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Disponibilidad / Condición</label>
+            <select id="articuloUso" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500 text-sm">
+              <option value="En uso activo">En uso activo</option>
+              <option value="Disponible en depósito">Disponible en depósito</option>
+              <option value="Prestado / En tránsito">Prestado / En tránsito</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Fecha de Ingreso / Compra</label>
+            <input type="date" id="articuloFecha" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500 text-sm">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Observaciones / Ubicación</label>
+            <textarea id="articuloNotas" rows="2" placeholder="Ubicación en el aula, detalles de compra o número de serie..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500 text-sm"></textarea>
+          </div>
+        </div>
+      </form>
+
+      <div class="p-5 border-t border-slate-800 flex justify-end gap-3 bg-slate-950/80">
+        <button type="button" onclick="intentarCerrarModalArticulo()" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 transition">
+          Cancelar
+        </button>
+        <button type="button" onclick="document.getElementById('formNuevoArticulo').requestSubmit()" class="px-5 py-2 rounded-xl text-sm font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition flex items-center gap-2">
+          <i data-lucide="check" class="w-4 h-4"></i> Guardar Artículo
+        </button>
+      </div>
 
     </div>
   </div>
 
-  <!-- Cartel de Alerta de Confirmación al Cancelar Nuevo Legajo -->
+  <!-- Modal: Ficha Detalle / Edición de Artículo -->
+  <div id="modalVerArticulo" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      
+      <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20">
+            <i data-lucide="box" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white" id="verArticuloTitulo">Detalle del Artículo</h3>
+            <p class="text-xs text-slate-400">Expediente de bien patrimonial</p>
+          </div>
+        </div>
+        <button type="button" onclick="cerrarModalVerArticuloConConfirmacion()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-4 text-xs text-slate-300 flex-1" id="contenidoDetalleArticulo"></div>
+
+      <div class="p-5 border-t border-slate-800 flex justify-between items-center bg-slate-950/80">
+        <button type="button" onclick="imprimirArticuloActual()" class="px-4 py-2 rounded-xl text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center gap-2 transition">
+          <i data-lucide="printer" class="w-4 h-4"></i> Imprimir Ficha
+        </button>
+        <div class="flex gap-2">
+          <button type="button" onclick="guardarEdicionArticulo()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition">
+            Guardar Cambios
+          </button>
+          <button type="button" onclick="cerrarModalVerArticuloConConfirmacion()" class="px-4 py-2 rounded-xl text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+            Salir
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Confirmation Modals -->
   <div id="modalConfirmarCancelar" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-[60] p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl">
       <div class="w-12 h-12 bg-amber-500/10 text-amber-500 rounded-full flex items-center justify-center mx-auto border border-amber-500/20">
@@ -652,14 +811,14 @@
       </div>
       <div>
         <h3 class="text-lg font-bold text-white">¿Estás seguro de continuar?</h3>
-        <p class="text-sm text-slate-400 mt-1">Si descartás, se perderán todos los datos cargados en el legajo.</p>
+        <p class="text-sm text-slate-400 mt-1" id="confirmarMensaje">Si descartás, se perderán todos los datos ingresados.</p>
       </div>
       <div class="flex justify-center gap-3 pt-2">
         <button type="button" onclick="confirmarDescarte(false)" class="px-4 py-2 rounded-xl text-sm font-medium bg-slate-800 hover:bg-slate-700 text-slate-200">
           No, seguir editando
         </button>
         <button type="button" onclick="confirmarDescarte(true)" class="px-4 py-2 rounded-xl text-sm font-semibold bg-rose-600 hover:bg-rose-500 text-white">
-          Sí, descartar datos
+          Sí, descartar
         </button>
       </div>
     </div>
@@ -673,13 +832,24 @@
     // Inicialización de Iconos Lucide
     lucide.createIcons();
 
+    // Variable global para acción de descarte activa
+    let tipoDescarteActivo = 'legajo'; // 'legajo' | 'articulo' | 'verArticulo'
+    let articuloEditandoId = null;
+
     // Datos de Ejemplo para Alumnos
     const alumnosEjemplo = [
       { id: 1, nombre: "Sofía Martínez", dni: "44.123.456", curso: "Piano Inicial", profesor: "Prof. Carlos Rossi", nivel: "Nivel 2", tutor: "María Rossi", sanciones: 0 },
       { id: 2, nombre: "Lucas Gómez", dni: "46.789.012", curso: "Guitarra Eléctrica", profesor: "Prof. Ana López", nivel: "Nivel 1", tutor: "Juan Gómez", sanciones: 1 }
     ];
 
-    // Renderizar la tabla dinámica
+    // Datos de Ejemplo para Inventario / Artículos
+    const articulosEjemplo = [
+      { id: 101, nombre: "Micrófono Shure SM58", categoria: "Micrófono / Audio", cantidad: 4, funcionamiento: "Excelente / Operativo", uso: "En uso activo", fecha: "2026-03-15", notas: "Guardados en estuche de cabina de audio." },
+      { id: 102, nombre: "Teclado Roland FP-30X", categoria: "Instrumento Musical", cantidad: 2, funcionamiento: "Excelente / Operativo", uso: "En uso activo", fecha: "2026-02-10", notas: "Ubicados en Aula 1 de Piano." },
+      { id: 103, nombre: "Mesa Plegable de Ensayo", categoria: "Mobiliario (Mesa/Silla)", cantidad: 6, funcionamiento: "Bueno / Uso regular", uso: "Disponible en depósito", fecha: "2025-11-20", notas: "Depósito central." }
+    ];
+
+    // RENDERIZADO DE TABLAS
     function renderAlumnos() {
       const tbody = document.getElementById('tabla-alumnos');
       const contador = document.getElementById('contadorAlumnos');
@@ -699,7 +869,26 @@
       `).join('');
     }
 
-    // Funciones para desplegar / ocultar el listado completo ("Ver todos")
+    function renderArticulos() {
+      const tbody = document.getElementById('tabla-articulos');
+      const contador = document.getElementById('contadorArticulos');
+      if (contador) contador.innerText = `${articulosEjemplo.length} artículos registrados`;
+
+      if (!tbody) return;
+      tbody.innerHTML = articulosEjemplo.map(art => `
+        <tr class="hover:bg-slate-800/40 transition">
+          <td class="py-3 px-4 font-medium text-white">${art.nombre}<br><span class="text-[10px] text-emerald-400">${art.categoria}</span></td>
+          <td class="py-3 px-4 font-bold text-slate-200">${art.cantidad} u.</td>
+          <td class="py-3 px-4"><span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-[10px]">${art.funcionamiento}</span></td>
+          <td class="py-3 px-4 text-slate-300">${art.uso}</td>
+          <td class="py-3 px-4 text-right">
+            <button onclick="verDetalleArticulo(${art.id})" class="text-emerald-400 hover:underline text-[11px] font-medium">Ver / Editar</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // VISTAS DESPLEGABLES
     function mostrarTodosLosLegajos() {
       renderAlumnos();
       document.getElementById('contenedorTablaAlumnos').classList.remove('hidden');
@@ -709,13 +898,21 @@
       document.getElementById('contenedorTablaAlumnos').classList.add('hidden');
     }
 
-    // Funciones del Modal de Nuevo Legajo
+    function mostrarTodosLosArticulos() {
+      renderArticulos();
+      document.getElementById('contenedorTablaArticulos').classList.remove('hidden');
+    }
+
+    function ocultarTablaArticulos() {
+      document.getElementById('contenedorTablaArticulos').classList.add('hidden');
+    }
+
+    // MODAL NUEVO LEGAJO (ALUMNOS)
     function abrirModalNuevoLegajo() {
       const form = document.getElementById('formNuevoLegajo');
       if (form) form.reset();
       cambiarTabLegajo('datos');
-      const modal = document.getElementById('modalLegajo');
-      if (modal) modal.classList.remove('hidden');
+      document.getElementById('modalLegajo').classList.remove('hidden');
     }
 
     function cambiarTabLegajo(tab) {
@@ -737,15 +934,10 @@
       const dni = document.getElementById('legajoDni').value;
       
       if (nombre.trim() !== '' || dni.trim() !== '') {
+        tipoDescarteActivo = 'legajo';
+        document.getElementById('confirmarMensaje').innerText = 'Si descartás, se perderán todos los datos ingresados en el legajo.';
         document.getElementById('modalConfirmarCancelar').classList.remove('hidden');
       } else {
-        cerrarModalLegajoDirecto();
-      }
-    }
-
-    function confirmarDescarte(seguro) {
-      document.getElementById('modalConfirmarCancelar').classList.add('hidden');
-      if (seguro) {
         cerrarModalLegajoDirecto();
       }
     }
@@ -781,7 +973,201 @@
       cerrarModalLegajoDirecto();
     }
 
-    // Control de la barra de búsqueda privada de legajos
+    // MODAL NUEVO ARTÍCULO (INVENTARIO)
+    function abrirModalNuevoArticulo() {
+      const form = document.getElementById('formNuevoArticulo');
+      if (form) form.reset();
+      document.getElementById('articuloFecha').valueAsDate = new Date();
+      document.getElementById('modalArticulo').classList.remove('hidden');
+    }
+
+    function intentarCerrarModalArticulo() {
+      const nombre = document.getElementById('articuloNombre').value;
+      
+      if (nombre.trim() !== '') {
+        tipoDescarteActivo = 'articulo';
+        document.getElementById('confirmarMensaje').innerText = 'Hay datos cargados en el artículo. ¿Desea descartarlos sin guardar?';
+        document.getElementById('modalConfirmarCancelar').classList.remove('hidden');
+      } else {
+        cerrarModalArticuloDirecto();
+      }
+    }
+
+    function cerrarModalArticuloDirecto() {
+      document.getElementById('modalArticulo').classList.add('hidden');
+      document.getElementById('formNuevoArticulo').reset();
+    }
+
+    function guardarArticulo(e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById('articuloNombre').value;
+      const categoria = document.getElementById('articuloCategoria').value;
+      const cantidad = parseInt(document.getElementById('articuloCantidad').value) || 1;
+      const funcionamiento = document.getElementById('articuloFuncionamiento').value;
+      const uso = document.getElementById('articuloUso').value;
+      const fecha = document.getElementById('articuloFecha').value || new Date().toISOString().split('T')[0];
+      const notas = document.getElementById('articuloNotas').value || 'Sin observaciones.';
+
+      articulosEjemplo.unshift({
+        id: Date.now(),
+        nombre,
+        categoria,
+        cantidad,
+        funcionamiento,
+        uso,
+        fecha,
+        notas
+      });
+
+      renderArticulos();
+      alert(`¡El artículo "${nombre}" se ha registrado con éxito!`);
+      cerrarModalArticuloDirecto();
+    }
+
+    // BÚSQUEDA Y DETALLE DE ARTÍCULOS
+    function toggleBarraBusquedaArticulo() {
+      const container = document.getElementById('barraBusquedaArticuloContainer');
+      container.classList.toggle('hidden');
+      if (!container.classList.contains('hidden')) {
+        document.getElementById('inputBusquedaArticulo').focus();
+      }
+    }
+
+    function cerrarBarraBusquedaArticulo() {
+      document.getElementById('barraBusquedaArticuloContainer').classList.add('hidden');
+      document.getElementById('inputBusquedaArticulo').value = '';
+      document.getElementById('resultadosBusquedaArticulo').innerHTML = '<p class="text-slate-500 py-2 text-center">Ingrese un término para buscar bienes o artículos...</p>';
+    }
+
+    function ejecutarBusquedaArticulo() {
+      const query = document.getElementById('inputBusquedaArticulo').value.toLowerCase().trim();
+      const resultadosDiv = document.getElementById('resultadosBusquedaArticulo');
+
+      if (query === '') {
+        resultadosDiv.innerHTML = '<p class="text-slate-500 py-2 text-center">Ingrese un término para buscar bienes o artículos...</p>';
+        return;
+      }
+
+      const encontrados = articulosEjemplo.filter(a => 
+        a.nombre.toLowerCase().includes(query) || 
+        a.categoria.toLowerCase().includes(query) ||
+        a.notas.toLowerCase().includes(query)
+      );
+
+      if (encontrados.length === 0) {
+        resultadosDiv.innerHTML = '<p class="text-rose-400 py-2 text-center">No se encontraron artículos con ese criterio.</p>';
+        return;
+      }
+
+      resultadosDiv.innerHTML = encontrados.map(a => `
+        <div class="py-2.5 px-3 flex items-center justify-between hover:bg-slate-800/60 rounded-lg transition">
+          <div>
+            <div class="font-semibold text-white">${a.nombre} <span class="text-emerald-400 font-normal">(${a.cantidad} u.)</span></div>
+            <div class="text-[11px] text-slate-400">Categoría: ${a.categoria} — Estado: ${a.funcionamiento}</div>
+          </div>
+          <button onclick="verDetalleArticulo(${a.id})" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[11px] transition">
+            Ver / Editar
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function verDetalleArticulo(id) {
+      const art = articulosEjemplo.find(a => a.id === id);
+      if (!art) return;
+
+      articuloEditandoId = id;
+      document.getElementById('verArticuloTitulo').innerText = `Ficha de: ${art.nombre}`;
+
+      const detalleDiv = document.getElementById('contenidoDetalleArticulo');
+      detalleDiv.innerHTML = `
+        <div class="space-y-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Nombre del Artículo</label>
+              <input type="text" id="editArtNombre" value="${art.nombre}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs">
+            </div>
+            <div>
+              <label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Categoría</label>
+              <input type="text" id="editArtCategoria" value="${art.categoria}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs">
+            </div>
+            <div>
+              <label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Cantidad Registrada</label>
+              <input type="number" id="editArtCantidad" value="${art.cantidad}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs">
+            </div>
+            <div>
+              <label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Fecha Modificación / Compra</label>
+              <input type="date" id="editArtFecha" value="${art.fecha}" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs">
+            </div>
+            <div>
+              <label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Estado de Funcionamiento</label>
+              <select id="editArtFuncionamiento" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs">
+                <option value="Excelente / Operativo" ${art.funcionamiento.includes('Excelente') ? 'selected' : ''}>Excelente / Operativo</option>
+                <option value="Bueno / Uso regular" ${art.funcionamiento.includes('Bueno') ? 'selected' : ''}>Bueno / Uso regular</option>
+                <option value="Requiere Mantenimiento" ${art.funcionamiento.includes('Mantenimiento') ? 'selected' : ''}>Requiere Mantenimiento</option>
+                <option value="Fuera de servicio" ${art.funcionamiento.includes('Fuera') ? 'selected' : ''}>Fuera de servicio</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Disponibilidad</label>
+              <select id="editArtUso" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs">
+                <option value="En uso activo" ${art.uso.includes('activo') ? 'selected' : ''}>En uso activo</option>
+                <option value="Disponible en depósito" ${art.uso.includes('depósito') ? 'selected' : ''}>Disponible en depósito</option>
+                <option value="Prestado / En tránsito" ${art.uso.includes('Prestado') ? 'selected' : ''}>Prestado / En tránsito</option>
+              </select>
+            </div>
+            <div class="col-span-2">
+              <label class="text-slate-500 block text-[10px] uppercase font-semibold mb-1">Observaciones / Historial de Cambios</label>
+              <textarea id="editArtNotas" rows="2" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white text-xs">${art.notas}</textarea>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('modalVerArticulo').classList.remove('hidden');
+    }
+
+    function guardarEdicionArticulo() {
+      const art = articulosEjemplo.find(a => a.id === articuloEditandoId);
+      if (!art) return;
+
+      art.nombre = document.getElementById('editArtNombre').value;
+      art.categoria = document.getElementById('editArtCategoria').value;
+      art.cantidad = parseInt(document.getElementById('editArtCantidad').value) || 1;
+      art.fecha = document.getElementById('editArtFecha').value;
+      art.funcionamiento = document.getElementById('editArtFuncionamiento').value;
+      art.uso = document.getElementById('editArtUso').value;
+      art.notas = document.getElementById('editArtNotas').value;
+
+      renderArticulos();
+      alert('¡Ficha del artículo actualizada correctamente!');
+      document.getElementById('modalVerArticulo').classList.add('hidden');
+    }
+
+    function cerrarModalVerArticuloConConfirmacion() {
+      tipoDescarteActivo = 'verArticulo';
+      document.getElementById('confirmarMensaje').innerText = '¿Desea salir del expediente del artículo? Si realizó cambios sin guardar, se perderán.';
+      document.getElementById('modalConfirmarCancelar').classList.remove('hidden');
+    }
+
+    function imprimirArticuloActual() {
+      if (confirm('¿Desea enviar la ficha técnica de este bien a la impresora?')) {
+        window.print();
+      }
+    }
+
+    // MANEJO GLOBAL DE ALERTAS Y CANCELACIONES
+    function confirmarDescarte(seguro) {
+      document.getElementById('modalConfirmarCancelar').classList.add('hidden');
+      if (seguro) {
+        if (tipoDescarteActivo === 'legajo') cerrarModalLegajoDirecto();
+        if (tipoDescarteActivo === 'articulo') cerrarModalArticuloDirecto();
+        if (tipoDescarteActivo === 'verArticulo') document.getElementById('modalVerArticulo').classList.add('hidden');
+      }
+    }
+
+    // BUSQUEDA Y DETALLE DE ALUMNOS (REUTILIZADO)
     function toggleBarraBusqueda() {
       const container = document.getElementById('barraBusquedaContainer');
       container.classList.toggle('hidden');
@@ -829,7 +1215,6 @@
       `).join('');
     }
 
-    // Visualizar Detalle del Legajo Seleccionado
     function verDetalleLegajo(id) {
       const alumno = alumnosEjemplo.find(a => a.id === id);
       if (!alumno) return;
@@ -883,7 +1268,7 @@
       }
     }
 
-    // Cambios de pantallas / Navegación
+    // NAVEGACIÓN GENERAL
     function navigateTo(sectionId) {
       const sections = ['inicio', 'alumnos', 'inventario', 'personal', 'finanzas', 'agenda', 'backup', 'guia'];
       sections.forEach(s => {
@@ -899,7 +1284,7 @@
       if (currentNav) currentNav.classList.add('bg-slate-800', 'text-white');
     }
 
-    // Formularios de Autenticación (Bloque 1)
+    // AUTENTICACIÓN
     function toggleAuthForm(formType) {
       document.getElementById('form-login').classList.add('hidden');
       document.getElementById('form-register').classList.add('hidden');
@@ -929,11 +1314,10 @@
       toggleAuthForm('login');
     }
 
-    // Modales
+    // MODALES GENERALES
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-    // Toggle Sidebar Mobile
     function toggleSidebar() {
       const sb = document.getElementById('sidebar');
       sb.classList.toggle('hidden');
