@@ -1027,6 +1027,69 @@
   </div>
 </div>
 
+<!-- Modal: Balance Mensual & Rentabilidad -->
+<div id="modalBalance" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+  <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+    <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
+      <div class="flex items-center gap-3">
+        <div class="p-2 bg-cyan-500/10 text-cyan-400 rounded-lg border border-cyan-500/20"><i data-lucide="scale" class="w-5 h-5"></i></div>
+        <div>
+          <h3 class="text-lg font-bold text-white">Balance Mensual & Rentabilidad</h3>
+          <p class="text-xs text-slate-400">Análisis contable, desglose de cobros/gastos y margen neto</p>
+        </div>
+      </div>
+      <button onclick="document.getElementById('modalBalance').classList.add('hidden')" class="p-1 text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+
+    <div class="p-6 overflow-y-auto space-y-6 flex-1 text-xs text-slate-300">
+      <!-- Selector de Mes -->
+      <div class="flex items-end gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800">
+        <div class="flex-1">
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Seleccionar Mes de Análisis</label>
+          <input type="month" id="inputMesBalance" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white text-xs">
+        </div>
+        <button onclick="calcularBalanceMensual()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg text-xs transition">Calcular Balance</button>
+      </div>
+
+      <!-- Resultados del Balance -->
+      <div id="resultadoBalanceContainer" class="space-y-4">
+        <!-- Ingresos -->
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <h4 class="text-sm font-bold text-emerald-400 border-b border-slate-800 pb-2">Ingresos del Mes</h4>
+          <div id="detalleIngresosBalance" class="space-y-1 text-slate-300">
+            <p class="text-slate-500 italic">Seleccione un mes y presione "Calcular Balance".</p>
+          </div>
+          <div class="pt-2 border-t border-slate-800 flex justify-between font-bold text-white text-sm">
+            <span>Total General de Ingresos:</span>
+            <span id="balanceTotalIngresos" class="text-emerald-400">$ 0</span>
+          </div>
+        </div>
+
+        <!-- Egresos -->
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <h4 class="text-sm font-bold text-rose-400 border-b border-slate-800 pb-2">Egresos por Sección</h4>
+          <div id="detalleEgresosBalance" class="space-y-1 text-slate-300">
+            <p class="text-slate-500 italic">Sin datos calculados.</p>
+          </div>
+          <div class="pt-2 border-t border-slate-800 flex justify-between font-bold text-white text-sm">
+            <span>Total General de Egresos:</span>
+            <span id="balanceTotalEgresos" class="text-rose-400">$ 0</span>
+          </div>
+        </div>
+
+        <!-- Rentabilidad -->
+        <div class="bg-gradient-to-r from-cyan-950/40 to-slate-900 p-4 rounded-xl border border-cyan-800/50 flex justify-between items-center">
+          <div>
+            <span class="text-cyan-300 block text-xs uppercase font-bold">Porcentaje de Rentabilidad del Mes</span>
+            <span class="text-slate-400 text-[11px]">Fórmula: ((Ingresos - Egresos) / Ingresos) * 100</span>
+          </div>
+          <div class="text-2xl font-black text-cyan-400" id="balanceRentabilidad">0 %</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   <!-- ========================================== -->
   <!-- LÓGICA JAVASCRIPT GLOBAL                   -->
@@ -1637,6 +1700,96 @@ function guardarEgreso(e) {
 
   document.getElementById('modalEgreso').classList.add('hidden');
   alert(`¡Egreso registrado correctamente a favor de ${recibe}!`);
+}
+
+function abrirModalBalanceMensual() {
+  // Asignar el mes actual por defecto (ej: "2026-10")
+  const hoy = new Date();
+  const anio = hoy.getFullYear();
+  const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+  const inputMes = document.getElementById('inputMesBalance');
+  if (inputMes) inputMes.value = `${anio}-${mes}`;
+
+  document.getElementById('modalBalance').classList.remove('hidden');
+  calcularBalanceMensual(); // Calcular automáticamente al abrir
+}
+
+function calcularBalanceMensual() {
+  const mesSeleccionado = document.getElementById('inputMesBalance').value; // Formato "YYYY-MM"
+  if (!mesSeleccionado) {
+    alert('Por favor seleccione un mes.');
+    return;
+  }
+
+  // Filtrar movimientos del mes seleccionado
+  const movsMes = movimientosFinancieros.filter(m => m.fecha && m.fecha.startsWith(mesSeleccionado));
+
+  // 1. Agrupar Ingresos por Forma de Pago y Moneda
+  const ingresosPorForma = {};
+  let totalIngresos = 0;
+
+  // 2. Agrupar Egresos por Rubro (las 8 secciones solicitadas)
+  const egresosPorRubro = {
+    'Pago docente': 0,
+    'Pago a proveedor': 0,
+    'Pago de servicios': 0,
+    'Impuestos': 0,
+    'Compra de insumos': 0,
+    'Compra de material': 0,
+    'Compra de instrumentos': 0,
+    'Otros': 0
+  };
+  let totalEgresos = 0;
+
+  movsMes.forEach(m => {
+    if (m.tipo === 'INGRESO') {
+      totalIngresos += m.monto;
+      const key = `${m.formaPago} (${m.moneda})`;
+      ingresosPorForma[key] = (ingresosPorForma[key] || 0) + m.monto;
+    } else if (m.tipo === 'EGRESO') {
+      totalEgresos += m.monto;
+      const rubro = m.rubro || 'Otros';
+      if (egresosPorRubro[rubro] !== undefined) {
+        egresosPorRubro[rubro] += m.monto;
+      } else {
+        egresosPorRubro['Otros'] += m.monto;
+      }
+    }
+  });
+
+  // Renderizar Ingresos
+  const divIngresos = document.getElementById('detalleIngresosBalance');
+  if (Object.keys(ingresosPorForma).length === 0) {
+    divIngresos.innerHTML = `<p class="text-slate-500 italic">No hay ingresos registrados en este mes.</p>`;
+  } else {
+    divIngresos.innerHTML = Object.entries(ingresosPorForma).map(([forma, monto]) => `
+      <div class="flex justify-between py-1 border-b border-slate-900">
+        <span class="text-slate-300">• Medio / Moneda: <strong class="text-white">${forma}</strong></span>
+        <span class="text-emerald-400 font-semibold">$ ${monto.toLocaleString()}</span>
+      </div>
+    `).join('');
+  }
+  document.getElementById('balanceTotalIngresos').innerText = `$ ${totalIngresos.toLocaleString()}`;
+
+  // Renderizar Egresos por Sección
+  const divEgresos = document.getElementById('detalleEgresosBalance');
+  divEgresos.innerHTML = Object.entries(egresosPorRubro).map(([rubro, monto]) => `
+    <div class="flex justify-between py-1 border-b border-slate-900">
+      <span class="text-slate-300">• ${rubro}:</span>
+      <span class="text-rose-400 font-semibold">$ ${monto.toLocaleString()}</span>
+    </div>
+  `).join('');
+  document.getElementById('balanceTotalEgresos').innerText = `$ ${totalEgresos.toLocaleString()}`;
+
+  // Calcular Rentabilidad
+  let rentabilidad = 0;
+  if (totalIngresos > 0) {
+    rentabilidad = ((totalIngresos - totalEgresos) / totalIngresos) * 100;
+  }
+  
+  const lblRentabilidad = document.getElementById('balanceRentabilidad');
+  lblRentabilidad.innerText = `${rentabilidad.toFixed(1)} %`;
+  lblRentabilidad.className = `text-2xl font-black ${rentabilidad >= 0 ? 'text-cyan-400' : 'text-rose-400'}`;
 }
   
   </script>
