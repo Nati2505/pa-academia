@@ -218,7 +218,7 @@
           </div>
         </section>
 
-        <!-- PANTALLA: ALUMNOS (Privada con buscador y fondo ilustrativo) -->
+        <!-- PANTALLA: ALUMNOS -->
         <section id="section-alumnos" class="hidden h-full flex flex-col space-y-6">
           <div class="flex items-center justify-between border-b border-slate-800 pb-4 shrink-0">
             <div>
@@ -228,11 +228,14 @@
               <p class="text-xs text-slate-400">Módulo de consulta privada y segura de expedientes académicos.</p>
             </div>
             <div class="flex items-center gap-2">
-              <button onclick="toggleBarraBusqueda()" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs px-4 py-2 rounded-lg flex items-center gap-2 transition shadow-lg shadow-cyan-600/20">
+              <button onclick="toggleBarraBusqueda()" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 transition shadow-lg shadow-cyan-600/20">
                 <i data-lucide="search" class="w-4 h-4"></i> Buscar Legajo
               </button>
+              <button onclick="mostrarTodosLosLegajos()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700 transition">
+                <i data-lucide="list" class="w-4 h-4 text-amber-400"></i> Ver todos
+              </button>
               <button onclick="abrirModalNuevoLegajo()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700 transition">
-                <i data-lucide="user-plus" class="w-4 h-4"></i> Nuevo Legajo
+                <i data-lucide="user-plus" class="w-4 h-4 text-emerald-400"></i> Nuevo Legajo
               </button>
             </div>
           </div>
@@ -249,8 +252,33 @@
             </div>
           </div>
 
-          <!-- Área de Fondo Ilustrativo (Reemplaza la lista estática por privacidad) -->
-          <div class="relative flex-1 rounded-2xl overflow-hidden border border-slate-800 shadow-xl flex items-center justify-center p-6">
+          <!-- Listado Desplegable con todos los legajos (Oculto por defecto) -->
+          <div id="contenedorTablaAlumnos" class="hidden bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shrink-0">
+            <div class="p-4 bg-slate-800/40 border-b border-slate-800 text-xs text-slate-400 flex justify-between items-center">
+              <span class="font-semibold text-slate-200">Listado Completo de Legajos</span>
+              <div class="flex items-center gap-3">
+                <span id="contadorAlumnos" class="text-cyan-400 font-semibold">2 alumnos registrados</span>
+                <button onclick="ocultarTablaAlumnos()" class="text-slate-400 hover:text-white text-[11px] underline">Ocultar lista</button>
+              </div>
+            </div>
+            <table class="w-full text-left text-xs text-slate-300">
+              <thead class="bg-slate-800/60 text-slate-400 border-b border-slate-800 uppercase text-[10px] tracking-wider">
+                <tr>
+                  <th class="py-3 px-4">Alumno / DNI</th>
+                  <th class="py-3 px-4">Curso / Profesor</th>
+                  <th class="py-3 px-4">Nivel / Avance</th>
+                  <th class="py-3 px-4">Tutor</th>
+                  <th class="py-3 px-4 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800" id="tabla-alumnos">
+                <!-- Se llena mediante Javascript -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Área de Fondo Ilustrativo -->
+          <div id="fondoAlumnos" class="relative flex-1 rounded-2xl overflow-hidden border border-slate-800 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
             <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80" alt="Música y Alumnos" class="absolute inset-0 w-full h-full object-cover brightness-30" />
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
 
@@ -258,9 +286,9 @@
               <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
                 <i data-lucide="shield-check" class="w-6 h-6"></i>
               </div>
-              <h3 class="text-lg font-bold text-white">Protección de Datos de Alumnos</h3>
+              <h3 class="text-lg font-bold text-white">Gestión Privada de Legajos</h3>
               <p class="text-xs text-slate-400">
-                Por motivos de seguridad y privacidad, los legajos se mantienen ocultos. Utilice el botón superior <strong class="text-slate-200">"Buscar Legajo"</strong> para encontrar un expediente específico o registrar uno nuevo.
+                Utilice el botón <strong class="text-cyan-400">"Buscar Legajo"</strong> para encontrar un expediente o el botón <strong class="text-amber-400">"Ver todos"</strong> para desplegar la lista completa.
               </p>
             </div>
           </div>
@@ -651,6 +679,36 @@
       { id: 2, nombre: "Lucas Gómez", dni: "46.789.012", curso: "Guitarra Eléctrica", profesor: "Prof. Ana López", nivel: "Nivel 1", tutor: "Juan Gómez", sanciones: 1 }
     ];
 
+    // Renderizar la tabla dinámica
+    function renderAlumnos() {
+      const tbody = document.getElementById('tabla-alumnos');
+      const contador = document.getElementById('contadorAlumnos');
+      if (contador) contador.innerText = `${alumnosEjemplo.length} alumnos registrados`;
+
+      if (!tbody) return;
+      tbody.innerHTML = alumnosEjemplo.map(a => `
+        <tr class="hover:bg-slate-800/40 transition">
+          <td class="py-3 px-4 font-medium text-white">${a.nombre}<br><span class="text-[10px] text-slate-500">DNI: ${a.dni}</span></td>
+          <td class="py-3 px-4">${a.curso}<br><span class="text-[10px] text-slate-500">${a.profesor}</span></td>
+          <td class="py-3 px-4"><span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded text-[10px]">${a.nivel}</span></td>
+          <td class="py-3 px-4">${a.tutor || 'No especificado'}</td>
+          <td class="py-3 px-4 text-right">
+            <button onclick="verDetalleLegajo(${a.id})" class="text-cyan-400 hover:underline text-[11px] font-medium">Ver Legajo</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Funciones para desplegar / ocultar el listado completo ("Ver todos")
+    function mostrarTodosLosLegajos() {
+      renderAlumnos();
+      document.getElementById('contenedorTablaAlumnos').classList.remove('hidden');
+    }
+
+    function ocultarTablaAlumnos() {
+      document.getElementById('contenedorTablaAlumnos').classList.add('hidden');
+    }
+
     // Funciones del Modal de Nuevo Legajo
     function abrirModalNuevoLegajo() {
       const form = document.getElementById('formNuevoLegajo');
@@ -718,6 +776,7 @@
         sanciones: 0
       });
 
+      renderAlumnos();
       alert(`¡Legajo de ${nombre} guardado correctamente!`);
       cerrarModalLegajoDirecto();
     }
