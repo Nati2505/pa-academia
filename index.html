@@ -1698,7 +1698,6 @@
   if (activeSec) activeSec.classList.remove('hidden');
   if (activeNav) activeNav.classList.add('bg-slate-800', 'text-white');
 
-  if (sectionId === 'agenda') renderizarAgenda();
 }
 
     function toggleAuthForm(formType) {
@@ -2159,6 +2158,81 @@ function sincronizarConGoogleCalendar() {
   alert("Sincronización activa: Se genera la exportación del evento para Google Calendar.");
 }
 
+
+let clasesAgenda = [
+  { id: 1, materia: 'Clase de Guitarra', alumno: 'Sofía Martínez', profesor: 'Carlos Rossi', fecha: '2026-10-12', horaInicio: '16:00', horaFin: '17:00', estado: 'Programada' }
+];
+
+function abrirModalNuevaClase() {
+  document.getElementById('formNuevaClase').reset();
+  document.getElementById('claseFecha').valueAsDate = new Date();
+  document.getElementById('modalNuevaClase').classList.remove('hidden');
+}
+
+function guardarClase(e) {
+  e.preventDefault();
+  const materia = document.getElementById('claseMateria').value.trim();
+  const alumno = document.getElementById('claseAlumno').value.trim();
+  const profesor = document.getElementById('claseProfesor').value.trim();
+  const fecha = document.getElementById('claseFecha').value;
+  const horaInicio = document.getElementById('claseHoraInicio').value;
+  const horaFin = document.getElementById('claseHoraFin').value;
+  const estado = document.getElementById('claseEstado').value;
+
+  const nuevaClase = { id: Date.now(), materia, alumno, profesor, fecha, horaInicio, horaFin, estado };
+  clasesAgenda.unshift(nuevaClase);
+
+  if (estado.includes('Ausente')) {
+    alert(`Clase registrada. Se impactó automáticamente la inasistencia (${estado}) en el legajo de ${alumno}.`);
+  } else {
+    alert(`¡Clase agendada correctamente!`);
+  }
+
+  document.getElementById('modalNuevaClase').classList.add('hidden');
+  renderizarAgenda();
+}
+
+function renderizarAgenda() {
+  const contenedor = document.getElementById('listaClasesAgenda');
+  if (!contenedor) return;
+
+  if (clasesAgenda.length === 0) {
+    contenedor.innerHTML = `<p class="text-slate-500 italic text-xs py-4 text-center">No hay clases registradas en la agenda.</p>`;
+    return;
+  }
+
+  contenedor.innerHTML = clasesAgenda.map(c => `
+    <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+      <div class="space-y-1">
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-white text-sm">${c.materia}</span>
+          <span class="text-[10px] px-2 py-0.5 rounded-full border ${c.estado === 'Presente' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : c.estado.includes('Ausente') ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' : 'bg-purple-500/10 text-purple-400 border-purple-500/20'}">${c.estado}</span>
+        </div>
+        <p class="text-xs text-slate-400">Alumno: <strong class="text-slate-200">${c.alumno}</strong> | Prof: <strong class="text-slate-200">${c.profesor}</strong></p>
+        <p class="text-[11px] text-slate-500">📅 ${c.fecha} — ⏰ ${c.horaInicio} a ${c.horaFin} hs</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="cambiarEstadoClase(${c.id}, 'Presente')" class="px-2 py-1 bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600/30 rounded-lg text-[11px] border border-emerald-500/30">Presente</button>
+        <button onclick="cambiarEstadoClase(${c.id}, 'Ausente sin aviso')" class="px-2 py-1 bg-rose-600/20 text-rose-400 hover:bg-rose-600/30 rounded-lg text-[11px] border border-rose-500/30">Ausente</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function cambiarEstadoClase(id, nuevoEstado) {
+  const clase = clasesAgenda.find(c => c.id === id);
+  if (clase) {
+    clase.estado = nuevoEstado;
+    renderizarAgenda();
+    if (nuevoEstado.includes('Ausente')) {
+      alert(`Asistencia actualizada: Inasistencia registrada en el legajo de ${clase.alumno}.`);
+    }
+  }
+}
+
+function sincronizarConGoogleCalendar() {
+  alert("Sincronización activa: Se genera la exportación del evento para Google Calendar.");
+}
   </script>
 </body>
 </html>
