@@ -30,13 +30,11 @@
   <!-- ========================================== -->
   <!-- BLOQUE 1: AUTENTICACIÓN / LOGIN Y REGISTRO -->
   <!-- ========================================== -->
-  <!-- BLOQUE 1: AUTENTICACIÓN / LOGIN Y REGISTRO (Modo Claro Armonioso) -->
   <div id="auth-screen" class="fixed inset-0 z-50 bg-gradient-to-br from-indigo-50 via-purple-50 to-cyan-50 flex items-center justify-center p-4">
     <div class="bg-white/95 border border-purple-100 rounded-3xl shadow-2xl p-8 max-w-md w-full relative backdrop-blur-xl space-y-6">
       <div class="text-center space-y-3">
         <div class="inline-block p-1 bg-gradient-to-tr from-purple-200 to-cyan-200 rounded-full shadow-md">
-          <!-- Ruta corregida exactamente con el nombre de tu archivo con mayúsculas y espacios -->
-          <img src="Logo Zyra.jpeg" alt="Zyra Logo" class="w-20 h-20 rounded-full object-cover border-2 border-white shadow">
+          <img src="logo.jpeg" alt="Zyra Logo" class="w-20 h-20 rounded-full object-cover border-2 border-white shadow">
         </div>
         <div>
           <h1 class="text-2xl font-extrabold text-slate-800 tracking-wide">Zyra</h1>
@@ -106,70 +104,6 @@
       </div>
     </div>
   </div>
-
-      <!-- Formularios de Auth -->
-      <div id="auth-forms">
-        <!-- Formulario Login -->
-        <form id="form-login" onsubmit="event.preventDefault(); loginUser();" class="space-y-4">
-          <h2 class="text-lg font-semibold text-slate-200">Iniciar Sesión</h2>
-          <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Usuario / Email</label>
-            <input type="text" id="login-user" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="usuario@ejemplo.com" />
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Contraseña</label>
-            <input type="password" id="login-pass" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="••••••••" />
-          </div>
-          <div class="flex items-center text-xs text-slate-400">
-            <input type="checkbox" id="login-terms" required class="mr-2 rounded border-slate-700 bg-slate-800 text-cyan-500" />
-            <label for="login-terms">Acepto los <a href="#" onclick="openModal('modal-terms')" class="text-cyan-400 underline">Términos y Condiciones</a> y la <a href="#" onclick="openModal('modal-privacy')" class="text-cyan-400 underline">Política de Privacidad</a></label>
-          </div>
-          <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-medium py-2 rounded-lg text-sm transition">Ingresar al Programa</button>
-          
-          <div class="flex justify-between text-xs text-slate-400 pt-2 border-t border-slate-800">
-            <button type="button" onclick="toggleAuthForm('register')" class="hover:text-cyan-400">Crear cuenta nueva</button>
-            <button type="button" onclick="toggleAuthForm('recover')" class="hover:text-cyan-400">¿Olvidaste tu contraseña?</button>
-          </div>
-        </form>
-
-        <!-- Formulario Registro -->
-        <form id="form-register" onsubmit="event.preventDefault(); registerUser();" class="space-y-4 hidden">
-          <h2 class="text-lg font-semibold text-slate-200">Registro de Cuenta</h2>
-          <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Nombre Completo</label>
-            <input type="text" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" />
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Correo Electrónico</label>
-            <input type="email" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" />
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Contraseña</label>
-            <input type="password" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" />
-          </div>
-          <div class="flex items-center text-xs text-slate-400">
-            <input type="checkbox" required class="mr-2 rounded border-slate-700 bg-slate-800 text-cyan-500" />
-            <label>Acepto los <a href="#" onclick="openModal('modal-terms')" class="text-cyan-400 underline">Términos y Condiciones</a> y la <a href="#" onclick="openModal('modal-privacy')" class="text-cyan-400 underline">Política de Privacidad</a></label>
-          </div>
-          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded-lg text-sm transition">Registrarse</button>
-          <button type="button" onclick="toggleAuthForm('login')" class="w-full text-center text-xs text-slate-400 hover:text-white mt-2">Volver al Inicio de Sesión</button>
-        </form>
-
-        <!-- Formulario Recuperación -->
-        <form id="form-recover" onsubmit="event.preventDefault(); recoverPass();" class="space-y-4 hidden">
-          <h2 class="text-lg font-semibold text-slate-200">Recuperar Contraseña</h2>
-          <p class="text-xs text-slate-400">Ingresá tu correo registrado para recibir las instrucciones de restablecimiento.</p>
-          <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Correo Electrónico</label>
-            <input type="email" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="correo@ejemplo.com" />
-          </div>
-          <button type="submit" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-medium py-2 rounded-lg text-sm transition">Enviar Instrucciones</button>
-          <button type="button" onclick="toggleAuthForm('login')" class="w-full text-center text-xs text-slate-400 hover:text-white mt-2">Volver al Inicio de Sesión</button>
-        </form>
-      </div>
-    </div>
-  </div>
-
 
   <!-- ========================================== -->
   <!-- SISTEMA PRINCIPAL                         -->
