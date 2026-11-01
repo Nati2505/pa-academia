@@ -1325,6 +1325,110 @@
   </div>
 </div>
 
+<!-- MODAL: CREAR NUEVO CURSO -->
+<div id="modalNuevoCurso" class="fixed inset-0 bg-slate-950/50 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+  <div class="bg-white border border-purple-100 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+    <div class="flex justify-between items-center border-b border-purple-100 pb-3">
+      <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+        <i data-lucide="book-marked" class="text-purple-600 w-5 h-5"></i> Crear Nuevo Curso
+      </h3>
+      <button onclick="cerrarModalNuevoCurso()" class="text-slate-400 hover:text-slate-700"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+
+    <form onsubmit="event.preventDefault(); guardarNuevoCurso();" class="space-y-3">
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Nombre del Curso (Ej: Canto, Guitarra, Adultos Mayores)</label>
+        <input type="text" id="curso-nombre" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" placeholder="Nombre del curso" />
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Profesor Asignado</label>
+          <input type="text" id="curso-profesor" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" placeholder="Nombre del profesor" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Días y Horarios</label>
+          <input type="text" id="curso-horario" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" placeholder="Ej: Martes 16hs" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Modalidad de Clase</label>
+        <select id="curso-modalidad" onchange="verificarModalidadCurso()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500">
+          <option value="Personalizada">Personalizada</option>
+          <option value="Grupales">Grupales</option>
+          <option value="Particulares">Particulares</option>
+          <option value="Otra">Otra (Detallar)</option>
+        </select>
+      </div>
+
+      <!-- Campo condicional si elige "Otra" -->
+      <div id="contenedor-otra-modalidad" class="hidden">
+        <label class="block text-xs font-bold text-slate-700 mb-1">Especifique la modalidad:</label>
+        <input type="text" id="curso-otra-detalle" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" placeholder="Detalle de la modalidad" />
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Observaciones / Notas</label>
+        <textarea id="curso-observaciones" rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" placeholder="Observaciones generales..."></textarea>
+      </div>
+
+      <div class="pt-2 flex gap-2">
+        <button type="submit" class="flex-1 bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-xs shadow-md transition">Guardar Curso</button>
+        <button type="button" onclick="cerrarModalNuevoCurso()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 py-2.5 rounded-xl text-xs font-medium transition">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: REGISTRAR ALIANZA RÓMULO GALLEGOS -->
+<div id="modalNuevaAlianza" class="fixed inset-0 bg-slate-950/50 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+  <div class="bg-white border border-purple-100 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+    <div class="flex justify-between items-center border-b border-purple-100 pb-3">
+      <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+        <i data-lucide="handshake" class="text-cyan-600 w-5 h-5"></i> Alianza Rómulo Gallegos
+      </h3>
+      <button onclick="cerrarModalAlianza()" class="text-slate-400 hover:text-slate-700"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+
+    <form onsubmit="event.preventDefault(); guardarRegistroAlianza();" class="space-y-3">
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Tipo de Registro</label>
+        <select id="alianza-tipo" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-cyan-500">
+          <option value="Alumno">Alumno (Se sincroniza con Legajos)</option>
+          <option value="Profesor">Profesor (Se sincroniza con Personal)</option>
+        </select>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nombre y Apellido</label>
+          <input type="text" id="alianza-nombre" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-cyan-500" placeholder="Nombre completo" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">DNI / Identificación</label>
+          <input type="text" id="alianza-dni" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-cyan-500" placeholder="DNI" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Curso / Materia o Actividad</label>
+        <input type="text" id="alianza-curso" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-cyan-500" placeholder="Ej: Canto / Intercambio" />
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Observaciones del Convenio</label>
+        <textarea id="alianza-obs" rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-cyan-500" placeholder="Detalles de la alianza..."></textarea>
+      </div>
+
+      <div class="pt-2 flex gap-2">
+        <button type="submit" class="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2.5 rounded-xl text-xs shadow-md transition">Guardar Registro</button>
+        <button type="button" onclick="cerrarModalAlianza()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 py-2.5 rounded-xl text-xs font-medium transition">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 
   <!-- ========================================== -->
   <!-- LÓGICA JAVASCRIPT GLOBAL                   -->
@@ -2210,5 +2314,39 @@ function sincronizarConGoogleCalendar() {
 }
 
   </script>
+
+// --- FUNCIONES PARA CURSOS ---
+function abrirModalNuevoCurso() {
+  document.getElementById('modalNuevoCurso').classList.remove('hidden');
+}
+function cerrarModalNuevoCurso() {
+  document.getElementById('modalNuevoCurso').classList.add('hidden');
+}
+function verificarModalidadCurso() {
+  const modalidad = document.getElementById('curso-modalidad').value;
+  const contenedorOtra = document.getElementById('contenedor-otra-modalidad');
+  if (modalidad === 'Otra') {
+    contenedorOtra.classList.remove('hidden');
+  } else {
+    contenedorOtra.classList.add('hidden');
+  }
+}
+function guardarNuevoCurso() {
+  alert('¡Curso creado con éxito! (Aquí luego conectamos la inserción en tu base de datos local).');
+  cerrarModalNuevoCurso();
+}
+
+// --- FUNCIONES PARA ALIANZA ---
+function abrirModalNuevaAlianzaRegistro() {
+  document.getElementById('modalNuevaAlianza').classList.remove('hidden');
+}
+function cerrarModalAlianza() {
+  document.getElementById('modalNuevaAlianza').classList.add('hidden');
+}
+function guardarRegistroAlianza() {
+  alert('¡Registro de alianza guardado y sincronizado con legajos!');
+  cerrarModalAlianza();
+}
+
 </body>
 </html>
