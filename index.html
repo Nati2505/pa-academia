@@ -105,30 +105,30 @@
     </div>
   </div>
 
+ <!-- ========================================== -->
+  <!-- SISTEMA PRINCIPAL                          -->
   <!-- ========================================== -->
-  <!-- SISTEMA PRINCIPAL                         -->
-  <!-- ========================================== -->
-  <div id="app-content" class="flex flex-col h-full hidden">
+  <div id="app-content" class="flex flex-col h-full hidden bg-slate-50 text-slate-800">
     
    <!-- ENCABEZADO / HEADER -->
-<header class="bg-slate-900 border-b border-slate-800 px-4 py-3 flex items-center justify-between shrink-0">
+<header class="bg-white/80 backdrop-blur-md border-b border-purple-100 px-4 py-3 flex items-center justify-between shrink-0 shadow-sm">
   <!-- Logo y Título Interactivos (Lleva al Inicio) -->
   <div onclick="navigateTo('inicio')" class="flex items-center gap-3 cursor-pointer group py-1">
     <div class="relative">
-      <img src="logo.jpeg" alt="Zyra Logo" class="w-10 h-10 rounded-full object-cover border-2 border-purple-500/40 shadow-md group-hover:border-purple-400 transition">
+      <img src="logo.jpeg" alt="Zyra Logo" class="w-10 h-10 rounded-full object-cover border-2 border-purple-200 shadow-sm group-hover:border-purple-400 transition">
     </div>
     <div>
-      <h1 class="text-white font-extrabold text-sm md:text-base tracking-wide group-hover:text-purple-300 transition">Zyra – Gestión para tu Academia</h1>
-      <p class="text-[11px] text-slate-400">Sistema de Control Integral</p>
+      <h1 class="text-slate-800 font-extrabold text-sm md:text-base tracking-wide group-hover:text-purple-600 transition">Zyra – Gestión para tu Academia</h1>
+      <p class="text-[11px] text-slate-500">Sistema de Control Integral</p>
     </div>
   </div>
 
   <!-- Botones de la Derecha -->
   <div class="flex items-center gap-3">
-    <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-400 hover:text-white border border-slate-800 rounded-lg">
+    <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-500 hover:text-purple-600 border border-purple-100 rounded-lg">
       <i data-lucide="menu" class="w-5 h-5"></i>
     </button>
-    <button onclick="logoutUser()" class="flex items-center gap-1.5 bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500/20 px-3 py-1.5 rounded-lg text-xs font-medium transition">
+    <button onclick="logoutUser()" class="flex items-center gap-1.5 bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 px-3 py-1.5 rounded-lg text-xs font-semibold transition shadow-sm">
       <i data-lucide="log-out" class="w-4 h-4"></i>
       <span>Cerrar sesión</span>
     </button>
@@ -138,78 +138,78 @@
     <div class="flex flex-1 overflow-hidden">
 
       <!-- MENÚ LATERAL (SIDEBAR) -->
-      <aside id="sidebar" class="w-64 bg-slate-900/95 border-r border-slate-800 flex flex-col justify-between shrink-0 transition-all duration-300">
+      <aside id="sidebar" class="w-64 bg-white/80 backdrop-blur-md border-r border-purple-100 flex flex-col justify-between shrink-0 transition-all duration-300 shadow-sm">
         <div class="p-3 space-y-1 custom-scroll overflow-y-auto">
-          <p class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider px-3 mb-2">Menú Principal</p>
+          <p class="text-[10px] font-bold text-purple-400 uppercase tracking-wider px-3 mb-2">Menú Principal</p>
 
-          <button onclick="navigateTo('inicio')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition active-nav" id="nav-inicio">
-            <i data-lucide="home" class="w-4 h-4 text-cyan-400"></i>
+          <button onclick="navigateTo('inicio')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition active-nav" id="nav-inicio">
+            <i data-lucide="home" class="w-4 h-4 text-cyan-500"></i>
             <span>Inicio</span>
           </button>
 
-          <button onclick="navigateTo('alumnos')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition" id="nav-alumnos">
-            <i data-lucide="graduation-cap" class="w-4 h-4 text-amber-400"></i>
+          <button onclick="navigateTo('alumnos')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-alumnos">
+            <i data-lucide="graduation-cap" class="w-4 h-4 text-amber-500"></i>
             <span>Alumnos</span>
           </button>
 
-          <button onclick="navigateTo('inventario')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition" id="nav-inventario">
-            <i data-lucide="box" class="w-4 h-4 text-emerald-400"></i>
+          <button onclick="navigateTo('inventario')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-inventario">
+            <i data-lucide="box" class="w-4 h-4 text-emerald-500"></i>
             <span>Inventario</span>
           </button>
 
-          <button onclick="navigateTo('personal')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition" id="nav-personal">
-            <i data-lucide="users" class="w-4 h-4 text-indigo-400"></i>
+          <button onclick="navigateTo('personal')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-personal">
+            <i data-lucide="users" class="w-4 h-4 text-indigo-500"></i>
             <span>Personal de la Academia</span>
           </button>
 
-          <button onclick="navigateTo('finanzas')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition" id="nav-finanzas">
-            <i data-lucide="dollar-sign" class="w-4 h-4 text-green-400"></i>
+          <button onclick="navigateTo('finanzas')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-finanzas">
+            <i data-lucide="dollar-sign" class="w-4 h-4 text-green-600"></i>
             <span>Finanzas</span>
           </button>
 
-          <button onclick="navigateTo('agenda')" id="nav-agenda" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-800 hover:text-white transition">
-  <i data-lucide="calendar" class="w-4 h-4 text-purple-400"></i> Agenda & Clases
-</button>
+          <button onclick="navigateTo('agenda')" id="nav-agenda" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition">
+            <i data-lucide="calendar" class="w-4 h-4 text-purple-500"></i> <span>Agenda & Clases</span>
+          </button>
 
-          <button onclick="navigateTo('backup')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition" id="nav-backup">
-            <i data-lucide="hard-drive" class="w-4 h-4 text-blue-400"></i>
+          <button onclick="navigateTo('backup')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-backup">
+            <i data-lucide="hard-drive" class="w-4 h-4 text-blue-500"></i>
             <span>Backup / Copia Seg.</span>
           </button>
 
-          <div class="pt-4 mt-4 border-t border-slate-800/80">
-            <a href="https://wa.me/5493580000000" target="_blank" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-emerald-400 hover:bg-emerald-500/10 transition">
+          <div class="pt-4 mt-4 border-t border-purple-100">
+            <a href="https://wa.me/5493580000000" target="_blank" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-emerald-600 hover:bg-emerald-50 transition">
               <i data-lucide="message-square" class="w-4 h-4"></i>
               <span>Contacto WhatsApp</span>
             </a>
 
-            <button onclick="navigateTo('guia')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition" id="nav-guia">
+            <button onclick="navigateTo('guia')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-guia">
               <i data-lucide="book-open" class="w-4 h-4 text-slate-400"></i>
               <span>Guía de Usuario</span>
             </button>
           </div>
         </div>
 
-        <div class="p-3 border-t border-slate-800 text-[11px] text-slate-500 text-center">
+        <div class="p-3 border-t border-purple-100 text-[11px] text-slate-400 text-center">
           Versión 1.0 — Zyra
         </div>
       </aside>
 
       <!-- ÁREA DE CONTENIDO PRINCIPAL -->
-      <main class="flex-1 overflow-y-auto custom-scroll bg-slate-950 p-6">
+      <main class="flex-1 overflow-y-auto custom-scroll bg-slate-50 p-6">
 
         <!-- DASHBOARD HERO -->
         <section id="section-inicio" class="h-full flex flex-col justify-center items-center">
-          <div class="relative w-full max-w-4xl h-[480px] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center">
-            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80" alt="Música" class="absolute inset-0 w-full h-full object-cover brightness-40" />
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+          <div class="relative w-full max-w-4xl h-[480px] rounded-2xl overflow-hidden border border-purple-100 shadow-2xl flex items-center justify-center">
+            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80" alt="Música" class="absolute inset-0 w-full h-full object-cover brightness-50" />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent"></div>
             <div class="relative z-10 text-center px-6">
-              <span class="inline-block px-3 py-1 bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 rounded-full text-xs font-semibold tracking-wider uppercase mb-4">
+              <span class="inline-block px-3 py-1 bg-cyan-500/20 border border-cyan-400/30 text-cyan-200 rounded-full text-xs font-semibold tracking-wider uppercase mb-4 backdrop-blur-sm">
                 Plataforma de Control
               </span>
               <h2 class="text-4xl md:text-5xl font-black text-white tracking-tight drop-shadow-md">
                 BIENVENIDO A ZYRA
               </h2>
-              <p class="text-slate-300 mt-2 max-w-lg mx-auto text-sm md:text-base">
+              <p class="text-slate-200 mt-2 max-w-lg mx-auto text-sm md:text-base font-light">
                 Gestión integral para tu Academia: Alumnos, Inventario, Personal y Finanzas.
               </p>
             </div>
@@ -218,48 +218,48 @@
 
         <!-- PANTALLA: ALUMNOS -->
         <section id="section-alumnos" class="hidden h-full flex flex-col space-y-6">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-4 shrink-0">
+          <div class="flex items-center justify-between border-b border-purple-100 pb-4 shrink-0">
             <div>
-              <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                <i data-lucide="graduation-cap" class="text-amber-400"></i> Legajos de Alumnos
+              <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                <i data-lucide="graduation-cap" class="text-amber-500"></i> Legajos de Alumnos
               </h2>
-              <p class="text-xs text-slate-400">Módulo de consulta privada y segura de expedientes académicos.</p>
+              <p class="text-xs text-slate-500">Módulo de consulta privada y segura de expedientes académicos.</p>
             </div>
             <div class="flex items-center gap-2">
               <button onclick="abrirModalNuevoLegajo()" class="bg-amber-600 hover:bg-amber-500 text-white text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 transition shadow-lg shadow-amber-600/20">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> Nuevo Legajo
               </button>
-              <button onclick="toggleBarraBusqueda()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700 transition">
-                <i data-lucide="search" class="w-4 h-4 text-cyan-400"></i> Buscar Legajo
+              <button onclick="toggleBarraBusqueda()" class="bg-white hover:bg-slate-100 text-slate-700 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-purple-100 transition shadow-sm">
+                <i data-lucide="search" class="w-4 h-4 text-cyan-600"></i> Buscar Legajo
               </button>
-              <button onclick="mostrarTodosLosLegajos()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700 transition">
-                <i data-lucide="list" class="w-4 h-4 text-amber-400"></i> Ver todos
+              <button onclick="mostrarTodosLosLegajos()" class="bg-white hover:bg-slate-100 text-slate-700 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-purple-100 transition shadow-sm">
+                <i data-lucide="list" class="w-4 h-4 text-amber-500"></i> Ver todos
               </button>
             </div>
           </div>
 
           <!-- Barra de Búsqueda Desplegable Alumnos -->
-          <div id="barraBusquedaContainer" class="hidden bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 shrink-0">
+          <div id="barraBusquedaContainer" class="hidden bg-white border border-purple-100 rounded-xl p-4 space-y-3 shrink-0 shadow-sm">
             <div class="flex gap-2">
-              <input type="text" id="inputBusquedaLegajo" placeholder="Escriba nombre, DNI o curso a buscar..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500" oninput="ejecutarBusquedaLegajo()">
-              <button onclick="cerrarBarraBusqueda()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs">Cerrar</button>
+              <input type="text" id="inputBusquedaLegajo" placeholder="Escriba nombre, DNI o curso a buscar..." class="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" oninput="ejecutarBusquedaLegajo()">
+              <button onclick="cerrarBarraBusqueda()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-medium">Cerrar</button>
             </div>
-            <div id="resultadosBusqueda" class="divide-y divide-slate-800 max-h-48 overflow-y-auto text-xs text-slate-300">
-              <p class="text-slate-500 py-2 text-center">Ingrese un término para buscar en los legajos...</p>
+            <div id="resultadosBusqueda" class="divide-y divide-slate-100 max-h-48 overflow-y-auto text-xs text-slate-600">
+              <p class="text-slate-400 py-2 text-center">Ingrese un término para buscar en los legajos...</p>
             </div>
           </div>
 
           <!-- Listado Desplegable Alumnos -->
-          <div id="contenedorTablaAlumnos" class="hidden bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shrink-0">
-            <div class="p-4 bg-slate-800/40 border-b border-slate-800 text-xs text-slate-400 flex justify-between items-center">
-              <span class="font-semibold text-slate-200">Listado Completo de Legajos</span>
+          <div id="contenedorTablaAlumnos" class="hidden bg-white border border-purple-100 rounded-xl overflow-hidden shrink-0 shadow-sm">
+            <div class="p-4 bg-purple-50/50 border-b border-purple-100 text-xs text-slate-500 flex justify-between items-center">
+              <span class="font-semibold text-slate-700">Listado Completo de Legajos</span>
               <div class="flex items-center gap-3">
-                <span id="contadorAlumnos" class="text-cyan-400 font-semibold">2 alumnos registrados</span>
-                <button onclick="ocultarTablaAlumnos()" class="text-slate-400 hover:text-white text-[11px] underline">Ocultar lista</button>
+                <span id="contadorAlumnos" class="text-purple-600 font-semibold">2 alumnos registrados</span>
+                <button onclick="ocultarTablaAlumnos()" class="text-slate-500 hover:text-slate-800 text-[11px] underline">Ocultar lista</button>
               </div>
             </div>
-            <table class="w-full text-left text-xs text-slate-300">
-              <thead class="bg-slate-800/60 text-slate-400 border-b border-slate-800 uppercase text-[10px] tracking-wider">
+            <table class="w-full text-left text-xs text-slate-700">
+              <thead class="bg-slate-50 text-slate-500 border-b border-purple-100 uppercase text-[10px] tracking-wider">
                 <tr>
                   <th class="py-3 px-4">Alumno / DNI</th>
                   <th class="py-3 px-4">Curso / Profesor</th>
@@ -268,21 +268,21 @@
                   <th class="py-3 px-4 text-right">Acciones</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-800" id="tabla-alumnos"></tbody>
+              <tbody class="divide-y divide-slate-100" id="tabla-alumnos"></tbody>
             </table>
           </div>
 
           <!-- Fondo Ilustrativo Alumnos -->
-          <div id="fondoAlumnos" class="relative flex-1 rounded-2xl overflow-hidden border border-slate-800 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
-            <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80" alt="Música y Alumnos" class="absolute inset-0 w-full h-full object-cover brightness-30" />
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
+          <div id="fondoAlumnos" class="relative flex-1 rounded-2xl overflow-hidden border border-purple-100 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
+            <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80" alt="Música y Alumnos" class="absolute inset-0 w-full h-full object-cover brightness-40" />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent"></div>
             <div class="relative z-10 text-center max-w-md space-y-3">
-              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 backdrop-blur-sm">
                 <i data-lucide="shield-check" class="w-6 h-6"></i>
               </div>
               <h3 class="text-lg font-bold text-white">Gestión Privada de Legajos</h3>
-              <p class="text-xs text-slate-400">
-                Utilice el botón <strong class="text-amber-400">"Nuevo Legajo"</strong> para registrar estudiantes o consulte expedientes mediante <strong class="text-cyan-400">"Buscar Legajo"</strong>.
+              <p class="text-xs text-slate-200">
+                Utilice el botón <strong class="text-amber-300">"Nuevo Legajo"</strong> para registrar estudiantes o consulte expedientes mediante <strong class="text-cyan-300">"Buscar Legajo"</strong>.
               </p>
             </div>
           </div>
@@ -290,46 +290,46 @@
 
         <!-- PANTALLA: INVENTARIO -->
         <section id="section-inventario" class="hidden h-full flex flex-col space-y-6">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-4 shrink-0">
+          <div class="flex items-center justify-between border-b border-purple-100 pb-4 shrink-0">
             <div>
-              <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                <i data-lucide="box" class="text-emerald-400"></i> Inventario de Artículos & Activos
+              <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                <i data-lucide="box" class="text-emerald-600"></i> Inventario de Artículos & Activos
               </h2>
-              <p class="text-xs text-slate-400">Control de instrumentos, micrófonos, mobiliario y equipamiento técnico con historial de cambios.</p>
+              <p class="text-xs text-slate-500">Control de instrumentos, micrófonos, mobiliario y equipamiento técnico con historial de cambios.</p>
             </div>
             <div class="flex items-center gap-2">
               <button onclick="abrirModalNuevoArticulo()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 transition shadow-lg shadow-emerald-600/20">
                 <i data-lucide="plus" class="w-4 h-4"></i> Nuevo Artículo
               </button>
-              <button onclick="toggleBarraBusquedaArticulo()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700 transition">
-                <i data-lucide="search" class="w-4 h-4 text-cyan-400"></i> Buscar Artículo
+              <button onclick="toggleBarraBusquedaArticulo()" class="bg-white hover:bg-slate-100 text-slate-700 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-purple-100 transition shadow-sm">
+                <i data-lucide="search" class="w-4 h-4 text-cyan-600"></i> Buscar Artículo
               </button>
-              <button onclick="mostrarTodosLosArticulos()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700 transition">
-                <i data-lucide="list" class="w-4 h-4 text-amber-400"></i> Ver todos
+              <button onclick="mostrarTodosLosArticulos()" class="bg-white hover:bg-slate-100 text-slate-700 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-purple-100 transition shadow-sm">
+                <i data-lucide="list" class="w-4 h-4 text-amber-500"></i> Ver todos
               </button>
             </div>
           </div>
 
-          <div id="barraBusquedaArticuloContainer" class="hidden bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 shrink-0">
+          <div id="barraBusquedaArticuloContainer" class="hidden bg-white border border-purple-100 rounded-xl p-4 space-y-3 shrink-0 shadow-sm">
             <div class="flex gap-2">
-              <input type="text" id="inputBusquedaArticulo" placeholder="Escriba el nombre o categoría del artículo..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500" oninput="ejecutarBusquedaArticulo()">
-              <button onclick="cerrarBarraBusquedaArticulo()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs">Cerrar</button>
+              <input type="text" id="inputBusquedaArticulo" placeholder="Escriba el nombre o categoría del artículo..." class="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" oninput="ejecutarBusquedaArticulo()">
+              <button onclick="cerrarBarraBusquedaArticulo()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-medium">Cerrar</button>
             </div>
-            <div id="resultadosBusquedaArticulo" class="divide-y divide-slate-800 max-h-48 overflow-y-auto text-xs text-slate-300">
-              <p class="text-slate-500 py-2 text-center">Ingrese un término para buscar bienes o artículos...</p>
+            <div id="resultadosBusquedaArticulo" class="divide-y divide-slate-100 max-h-48 overflow-y-auto text-xs text-slate-600">
+              <p class="text-slate-400 py-2 text-center">Ingrese un término para buscar bienes o artículos...</p>
             </div>
           </div>
 
-          <div id="contenedorTablaArticulos" class="hidden bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shrink-0">
-            <div class="p-4 bg-slate-800/40 border-b border-slate-800 text-xs text-slate-400 flex justify-between items-center">
-              <span class="font-semibold text-slate-200">Inventario Completo de Bienes</span>
+          <div id="contenedorTablaArticulos" class="hidden bg-white border border-purple-100 rounded-xl overflow-hidden shrink-0 shadow-sm">
+            <div class="p-4 bg-purple-50/50 border-b border-purple-100 text-xs text-slate-500 flex justify-between items-center">
+              <span class="font-semibold text-slate-700">Inventario Completo de Bienes</span>
               <div class="flex items-center gap-3">
-                <span id="contadorArticulos" class="text-emerald-400 font-semibold">2 artículos registrados</span>
-                <button onclick="ocultarTablaArticulos()" class="text-slate-400 hover:text-white text-[11px] underline">Ocultar lista</button>
+                <span id="contadorArticulos" class="text-emerald-600 font-semibold">2 artículos registrados</span>
+                <button onclick="ocultarTablaArticulos()" class="text-slate-500 hover:text-slate-800 text-[11px] underline">Ocultar lista</button>
               </div>
             </div>
-            <table class="w-full text-left text-xs text-slate-300">
-              <thead class="bg-slate-800/60 text-slate-400 border-b border-slate-800 uppercase text-[10px] tracking-wider">
+            <table class="w-full text-left text-xs text-slate-700">
+              <thead class="bg-slate-50 text-slate-500 border-b border-purple-100 uppercase text-[10px] tracking-wider">
                 <tr>
                   <th class="py-3 px-4">Artículo / Categoría</th>
                   <th class="py-3 px-4">Cantidad</th>
@@ -338,20 +338,20 @@
                   <th class="py-3 px-4 text-right">Acciones</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-800" id="tabla-articulos"></tbody>
+              <tbody class="divide-y divide-slate-100" id="tabla-articulos"></tbody>
             </table>
           </div>
 
-          <div id="fondoInventario" class="relative flex-1 rounded-2xl overflow-hidden border border-slate-800 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
-            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1200&q=80" alt="Instrumentos y Estudio" class="absolute inset-0 w-full h-full object-cover brightness-30" />
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
+          <div id="fondoInventario" class="relative flex-1 rounded-2xl overflow-hidden border border-purple-100 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
+            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1200&q=80" alt="Instrumentos y Estudio" class="absolute inset-0 w-full h-full object-cover brightness-40" />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent"></div>
             <div class="relative z-10 text-center max-w-md space-y-3">
-              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 backdrop-blur-sm">
                 <i data-lucide="package-check" class="w-6 h-6"></i>
               </div>
               <h3 class="text-lg font-bold text-white">Control de Activos e Historial</h3>
-              <p class="text-xs text-slate-400">
-                Utilice <strong class="text-emerald-400">"Nuevo Artículo"</strong> para registrar altas, o consulte mediante <strong class="text-cyan-400">"Buscar Artículo"</strong>.
+              <p class="text-xs text-slate-200">
+                Utilice <strong class="text-emerald-300">"Nuevo Artículo"</strong> para registrar altas, o consulte mediante <strong class="text-cyan-300">"Buscar Artículo"</strong>.
               </p>
             </div>
           </div>
@@ -359,46 +359,46 @@
 
         <!-- PANTALLA: PERSONAL DE LA ACADEMIA -->
         <section id="section-personal" class="hidden h-full flex flex-col space-y-6">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-4 shrink-0">
+          <div class="flex items-center justify-between border-b border-purple-100 pb-4 shrink-0">
             <div>
-              <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                <i data-lucide="users" class="text-indigo-400"></i> Personal de la Academia
+              <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                <i data-lucide="users" class="text-indigo-600"></i> Personal de la Academia
               </h2>
-              <p class="text-xs text-slate-400">Registro de profesores, legajos laborales, materias y asistencia docente.</p>
+              <p class="text-xs text-slate-500">Registro de profesores, legajos laborales, materias y asistencia docente.</p>
             </div>
             <div class="flex items-center gap-2">
               <button onclick="abrirModalNuevoProfesor()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 transition shadow-lg shadow-indigo-600/20">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> Nuevo Profesor
               </button>
-              <button onclick="toggleBarraBusquedaProfesor()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700 transition">
-                <i data-lucide="search" class="w-4 h-4 text-cyan-400"></i> Buscar Profesor
+              <button onclick="toggleBarraBusquedaProfesor()" class="bg-white hover:bg-slate-100 text-slate-700 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-purple-100 transition shadow-sm">
+                <i data-lucide="search" class="w-4 h-4 text-cyan-600"></i> Buscar Profesor
               </button>
-              <button onclick="mostrarTodosLosProfesores()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-slate-700 transition">
-                <i data-lucide="list" class="w-4 h-4 text-amber-400"></i> Ver todos
+              <button onclick="mostrarTodosLosProfesores()" class="bg-white hover:bg-slate-100 text-slate-700 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-purple-100 transition shadow-sm">
+                <i data-lucide="list" class="w-4 h-4 text-amber-500"></i> Ver todos
               </button>
             </div>
           </div>
 
-          <div id="barraBusquedaProfesorContainer" class="hidden bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 shrink-0">
+          <div id="barraBusquedaProfesorContainer" class="hidden bg-white border border-purple-100 rounded-xl p-4 space-y-3 shrink-0 shadow-sm">
             <div class="flex gap-2">
-              <input type="text" id="inputBusquedaProfesor" placeholder="Buscar por nombre, DNI o curso dictado..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" oninput="ejecutarBusquedaProfesor()">
-              <button onclick="cerrarBarraBusquedaProfesor()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs">Cerrar</button>
+              <input type="text" id="inputBusquedaProfesor" placeholder="Buscar por nombre, DNI o curso dictado..." class="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" oninput="ejecutarBusquedaProfesor()">
+              <button onclick="cerrarBarraBusquedaProfesor()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-medium">Cerrar</button>
             </div>
-            <div id="resultadosBusquedaProfesor" class="divide-y divide-slate-800 max-h-48 overflow-y-auto text-xs text-slate-300">
-              <p class="text-slate-500 py-2 text-center">Ingrese un término para buscar docentes...</p>
+            <div id="resultadosBusquedaProfesor" class="divide-y divide-slate-100 max-h-48 overflow-y-auto text-xs text-slate-600">
+              <p class="text-slate-400 py-2 text-center">Ingrese un término para buscar docentes...</p>
             </div>
           </div>
 
-          <div id="contenedorTablaProfesores" class="hidden bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shrink-0">
-            <div class="p-4 bg-slate-800/40 border-b border-slate-800 text-xs text-slate-400 flex justify-between items-center">
-              <span class="font-semibold text-slate-200">Cuerpo Docente Activo</span>
+          <div id="contenedorTablaProfesores" class="hidden bg-white border border-purple-100 rounded-xl overflow-hidden shrink-0 shadow-sm">
+            <div class="p-4 bg-purple-50/50 border-b border-purple-100 text-xs text-slate-500 flex justify-between items-center">
+              <span class="font-semibold text-slate-700">Cuerpo Docente Activo</span>
               <div class="flex items-center gap-3">
-                <span id="contadorProfesores" class="text-indigo-400 font-semibold">2 profesores registrados</span>
-                <button onclick="ocultarTablaProfesores()" class="text-slate-400 hover:text-white text-[11px] underline">Ocultar lista</button>
+                <span id="contadorProfesores" class="text-indigo-600 font-semibold">2 profesores registrados</span>
+                <button onclick="ocultarTablaProfesores()" class="text-slate-500 hover:text-slate-800 text-[11px] underline">Ocultar lista</button>
               </div>
             </div>
-            <table class="w-full text-left text-xs text-slate-300">
-              <thead class="bg-slate-800/60 text-slate-400 border-b border-slate-800 uppercase text-[10px] tracking-wider">
+            <table class="w-full text-left text-xs text-slate-700">
+              <thead class="bg-slate-50 text-slate-500 border-b border-purple-100 uppercase text-[10px] tracking-wider">
                 <tr>
                   <th class="py-3 px-4">Profesor / DNI</th>
                   <th class="py-3 px-4">Curso que Dicta</th>
@@ -408,170 +408,169 @@
                   <th class="py-3 px-4 text-right">Acciones</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-800" id="tabla-profesores"></tbody>
+              <tbody class="divide-y divide-slate-100" id="tabla-profesores"></tbody>
             </table>
           </div>
 
-          <div id="fondoPersonal" class="relative flex-1 rounded-2xl overflow-hidden border border-slate-800 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
-            <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&w=1200&q=80" alt="Docente de Música" class="absolute inset-0 w-full h-full object-cover brightness-30" />
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
+          <div id="fondoPersonal" class="relative flex-1 rounded-2xl overflow-hidden border border-purple-100 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
+            <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&w=1200&q=80" alt="Docente de Música" class="absolute inset-0 w-full h-full object-cover brightness-40" />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent"></div>
             <div class="relative z-10 text-center max-w-md space-y-3">
-              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 backdrop-blur-sm">
                 <i data-lucide="award" class="w-6 h-6"></i>
               </div>
               <h3 class="text-lg font-bold text-white">Gestión de Personal Docente</h3>
-              <p class="text-xs text-slate-400">
-                Utilice el botón <strong class="text-indigo-400">"Nuevo Profesor"</strong> para registrar docentes o consulte el cuerpo académico con <strong class="text-cyan-400">"Buscar Profesor"</strong>.
+              <p class="text-xs text-slate-200">
+                Utilice el botón <strong class="text-indigo-300">"Nuevo Profesor"</strong> para registrar docentes o consulte el cuerpo académico con <strong class="text-cyan-300">"Buscar Profesor"</strong>.
               </p>
             </div>
           </div>
         </section>
 
         <!-- PANTALLA: FINANZAS -->
-      <!-- PANTALLA: FINANZAS & BALANCE -->
-<section id="section-finanzas" class="hidden h-full flex flex-col justify-center items-center p-6 bg-slate-950">
-  
-  <!-- Encabezado del Módulo -->
-  <div class="text-center max-w-xl mb-10 space-y-2">
-    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-2">
-      <i data-lucide="dollar-sign" class="w-8 h-8"></i>
-    </div>
-    <h2 class="text-3xl font-extrabold text-white tracking-tight">Finanzas & Control Económico</h2>
-    <p class="text-xs text-slate-400">
-      Módulo privado para la gestión de ingresos, egresos, balance mensual de rentabilidad y análisis estadístico.
-    </p>
-  </div>
+        <section id="section-finanzas" class="hidden h-full flex flex-col justify-center items-center p-6 bg-slate-50">
+          
+          <!-- Encabezado del Módulo -->
+          <div class="text-center max-w-xl mb-10 space-y-2">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-600 border border-emerald-200 mb-2 shadow-sm">
+              <i data-lucide="dollar-sign" class="w-8 h-8"></i>
+            </div>
+            <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight">Finanzas & Control Económico</h2>
+            <p class="text-xs text-slate-500">
+              Módulo privado para la gestión de ingresos, egresos, balance mensual de rentabilidad y análisis estadístico.
+            </p>
+          </div>
 
-  <!-- Contenedor de los 3 Accesos Principales -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl w-full">
-    
-    <!-- Tarjeta 1: Registrar Movimientos -->
-    <div onclick="abrirModalSeleccionarMovimiento()" class="bg-slate-900/90 border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-6 flex flex-col justify-between cursor-pointer transition-all duration-300 hover:scale-[1.02] shadow-xl group">
-      <div>
-        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 mb-4 group-hover:bg-emerald-500 group-hover:text-slate-950 transition">
-          <i data-lucide="arrow-up-right" class="w-6 h-6"></i>
-        </div>
-        <h3 class="text-lg font-bold text-white mb-2">1. Registrar Movimientos</h3>
-        <p class="text-xs text-slate-400 leading-relaxed">
-          Carga de nuevos ingresos (cuotas, notas de crédito) o egresos (pagos a docentes, proveedores, servicios). Vinculación directa con legajos.
-        </p>
-      </div>
-      <div class="mt-6 flex items-center text-xs font-semibold text-emerald-400 group-hover:translate-x-1 transition">
-        <span>Ingresos & Egresos</span>
-        <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i>
-      </div>
-    </div>
+          <!-- Contenedor de los 3 Accesos Principales -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl w-full">
+            
+            <!-- Tarjeta 1: Registrar Movimientos -->
+            <div onclick="abrirModalSeleccionarMovimiento()" class="bg-white border border-purple-100 hover:border-emerald-500/50 rounded-2xl p-6 flex flex-col justify-between cursor-pointer transition-all duration-300 hover:scale-[1.02] shadow-sm hover:shadow-md group">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200 mb-4 group-hover:bg-emerald-600 group-hover:text-white transition">
+                  <i data-lucide="arrow-up-right" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Registrar Movimientos</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                  Carga de nuevos ingresos (cuotas, notas de crédito) o egresos (pagos a docentes, proveedores, servicios). Vinculación directa con legajos.
+                </p>
+              </div>
+              <div class="mt-6 flex items-center text-xs font-semibold text-emerald-600 group-hover:translate-x-1 transition">
+                <span>Ingresos & Egresos</span>
+                <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i>
+              </div>
+            </div>
 
-    <!-- Tarjeta 2: Balance Mensual -->
-    <div onclick="abrirModalBalanceMensual()" class="bg-slate-900/90 border border-slate-800 hover:border-cyan-500/50 rounded-2xl p-6 flex flex-col justify-between cursor-pointer transition-all duration-300 hover:scale-[1.02] shadow-xl group">
-      <div>
-        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20 mb-4 group-hover:bg-cyan-500 group-hover:text-slate-950 transition">
-          <i data-lucide="scale" class="w-6 h-6"></i>
-        </div>
-        <h3 class="text-lg font-bold text-white mb-2">2. Balance Mensual</h3>
-        <p class="text-xs text-slate-400 leading-relaxed">
-          Resumen mensual detallado por medio de pago (Efectivo/Transferencia), agrupación de egresos por rubro y cálculo del % de rentabilidad.
-        </p>
-      </div>
-      <div class="mt-6 flex items-center text-xs font-semibold text-cyan-400 group-hover:translate-x-1 transition">
-        <span>Ver Balance</span>
-        <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i>
-      </div>
-    </div>
+            <!-- Tarjeta 2: Balance Mensual -->
+            <div onclick="abrirModalBalanceMensual()" class="bg-white border border-purple-100 hover:border-cyan-500/50 rounded-2xl p-6 flex flex-col justify-between cursor-pointer transition-all duration-300 hover:scale-[1.02] shadow-sm hover:shadow-md group">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center border border-cyan-200 mb-4 group-hover:bg-cyan-600 group-hover:text-white transition">
+                  <i data-lucide="scale" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Balance Mensual</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                  Resumen mensual detallado por medio de pago (Efectivo/Transferencia), agrupación de egresos por rubro y cálculo del % de rentabilidad.
+                </p>
+              </div>
+              <div class="mt-6 flex items-center text-xs font-semibold text-cyan-600 group-hover:translate-x-1 transition">
+                <span>Ver Balance</span>
+                <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i>
+              </div>
+            </div>
 
-    <!-- Tarjeta 3: Estadísticas -->
-    <div onclick="abrirModalEstadisticas()" class="bg-slate-900/90 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-6 flex flex-col justify-between cursor-pointer transition-all duration-300 hover:scale-[1.02] shadow-xl group">
-      <div>
-        <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center border border-indigo-500/20 mb-4 group-hover:bg-indigo-500 group-hover:text-slate-950 transition">
-          <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
-        </div>
-        <h3 class="text-lg font-bold text-white mb-2">3. Estadísticas</h3>
-        <p class="text-xs text-slate-400 leading-relaxed">
-          Comparativa de períodos por rango de fechas, resúmenes contables e informes con gráficos interactivos.
-        </p>
-      </div>
-      <div class="mt-6 flex items-center text-xs font-semibold text-indigo-400 group-hover:translate-x-1 transition">
-        <span>Ver Gráficos & Informes</span>
-        <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i>
-      </div>
-    </div>
+            <!-- Tarjeta 3: Estadísticas -->
+            <div onclick="abrirModalEstadisticas()" class="bg-white border border-purple-100 hover:border-indigo-500/50 rounded-2xl p-6 flex flex-col justify-between cursor-pointer transition-all duration-300 hover:scale-[1.02] shadow-sm hover:shadow-md group">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-200 mb-4 group-hover:bg-indigo-600 group-hover:text-white transition">
+                  <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Estadísticas</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                  Comparativa de períodos por rango de fechas, resúmenes contables e informes con gráficos interactivos.
+                </p>
+              </div>
+              <div class="mt-6 flex items-center text-xs font-semibold text-indigo-600 group-hover:translate-x-1 transition">
+                <span>Ver Gráficos & Informes</span>
+                <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i>
+              </div>
+            </div>
 
-  </div>
+          </div>
 
-  <!-- Modal Selector Inicial: Elegir Tipo de Movimiento -->
-  <div id="modalSelectorMovimiento" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h3 class="text-base font-bold text-white flex items-center gap-2">
-          <i data-lucide="arrow-left-right" class="text-emerald-400 w-5 h-5"></i> Registrar Movimiento
-        </h3>
-        <button onclick="cerrarModalSelectorMovimiento()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-      </div>
-      <p class="text-xs text-slate-400">Seleccione la acción financiera a realizar:</p>
+          <!-- Modal Selector Inicial: Elegir Tipo de Movimiento -->
+          <div id="modalSelectorMovimiento" class="fixed inset-0 bg-slate-950/50 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+            <div class="bg-white border border-purple-100 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+              <div class="flex justify-between items-center border-b border-purple-100 pb-3">
+                <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                  <i data-lucide="arrow-left-right" class="text-emerald-600 w-5 h-5"></i> Registrar Movimiento
+                </h3>
+                <button onclick="cerrarModalSelectorMovimiento()" class="text-slate-400 hover:text-slate-700"><i data-lucide="x" class="w-5 h-5"></i></button>
+              </div>
+              <p class="text-xs text-slate-500">Seleccione la acción financiera a realizar:</p>
 
-      <div class="grid grid-cols-1 gap-3 pt-2">
-        <button onclick="abrirModalIngreso()" class="w-full bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 p-4 rounded-xl flex items-center justify-between text-xs font-semibold transition group">
-          <div class="flex items-center gap-3">
-            <i data-lucide="arrow-down-left" class="w-5 h-5 text-emerald-400"></i>
-            <div class="text-left">
-              <div class="text-sm font-bold text-white">Registrar INGRESO</div>
-              <div class="text-[11px] text-slate-400 font-normal">Cuota alumno, Nota de crédito, Otros</div>
+              <div class="grid grid-cols-1 gap-3 pt-2">
+                <button onclick="abrirModalIngreso()" class="w-full bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 p-4 rounded-xl flex items-center justify-between text-xs font-semibold transition group">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="arrow-down-left" class="w-5 h-5 text-emerald-600"></i>
+                    <div class="text-left">
+                      <div class="text-sm font-bold text-slate-800">Registrar INGRESO</div>
+                      <div class="text-[11px] text-slate-500 font-normal">Cuota alumno, Nota de crédito, Otros</div>
+                    </div>
+                  </div>
+                  <i data-lucide="chevron-right" class="w-4 h-4 text-emerald-600 group-hover:translate-x-1 transition"></i>
+                </button>
+
+                <button onclick="abrirModalEgreso()" class="w-full bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 p-4 rounded-xl flex items-center justify-between text-xs font-semibold transition group">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="arrow-up-right" class="w-5 h-5 text-rose-600"></i>
+                    <div class="text-left">
+                      <div class="text-sm font-bold text-slate-800">Registrar EGRESO</div>
+                      <div class="text-[11px] text-slate-500 font-normal">Docentes, Proveedores, Servicios, etc.</div>
+                    </div>
+                  </div>
+                  <i data-lucide="chevron-right" class="w-4 h-4 text-rose-600 group-hover:translate-x-1 transition"></i>
+                </button>
+              </div>
             </div>
           </div>
-          <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
-        </button>
 
-        <button onclick="abrirModalEgreso()" class="w-full bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-300 p-4 rounded-xl flex items-center justify-between text-xs font-semibold transition group">
-          <div class="flex items-center gap-3">
-            <i data-lucide="arrow-up-right" class="w-5 h-5 text-rose-400"></i>
-            <div class="text-left">
-              <div class="text-sm font-bold text-white">Registrar EGRESO</div>
-              <div class="text-[11px] text-slate-400 font-normal">Docentes, Proveedores, Servicios, etc.</div>
-            </div>
-          </div>
-          <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-
-</section>
+        </section>
 
         <!-- PANTALLA: AGENDA -->
         <section id="section-agenda" class="hidden space-y-6">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+          <div class="flex items-center justify-between border-b border-purple-100 pb-4">
             <div>
-              <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                <i data-lucide="calendar" class="text-purple-400"></i> Agenda & Control de Asistencia
+              <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                <i data-lucide="calendar" class="text-purple-500"></i> Agenda & Control de Asistencia
               </h2>
-              <p class="text-xs text-slate-400">Programación de clases y asistencia.</p>
+              <p class="text-xs text-slate-500">Programación de clases y asistencia.</p>
             </div>
           </div>
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 text-center text-slate-400 text-xs">
+          <div class="bg-white border border-purple-100 rounded-xl p-6 text-center text-slate-500 text-xs shadow-sm">
             Calendario de clases y asistencia.
           </div>
         </section>
 
         <!-- PANTALLA: BACKUP -->
         <section id="section-backup" class="hidden space-y-6">
-          <div class="border-b border-slate-800 pb-4">
-            <h2 class="text-xl font-bold text-white flex items-center gap-2">
-              <i data-lucide="hard-drive" class="text-blue-400"></i> Copias de Seguridad (Backup)
+          <div class="border-b border-purple-100 pb-4">
+            <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <i data-lucide="hard-drive" class="text-blue-500"></i> Copias de Seguridad (Backup)
             </h2>
-            <p class="text-xs text-slate-400">Respaldos de base de datos.</p>
+            <p class="text-xs text-slate-500">Respaldos de base de datos.</p>
           </div>
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4 max-w-md">
-            <button onclick="alert('Backup generado y guardado localmente.')" class="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium py-2 rounded-lg transition">Generar Backup Ahora</button>
+          <div class="bg-white border border-purple-100 rounded-xl p-6 space-y-4 max-w-md shadow-sm">
+            <button onclick="alert('Backup generado y guardado localmente.')" class="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium py-2 rounded-lg transition shadow-md">Generar Backup Ahora</button>
           </div>
         </section>
 
         <!-- PANTALLA: GUÍA -->
         <section id="section-guia" class="hidden space-y-6">
-          <div class="border-b border-slate-800 pb-4">
-            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <div class="border-b border-purple-100 pb-4">
+            <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
               <i data-lucide="book-open" class="text-slate-400"></i> Guía de Usuario
             </h2>
-            <p class="text-xs text-slate-400">Manuales de uso del sistema.</p>
+            <p class="text-xs text-slate-500">Manuales de uso del sistema.</p>
           </div>
         </section>
 
@@ -579,58 +578,21 @@
     </div>
 
     <!-- FOOTER -->
-    <footer class="bg-slate-900 border-t border-slate-800 text-xs text-slate-400 shrink-0">
-      <div class="px-6 py-3 flex flex-wrap items-center justify-between gap-4 border-b border-slate-800/60">
+    <footer class="bg-white border-t border-purple-100 text-xs text-slate-500 shrink-0 shadow-sm">
+      <div class="px-6 py-3 flex flex-wrap items-center justify-between gap-4 border-b border-purple-50">
         <div class="flex flex-wrap items-center gap-6 text-[11px]">
-          <button onclick="openModal('modal-terms')" class="hover:text-cyan-400 transition">Términos y Condiciones</button>
-          <button onclick="openModal('modal-privacy')" class="hover:text-cyan-400 transition">Política de Privacidad</button>
-          <a href="tel:+5493580000000" class="hover:text-cyan-400 transition">Teléfono</a>
-          <a href="mailto:contacto@puntotech.com" class="hover:text-cyan-400 transition">Correo electrónico</a>
+          <button onclick="openModal('modal-terms')" class="hover:text-purple-600 transition">Términos y Condiciones</button>
+          <button onclick="openModal('modal-privacy')" class="hover:text-purple-600 transition">Política de Privacidad</button>
+          <a href="tel:+5493580000000" class="hover:text-purple-600 transition">Teléfono</a>
+          <a href="mailto:contacto@puntotech.com" class="hover:text-purple-600 transition">Correo electrónico</a>
         </div>
       </div>
-      <div class="px-6 py-2.5 flex flex-wrap items-center justify-between gap-4 text-[11px] text-slate-500 bg-slate-950/50">
-        <div>Río Cuarto, Córdoba, Argentina</div>
-        <div class="font-medium text-slate-400">2026 Zyra – Desarrollado por Punto Tech</div>
+      <div class="px-6 py-2.5 flex flex-wrap items-center justify-between gap-4 text-[11px]">
+        <span>Río Cuarto, Córdoba, Argentina</span>
+        <span>2026 Zyra – Desarrollado por Punto Tech</span>
       </div>
     </footer>
   </div>
-
-<!-- PANTALLA: AGENDA & CLASES -->
-<section id="section-agenda" class="hidden p-6 h-full flex flex-col space-y-6 bg-slate-950 overflow-y-auto">
-  <!-- Encabezado del Módulo -->
-  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
-    <div>
-      <h2 class="text-2xl font-extrabold text-white flex items-center gap-2">
-        <i data-lucide="calendar" class="text-purple-400 w-7 h-7"></i> Agenda & Control de Clases
-      </h2>
-      <p class="text-xs text-slate-400">Programación de clases, control de asistencia e integración con Google Calendar</p>
-    </div>
-    <div class="flex items-center gap-3">
-      <button onclick="sincronizarConGoogleCalendar()" class="px-3 py-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 rounded-xl text-xs flex items-center gap-2 transition">
-        <i data-lucide="calendar-plus" class="w-4 h-4 text-emerald-400"></i> Sincronizar Google Calendar
-      </button>
-      <button onclick="abrirModalNuevaClase()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-xl text-xs flex items-center gap-2 transition shadow-lg shadow-purple-600/20">
-        <i data-lucide="plus" class="w-4 h-4"></i> Agendar Clase / Evento
-      </button>
-    </div>
-  </div>
-
-  <!-- Contenedor Principal: Vista de Clases Programadas -->
-  <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
-    <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-      <h3 class="text-sm font-bold text-white flex items-center gap-2">
-        <i data-lucide="clock" class="text-purple-400 w-4 h-4"></i> Clases y Eventos Registrados
-      </h3>
-      <input type="date" id="filtroFechaAgenda" onchange="renderizarAgenda()" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-white text-xs">
-    </div>
-
-    <!-- Lista de Clases -->
-    <div id="listaClasesAgenda" class="space-y-3">
-      <!-- Carga dinámica -->
-    </div>
-  </div>
-</section>
-
 
 
   <!-- ========================================== -->
