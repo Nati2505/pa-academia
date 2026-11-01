@@ -1257,38 +1257,34 @@
       </div>
 
       <!-- SECCIÓN: GESTIÓN DE ALUMNOS INSCRIPTOS -->
+      <!-- SECCIÓN: GESTIÓN E INSCRIPCIÓN DE ALUMNOS CON LEGAJO -->
       <div class="bg-purple-50/50 border border-purple-100 rounded-2xl p-4 space-y-3">
-        <label class="block text-xs font-bold text-slate-800 flex items-center justify-between">
-          <span>Alumnos Inscriptos en el Curso</span>
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-bold text-slate-800">Alumnos Inscriptos</label>
           <span id="contador-alumnos-modal" class="text-[10px] text-purple-600 font-semibold">0 alumnos</span>
-        </label>
-        
-        <!-- Input para agregar alumno rápido -->
-        <div class="flex gap-2">
-          <input type="text" id="nuevo-alumno-nombre" placeholder="Nombre y apellido del alumno..." class="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-purple-500" />
-          <button type="button" onclick="agregarAlumnoAlCursoActual()" class="bg-purple-600 hover:bg-purple-500 text-white text-xs px-3 py-1.5 rounded-xl font-medium transition shadow-sm">
-            + Añadir
+        </div>
+
+        <!-- Formulario completo de Legajo de Alumno -->
+        <div class="bg-white p-3 rounded-xl border border-purple-100 space-y-2">
+          <p class="text-[11px] font-semibold text-purple-700">Registrar alumno y vincular a Legajos:</p>
+          <div class="grid grid-cols-2 gap-2">
+            <input type="text" id="legajo-alumno-nombre" placeholder="Nombre y Apellido *" class="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-purple-500" />
+            <input type="text" id="legajo-alumno-dni" placeholder="DNI *" class="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-purple-500" />
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <input type="text" id="legajo-alumno-telefono" placeholder="Teléfono / Celular" class="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-purple-500" />
+            <input type="text" id="legajo-alumno-tutor" placeholder="Tutor / Responsable (opcional)" class="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-purple-500" />
+          </div>
+          <button type="button" onclick="registrarAlumnoConLegajo()" class="w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-1.5 rounded-lg transition shadow-sm">
+            + Guardar Alumno en Legajos e Inscribir al Curso
           </button>
         </div>
 
-        <!-- Lista de alumnos del curso -->
-        <div id="lista-alumnos-curso-container" class="max-h-32 overflow-y-auto space-y-1.5 divide-y divide-purple-100/60">
+        <!-- Lista de alumnos inscriptos en este curso -->
+        <div id="lista-alumnos-curso-container" class="max-h-36 overflow-y-auto space-y-1.5 divide-y divide-purple-100/60 pt-1">
           <!-- Se cargan dinámicamente -->
         </div>
       </div>
-
-      <div>
-        <label class="block text-xs font-bold text-slate-700 mb-1">Observaciones / Notas</label>
-        <textarea id="curso-observaciones" rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" placeholder="Observaciones generales..."></textarea>
-      </div>
-
-      <div class="pt-2 flex gap-2">
-        <button type="submit" class="flex-1 bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-xs shadow-md transition">Guardar Cambios</button>
-        <button type="button" onclick="cerrarModalNuevoCurso()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 py-2.5 rounded-xl text-xs font-medium transition">Cancelar</button>
-      </div>
-    </form>
-  </div>
-</div>
 
 <!-- Modal: Estadísticas Financieras & Gráficos -->
 <div id="modalEstadisticas" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
@@ -1675,6 +1671,55 @@ let listaCursos = [
     alumnos: ["Pedro Gómez", "Lucía Martínez"]
   }
 ];
+
+if (typeof listaLegajosAlumnos === 'undefined') {
+  var listaLegajosAlumnos = [];
+}
+
+function registrarAlumnoConLegajo() {
+  const nombre = document.getElementById('legajo-alumno-nombre').value.trim();
+  const dni = document.getElementById('legajo-alumno-dni').value.trim();
+  const telefono = document.getElementById('legajo-alumno-telefono').value.trim();
+  const tutor = document.getElementById('legajo-alumno-tutor').value.trim();
+  const nombreCurso = document.getElementById('curso-nombre').value || "Curso Sin Nombre";
+
+  if (!nombre || !dni) {
+    alert("Por favor completa al menos el Nombre y el DNI del alumno.");
+    return;
+  }
+
+  // 1. Crear el legajo completo del alumno
+  const nuevoLegajo = {
+    id: Date.now(),
+    nombre: nombre,
+    dni: dni,
+    telefono: telefono || "Sin teléfono",
+    tutor: tutor || "N/A",
+    curso: nombreCurso,
+    fechaAlta: new Date().toLocaleDateString()
+  };
+
+  // Guardar en la lista global de Legajos
+  listaLegajosAlumnos.push(nuevoLegajo);
+
+  // 2. Sumar el nombre a la lista temporal del curso
+  alumnosCursoTemporal.push(nombre);
+
+  // 3. Limpiar inputs y refrescar vista
+  document.getElementById('legajo-alumno-nombre').value = '';
+  document.getElementById('legajo-alumno-dni').value = '';
+  document.getElementById('legajo-alumno-telefono').value = '';
+  document.getElementById('legajo-alumno-tutor').value = '';
+
+  renderizarAlumnosModal();
+  
+  // Si tenés una función para dibujar la tabla en el módulo de Alumnos/Legajos, la llamás acá:
+  if (typeof renderizarTablaAlumnos === 'function') {
+    renderizarTablaAlumnos();
+  }
+
+  alert(`¡Alumno ${nombre} registrado en Legajos e inscripto correctamente!`);
+}
 
 // Alumnos temporales que se están editando/agregando en el modal actual
 let alumnosCursoTemporal = [];
