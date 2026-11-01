@@ -162,6 +162,23 @@
             <span>Personal de la Academia</span>
           </button>
 
+          <!-- NUEVO: Botón Cursos -->
+          <button onclick="navigateTo('cursos')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-cursos">
+            <i data-lucide="book-marked" class="w-4 h-4 text-purple-500"></i>
+            <span>Cursos</span>
+          </button>
+
+          <!-- NUEVO: Botón Alianza Rómulo Gallegos -->
+          <button onclick="navigateTo('alianza')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-alianza">
+            <i data-lucide="handshake" class="w-4 h-4 text-cyan-500"></i>
+            <span>Alianza Rómulo Gallegos</span>
+          </button>
+
+          <button onclick="navigateTo('inventario')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-inventario">
+            <i data-lucide="box" class="w-4 h-4 text-emerald-500"></i>
+            <span>Inventario</span>
+          </button>
+
           <button onclick="navigateTo('finanzas')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-finanzas">
             <i data-lucide="dollar-sign" class="w-4 h-4 text-green-600"></i>
             <span>Finanzas</span>
@@ -288,74 +305,7 @@
           </div>
         </section>
 
-        <!-- PANTALLA: INVENTARIO -->
-        <section id="section-inventario" class="hidden h-full flex flex-col space-y-6">
-          <div class="flex items-center justify-between border-b border-purple-100 pb-4 shrink-0">
-            <div>
-              <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-                <i data-lucide="box" class="text-emerald-600"></i> Inventario de Artículos & Activos
-              </h2>
-              <p class="text-xs text-slate-500">Control de instrumentos, micrófonos, mobiliario y equipamiento técnico con historial de cambios.</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <button onclick="abrirModalNuevoArticulo()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 transition shadow-lg shadow-emerald-600/20">
-                <i data-lucide="plus" class="w-4 h-4"></i> Nuevo Artículo
-              </button>
-              <button onclick="toggleBarraBusquedaArticulo()" class="bg-white hover:bg-slate-100 text-slate-700 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-purple-100 transition shadow-sm">
-                <i data-lucide="search" class="w-4 h-4 text-cyan-600"></i> Buscar Artículo
-              </button>
-              <button onclick="mostrarTodosLosArticulos()" class="bg-white hover:bg-slate-100 text-slate-700 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-purple-100 transition shadow-sm">
-                <i data-lucide="list" class="w-4 h-4 text-amber-500"></i> Ver todos
-              </button>
-            </div>
-          </div>
-
-          <div id="barraBusquedaArticuloContainer" class="hidden bg-white border border-purple-100 rounded-xl p-4 space-y-3 shrink-0 shadow-sm">
-            <div class="flex gap-2">
-              <input type="text" id="inputBusquedaArticulo" placeholder="Escriba el nombre o categoría del artículo..." class="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" oninput="ejecutarBusquedaArticulo()">
-              <button onclick="cerrarBarraBusquedaArticulo()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-medium">Cerrar</button>
-            </div>
-            <div id="resultadosBusquedaArticulo" class="divide-y divide-slate-100 max-h-48 overflow-y-auto text-xs text-slate-600">
-              <p class="text-slate-400 py-2 text-center">Ingrese un término para buscar bienes o artículos...</p>
-            </div>
-          </div>
-
-          <div id="contenedorTablaArticulos" class="hidden bg-white border border-purple-100 rounded-xl overflow-hidden shrink-0 shadow-sm">
-            <div class="p-4 bg-purple-50/50 border-b border-purple-100 text-xs text-slate-500 flex justify-between items-center">
-              <span class="font-semibold text-slate-700">Inventario Completo de Bienes</span>
-              <div class="flex items-center gap-3">
-                <span id="contadorArticulos" class="text-emerald-600 font-semibold">2 artículos registrados</span>
-                <button onclick="ocultarTablaArticulos()" class="text-slate-500 hover:text-slate-800 text-[11px] underline">Ocultar lista</button>
-              </div>
-            </div>
-            <table class="w-full text-left text-xs text-slate-700">
-              <thead class="bg-slate-50 text-slate-500 border-b border-purple-100 uppercase text-[10px] tracking-wider">
-                <tr>
-                  <th class="py-3 px-4">Artículo / Categoría</th>
-                  <th class="py-3 px-4">Cantidad</th>
-                  <th class="py-3 px-4">Estado</th>
-                  <th class="py-3 px-4">Disponibilidad</th>
-                  <th class="py-3 px-4 text-right">Acciones</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100" id="tabla-articulos"></tbody>
-            </table>
-          </div>
-
-          <div id="fondoInventario" class="relative flex-1 rounded-2xl overflow-hidden border border-purple-100 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
-            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1200&q=80" alt="Instrumentos y Estudio" class="absolute inset-0 w-full h-full object-cover brightness-40" />
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent"></div>
-            <div class="relative z-10 text-center max-w-md space-y-3">
-              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 backdrop-blur-sm">
-                <i data-lucide="package-check" class="w-6 h-6"></i>
-              </div>
-              <h3 class="text-lg font-bold text-white">Control de Activos e Historial</h3>
-              <p class="text-xs text-slate-200">
-                Utilice <strong class="text-emerald-300">"Nuevo Artículo"</strong> para registrar altas, o consulte mediante <strong class="text-cyan-300">"Buscar Artículo"</strong>.
-              </p>
-            </div>
-          </div>
-        </section>
+        
 
         <!-- PANTALLA: PERSONAL DE LA ACADEMIA -->
         <section id="section-personal" class="hidden h-full flex flex-col space-y-6">
@@ -422,6 +372,141 @@
               <h3 class="text-lg font-bold text-white">Gestión de Personal Docente</h3>
               <p class="text-xs text-slate-200">
                 Utilice el botón <strong class="text-indigo-300">"Nuevo Profesor"</strong> para registrar docentes o consulte el cuerpo académico con <strong class="text-cyan-300">"Buscar Profesor"</strong>.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- PANTALLA NUEVA: CURSOS -->
+        <section id="section-cursos" class="hidden h-full flex flex-col space-y-6">
+          <div class="flex items-center justify-between border-b border-purple-100 pb-4 shrink-0">
+            <div>
+              <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                <i data-lucide="book-marked" class="text-purple-600"></i> Gestión de Cursos & Clases
+              </h2>
+              <p class="text-xs text-slate-500">Creación de cursos (Canto, Guitarra, Adultos Mayores) y asignación de alumnos y profesores.</p>
+            </div>
+            <div>
+              <button onclick="abrirModalNuevoCurso()" class="bg-purple-600 hover:bg-purple-500 text-white text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 transition shadow-lg shadow-purple-600/20">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i> Crear Nuevo Curso
+              </button>
+            </div>
+          </div>
+
+          <!-- Contenedor / Listado de Cursos -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="contenedor-grid-cursos">
+            <!-- Tarjeta de Ejemplo de Curso -->
+            <div class="bg-white border border-purple-100 rounded-2xl p-5 shadow-sm space-y-3">
+              <div class="flex justify-between items-start">
+                <span class="px-2.5 py-1 bg-purple-50 text-purple-700 rounded-md text-[10px] font-bold uppercase">Guitarra</span>
+                <span class="text-xs text-slate-400">Personalizada</span>
+              </div>
+              <h3 class="text-base font-bold text-slate-800">Guitarra Inicial y Avanzada</h3>
+              <div class="text-xs text-slate-500 space-y-1">
+                <p><strong>Profesor:</strong> Juan Pérez (Vinculado a Legajos)</p>
+                <p><strong>Horarios:</strong> Martes y Jueves 16:30 hs</p>
+                <p><strong>Alumnos inscriptos:</strong> 5 alumnos</p>
+              </div>
+              <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+                <button onclick="verDetalleCurso('Guitarra')" class="text-purple-600 font-semibold hover:underline">Ver / Editar datos</button>
+                <span class="text-emerald-600 font-medium">Activo</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PANTALLA NUEVA: ALIANZA ROMULO GALLEGOS -->
+        <section id="section-alianza" class="hidden h-full flex flex-col space-y-6">
+          <div class="flex items-center justify-between border-b border-purple-100 pb-4 shrink-0">
+            <div>
+              <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                <i data-lucide="handshake" class="text-cyan-600"></i> Alianza con Academia Rómulo Gallegos
+              </h2>
+              <p class="text-xs text-slate-500">Control unificado de alumnos y profesores vinculados al convenio institucional.</p>
+            </div>
+            <div>
+              <button onclick="abrirModalNuevaAlianzaRegistro()" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 transition shadow-lg shadow-cyan-600/20">
+                <i data-lucide="user-plus" class="w-4 h-4"></i> Registrar Alumno / Profesor
+              </button>
+            </div>
+          </div>
+
+          <!-- Contenido de Alianza -->
+          <div class="bg-white border border-purple-100 rounded-xl p-6 shadow-sm space-y-4">
+            <h3 class="text-sm font-bold text-slate-800">Registros bajo el Convenio Rómulo Gallegos</h3>
+            <p class="text-xs text-slate-500">
+              Acá podés visualizar y cargar los datos de los estudiantes y docentes que forman parte del intercambio de la alianza. Los registros se sincronizan automáticamente con los legajos principales.
+            </p>
+            <div class="border border-slate-100 rounded-lg p-4 text-center text-xs text-slate-400">
+              No hay registros asociados a la alianza todavía. Hacé clic en "Registrar Alumno / Profesor" para comenzar.
+            </div>
+          </div>
+        </section>
+
+        <!-- PANTALLA: INVENTARIO -->
+        <section id="section-inventario" class="hidden h-full flex flex-col space-y-6">
+          <div class="flex items-center justify-between border-b border-purple-100 pb-4 shrink-0">
+            <div>
+              <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                <i data-lucide="box" class="text-emerald-600"></i> Inventario de Artículos & Activos
+              </h2>
+              <p class="text-xs text-slate-500">Control de instrumentos, micrófonos, mobiliario y equipamiento técnico con historial de cambios.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="abrirModalNuevoArticulo()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 transition shadow-lg shadow-emerald-600/20">
+                <i data-lucide="plus" class="w-4 h-4"></i> Nuevo Artículo
+              </button>
+              <button onclick="toggleBarraBusquedaArticulo()" class="bg-white hover:bg-slate-100 text-slate-700 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-purple-100 transition shadow-sm">
+                <i data-lucide="search" class="w-4 h-4 text-cyan-600"></i> Buscar Artículo
+              </button>
+              <button onclick="mostrarTodosLosArticulos()" class="bg-white hover:bg-slate-100 text-slate-700 text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-purple-100 transition shadow-sm">
+                <i data-lucide="list" class="w-4 h-4 text-amber-500"></i> Ver todos
+              </button>
+            </div>
+          </div>
+
+          <div id="barraBusquedaArticuloContainer" class="hidden bg-white border border-purple-100 rounded-xl p-4 space-y-3 shrink-0 shadow-sm">
+            <div class="flex gap-2">
+              <input type="text" id="inputBusquedaArticulo" placeholder="Escriba el nombre o categoría del artículo..." class="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" oninput="ejecutarBusquedaArticulo()">
+              <button onclick="cerrarBarraBusquedaArticulo()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-medium">Cerrar</button>
+            </div>
+            <div id="resultadosBusquedaArticulo" class="divide-y divide-slate-100 max-h-48 overflow-y-auto text-xs text-slate-600">
+              <p class="text-slate-400 py-2 text-center">Ingrese un término para buscar bienes o artículos...</p>
+            </div>
+          </div>
+
+          <div id="contenedorTablaArticulos" class="hidden bg-white border border-purple-100 rounded-xl overflow-hidden shrink-0 shadow-sm">
+            <div class="p-4 bg-purple-50/50 border-b border-purple-100 text-xs text-slate-500 flex justify-between items-center">
+              <span class="font-semibold text-slate-700">Inventario Completo de Bienes</span>
+              <div class="flex items-center gap-3">
+                <span id="contadorArticulos" class="text-emerald-600 font-semibold">2 artículos registrados</span>
+                <button onclick="ocultarTablaArticulos()" class="text-slate-500 hover:text-slate-800 text-[11px] underline">Ocultar lista</button>
+              </div>
+            </div>
+            <table class="w-full text-left text-xs text-slate-700">
+              <thead class="bg-slate-50 text-slate-500 border-b border-purple-100 uppercase text-[10px] tracking-wider">
+                <tr>
+                  <th class="py-3 px-4">Artículo / Categoría</th>
+                  <th class="py-3 px-4">Cantidad</th>
+                  <th class="py-3 px-4">Estado</th>
+                  <th class="py-3 px-4">Disponibilidad</th>
+                  <th class="py-3 px-4 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100" id="tabla-articulos"></tbody>
+            </table>
+          </div>
+
+          <div id="fondoInventario" class="relative flex-1 rounded-2xl overflow-hidden border border-purple-100 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
+            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1200&q=80" alt="Instrumentos y Estudio" class="absolute inset-0 w-full h-full object-cover brightness-40" />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent"></div>
+            <div class="relative z-10 text-center max-w-md space-y-3">
+              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 backdrop-blur-sm">
+                <i data-lucide="package-check" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-lg font-bold text-white">Control de Activos e Historial</h3>
+              <p class="text-xs text-slate-200">
+                Utilice <strong class="text-emerald-300">"Nuevo Artículo"</strong> para registrar altas, o consulte mediante <strong class="text-cyan-300">"Buscar Artículo"</strong>.
               </p>
             </div>
           </div>
@@ -1647,21 +1732,22 @@
       }
     }
 
-    // --- NAVEGACIÓN Y AUTENTICACIÓN ---
+// --- NAVEGACIÓN Y AUTENTICACIÓN ---
     function navigateTo(sectionId) {
-  const sections = ['inicio', 'alumnos', 'inventario', 'personal', 'finanzas', 'agenda'];
+  // Agregamos 'cursos' y 'alianza' a la lista de secciones válidas
+  const sections = ['inicio', 'alumnos', 'inventario', 'personal', 'finanzas', 'agenda', 'cursos', 'alianza', 'backup', 'guia'];
+  
   sections.forEach(id => {
     const sec = document.getElementById(`section-${id}`);
     const nav = document.getElementById(`nav-${id}`);
     if (sec) sec.classList.add('hidden');
-    if (nav) nav.classList.remove('bg-slate-800', 'text-white');
+    if (nav) nav.classList.remove('bg-purple-100', 'text-purple-700', 'bg-slate-800', 'text-white');
   });
 
   const activeSec = document.getElementById(`section-${sectionId}`);
   const activeNav = document.getElementById(`nav-${sectionId}`);
   if (activeSec) activeSec.classList.remove('hidden');
-  if (activeNav) activeNav.classList.add('bg-slate-800', 'text-white');
-
+  if (activeNav) activeNav.classList.add('bg-purple-100', 'text-purple-700', 'font-semibold');
 }
 
     function toggleAuthForm(formType) {
