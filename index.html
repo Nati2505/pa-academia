@@ -1660,7 +1660,8 @@
 
 // --- DATOS Y FUNCIONES PARA CURSOS ---
     // --- ARRAY GLOBAL DE CURSOS ---
-let listaCursos = [
+// --- 1. CARGAR DATOS DESDE LOCALSTORAGE (O USAR VALORES POR DEFECTO) ---
+let listaCursos = JSON.parse(localStorage.getItem('zyra_cursos')) || [
   {
     id: 1,
     nombre: "Guitarra Inicial y Avanzada",
@@ -1672,58 +1673,17 @@ let listaCursos = [
   }
 ];
 
-if (typeof listaLegajosAlumnos === 'undefined') {
-  var listaLegajosAlumnos = [];
-}
+let listaLegajosAlumnos = JSON.parse(localStorage.getItem('zyra_legajos_alumnos')) || [];
 
-function registrarAlumnoConLegajo() {
-  const nombre = document.getElementById('legajo-alumno-nombre').value.trim();
-  const dni = document.getElementById('legajo-alumno-dni').value.trim();
-  const telefono = document.getElementById('legajo-alumno-telefono').value.trim();
-  const tutor = document.getElementById('legajo-alumno-tutor').value.trim();
-  const nombreCurso = document.getElementById('curso-nombre').value || "Curso Sin Nombre";
-
-  if (!nombre || !dni) {
-    alert("Por favor completa al menos el Nombre y el DNI del alumno.");
-    return;
-  }
-
-  // 1. Crear el legajo completo del alumno
-  const nuevoLegajo = {
-    id: Date.now(),
-    nombre: nombre,
-    dni: dni,
-    telefono: telefono || "Sin teléfono",
-    tutor: tutor || "N/A",
-    curso: nombreCurso,
-    fechaAlta: new Date().toLocaleDateString()
-  };
-
-  // Guardar en la lista global de Legajos
-  listaLegajosAlumnos.push(nuevoLegajo);
-
-  // 2. Sumar el nombre a la lista temporal del curso
-  alumnosCursoTemporal.push(nombre);
-
-  // 3. Limpiar inputs y refrescar vista
-  document.getElementById('legajo-alumno-nombre').value = '';
-  document.getElementById('legajo-alumno-dni').value = '';
-  document.getElementById('legajo-alumno-telefono').value = '';
-  document.getElementById('legajo-alumno-tutor').value = '';
-
-  renderizarAlumnosModal();
-  
-  // Si tenés una función para dibujar la tabla en el módulo de Alumnos/Legajos, la llamás acá:
-  if (typeof renderizarTablaAlumnos === 'function') {
-    renderizarTablaAlumnos();
-  }
-
-  alert(`¡Alumno ${nombre} registrado en Legajos e inscripto correctamente!`);
-}
-
-// Alumnos temporales que se están editando/agregando en el modal actual
 let alumnosCursoTemporal = [];
 
+// Función auxiliar para guardar todo en la memoria del navegador
+function persistirDatos() {
+  localStorage.setItem('zyra_cursos', JSON.stringify(listaCursos));
+  localStorage.setItem('zyra_legajos_alumnos', JSON.stringify(listaLegajosAlumnos));
+}
+
+// --- 2. RENDERIZAR CURSOS ---
 function renderizarCursos() {
   const contenedor = document.getElementById('contenedor-grid-cursos');
   if (!contenedor) return;
@@ -1761,95 +1721,7 @@ function renderizarCursos() {
   if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
-// Abrir modal para CREAR un curso nuevo
-function abrirModalNuevoCurso() {
-  document.getElementById('curso-index-edit').value = "-1";
-  document.getElementById('modal-curso-titulo').innerHTML = `<i data-lucide="book-marked" class="text-purple-600 w-5 h-5"></i> Crear Nuevo Curso`;
-  document.getElementById('curso-nombre').value = '';
-  document.getElementById('curso-profesor').value = '';
-  document.getElementById('curso-horario').value = '';
-  document.getElementById('curso-modalidad').value = 'Personalizada';
-  document.getElementById('curso-observaciones').value = '';
-  document.getElementById('contenedor-otra-modalidad').classList.add('hidden');
-  
-  alumnosCursoTemporal = [];
-  renderizarAlumnosModal();
-  document.getElementById('modalNuevoCurso').classList.remove('hidden');
-  if (typeof lucide !== 'undefined') lucide.createIcons();
-}
-
-// Abrir modal para EDITAR un curso existente
-function abrirEditarCurso(index) {
-  const curso = listaCursos[index];
-  document.getElementById('curso-index-edit').value = index;
-  document.getElementById('modal-curso-titulo').innerHTML = `<i data-lucide="edit-3" class="text-purple-600 w-5 h-5"></i> Editar Curso: ${curso.nombre}`;
-  
-  document.getElementById('curso-nombre').value = curso.nombre;
-  document.getElementById('curso-profesor').value = curso.profesor;
-  document.getElementById('curso-horario').value = curso.horario;
-  document.getElementById('curso-modalidad').value = curso.modalidad;
-  document.getElementById('curso-observaciones').value = curso.observaciones;
-  
-  alumnosCursoTemporal = [...(curso.alumnos || [])];
-  renderizarAlumnosModal();
-  document.getElementById('modalNuevoCurso').classList.remove('hidden');
-  if (typeof lucide !== 'undefined') lucide.createIcons();
-}
-
-function cerrarModalNuevoCurso() {
-  document.getElementById('modalNuevoCurso').classList.add('hidden');
-}
-
-function verificarModalidadCurso() {
-  const modalidad = document.getElementById('curso-modalidad').value;
-  const contenedorOtra = document.getElementById('contenedor-otra-modalidad');
-  if (modalidad === 'Otra') {
-    contenedorOtra.classList.remove('hidden');
-  } else {
-    contenedorOtra.classList.add('hidden');
-  }
-}
-
-// Funciones para manejar la lista de alumnos dentro del modal
-function renderizarAlumnosModal() {
-  const contenedor = document.getElementById('lista-alumnos-curso-container');
-  const contador = document.getElementById('contador-alumnos-modal');
-  if (!contenedor) return;
-
-  contador.innerText = `${alumnosCursoTemporal.length} alumnos`;
-
-  if (alumnosCursoTemporal.length === 0) {
-    contenedor.innerHTML = `<p class="text-[11px] text-slate-400 text-center py-2">No hay alumnos inscriptos en este curso.</p>`;
-    return;
-  }
-
-  contenedor.innerHTML = '';
-  alumnosCursoTemporal.forEach((alumno, i) => {
-    contenedor.innerHTML += `
-      <div class="flex justify-between items-center py-1 text-xs text-slate-700">
-        <span>• ${alumno}</span>
-        <button type="button" onclick="quitarAlumnoTemporal(${i})" class="text-rose-500 hover:text-rose-700 text-[10px] font-semibold">Dar de baja</button>
-      </div>
-    `;
-  });
-}
-
-function agregarAlumnoAlCursoActual() {
-  const input = document.getElementById('nuevo-alumno-nombre');
-  const nombre = input.value.trim();
-  if (nombre) {
-    alumnosCursoTemporal.push(nombre);
-    input.value = '';
-    renderizarAlumnosModal();
-  }
-}
-
-function quitarAlumnoTemporal(i) {
-  alumnosCursoTemporal.splice(i, 1);
-  renderizarAlumnosModal();
-}
-
-// Guardar (tanto si es nuevo como si es edición)
+// --- 3. GUARDAR / EDITAR CURSO ---
 function guardarCursoFormulario() {
   const indexEdit = parseInt(document.getElementById('curso-index-edit').value);
   const nombre = document.getElementById('curso-nombre').value;
@@ -1870,15 +1742,14 @@ function guardarCursoFormulario() {
   };
 
   if (indexEdit >= 0) {
-    // Editar existente
     listaCursos[indexEdit] = datosCurso;
     alert('¡Curso actualizado con éxito!');
   } else {
-    // Crear nuevo
     listaCursos.push(datosCurso);
     alert('¡Curso creado con éxito!');
   }
 
+  persistirDatos(); // Guardamos cambios en localStorage
   renderizarCursos();
   cerrarModalNuevoCurso();
 }
@@ -1886,11 +1757,54 @@ function guardarCursoFormulario() {
 function eliminarCurso(index) {
   if (confirm('¿Estás segura de eliminar este curso?')) {
     listaCursos.splice(index, 1);
+    persistirDatos(); // Guardamos cambios
     renderizarCursos();
   }
 }
 
-// Ejecutar al cargar la sección de cursos o al iniciar la app
+// --- 4. REGISTRAR ALUMNO CON LEGAJO ---
+function registrarAlumnoConLegajo() {
+  const nombre = document.getElementById('legajo-alumno-nombre').value.trim();
+  const dni = document.getElementById('legajo-alumno-dni').value.trim();
+  const telefono = document.getElementById('legajo-alumno-telefono').value.trim();
+  const tutor = document.getElementById('legajo-alumno-tutor').value.trim();
+  const nombreCurso = document.getElementById('curso-nombre').value || "Curso Sin Nombre";
+
+  if (!nombre || !dni) {
+    alert("Por favor completa al menos el Nombre y el DNI del alumno.");
+    return;
+  }
+
+  const nuevoLegajo = {
+    id: Date.now(),
+    nombre: nombre,
+    dni: dni,
+    telefono: telefono || "Sin teléfono",
+    tutor: tutor || "N/A",
+    curso: nombreCurso,
+    fechaAlta: new Date().toLocaleDateString()
+  };
+
+  listaLegajosAlumnos.push(nuevoLegajo);
+  alumnosCursoTemporal.push(nombre);
+
+  // Limpiar campos
+  document.getElementById('legajo-alumno-nombre').value = '';
+  document.getElementById('legajo-alumno-dni').value = '';
+  document.getElementById('legajo-alumno-telefono').value = '';
+  document.getElementById('legajo-alumno-tutor').value = '';
+
+  persistirDatos(); // Guardamos cambios en localStorage para que no se pierdan
+  renderizarAlumnosModal();
+
+  if (typeof renderizarTablaAlumnos === 'function') {
+    renderizarTablaAlumnos();
+  }
+
+  alert(`¡Alumno ${nombre} registrado en Legajos e inscripto correctamente!`);
+}
+
+// Ejecutar al cargar la página
 document.addEventListener("DOMContentLoaded", () => {
   renderizarCursos();
 });
