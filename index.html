@@ -109,40 +109,30 @@
   <!-- ========================================== -->
   <div id="app-content" class="flex flex-col h-full hidden">
     
-    <!-- ENCABEZADO / HEADER -->
-    <header class="bg-slate-900 border-b border-slate-800 px-4 py-3 flex items-center justify-between shrink-0">
-      <a href="#" onclick="navigateTo('inicio')" class="flex items-center gap-2 hover:opacity-80 transition group">
-        <div class="bg-cyan-500/20 text-cyan-400 p-2 rounded-lg group-hover:bg-cyan-500/30">
-          
-          <!-- Encabezado Superior con el Logo de Zyra Interactivo -->
-<div onclick="navigateTo('inicio')" class="flex items-center gap-3 cursor-pointer group py-2">
-  <div class="relative">
-    <img src="logo.jpeg" alt="Zyra Logo" class="w-10 h-10 rounded-full object-cover border-2 border-purple-500/40 shadow-md group-hover:border-purple-400 transition">
+   <!-- ENCABEZADO / HEADER -->
+<header class="bg-slate-900 border-b border-slate-800 px-4 py-3 flex items-center justify-between shrink-0">
+  <!-- Logo y Título Interactivos (Lleva al Inicio) -->
+  <div onclick="navigateTo('inicio')" class="flex items-center gap-3 cursor-pointer group py-1">
+    <div class="relative">
+      <img src="logo.jpeg" alt="Zyra Logo" class="w-10 h-10 rounded-full object-cover border-2 border-purple-500/40 shadow-md group-hover:border-purple-400 transition">
+    </div>
+    <div>
+      <h1 class="text-white font-extrabold text-sm md:text-base tracking-wide group-hover:text-purple-300 transition">Zyra – Gestión para tu Academia</h1>
+      <p class="text-[11px] text-slate-400">Sistema de Control Integral</p>
+    </div>
   </div>
-  <div>
-    <h1 class="text-white font-extrabold text-sm md:text-base tracking-wide group-hover:text-purple-300 transition">Zyra – Gestión para tu Academia</h1>
-    <p class="text-[11px] text-slate-400">Sistema de Control Integral</p>
+
+  <!-- Botones de la Derecha -->
+  <div class="flex items-center gap-3">
+    <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-400 hover:text-white border border-slate-800 rounded-lg">
+      <i data-lucide="menu" class="w-5 h-5"></i>
+    </button>
+    <button onclick="logoutUser()" class="flex items-center gap-1.5 bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500/20 px-3 py-1.5 rounded-lg text-xs font-medium transition">
+      <i data-lucide="log-out" class="w-4 h-4"></i>
+      <span>Cerrar sesión</span>
+    </button>
   </div>
-</div>
-
-        </div>
-        <div>
-          <h1 class="text-sm font-bold text-white tracking-wide">Zyra – Gestión para tu Academia</h1>
-          <p class="text-[10px] text-slate-400">Sistema de Control Integral</p>
-        </div>
-      </a>
-
-      <div class="flex items-center gap-3">
-        <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-400 hover:text-white border border-slate-800 rounded-lg">
-          <i data-lucide="menu" class="w-5 h-5"></i>
-        </button>
-        <button onclick="logoutUser()" class="flex items-center gap-1.5 bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500/20 px-3 py-1.5 rounded-lg text-xs font-medium transition">
-          <i data-lucide="log-out" class="w-4 h-4"></i>
-          <span>Cerrar sesión</span>
-        </button>
-      </div>
-    </header>
-
+</header>
     <!-- CUERPO PRINCIPAL -->
     <div class="flex flex-1 overflow-hidden">
 
