@@ -210,34 +210,31 @@
       <main class="flex-1 overflow-y-auto custom-scroll bg-slate-50 p-6">
 
         <!-- DASHBOARD HERO -->
-        
 <!-- DASHBOARD HERO -->
         <section id="section-inicio" class="h-full flex flex-col justify-center items-center relative overflow-hidden py-12">
           
-          <!-- LOGO DE FONDO EN COLOR -->
-          <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-25">
-            <img src="logo.jpeg" alt="Zyra Logo Background" class="w-[520px] h-[520px] object-contain" />
-          </div>
+          <!-- RESPLANDOR/FONDO EN LA TONALIDAD DEL LOGO -->
+          <div class="absolute w-[450px] h-[450px] bg-gradient-to-tr from-purple-200/40 via-indigo-100/50 to-purple-300/30 rounded-full blur-3xl pointer-events-none"></div>
 
-          <!-- CONTENEDOR DE TEXTO CON EFECTO SUAVE (GLASSMORPHISM) Y ANIMACIÓN DE ENTRADA -->
-          <div class="relative z-10 text-center px-8 py-8 rounded-3xl bg-white/70 backdrop-blur-md border border-purple-100/60 shadow-xl shadow-purple-950/5 max-w-xl mx-auto space-y-3 animate-fade-in transition-all duration-700">
+          <!-- CONTENEDOR DEL LOGO CENTRAL SOBRE EL FONDO -->
+          <div class="relative z-10 flex flex-col items-center justify-center space-y-4">
             
-            <!-- Etiqueta superior -->
-            <span class="inline-block px-4 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold tracking-wider uppercase shadow-sm">
+            <!-- LOGO PROTAGONISTA EN SUS COLORES REALES -->
+            <div class="relative group">
+              <!-- Halo de luz sutil detrás del logo -->
+              <div class="absolute -inset-2 bg-gradient-to-r from-purple-400/20 to-indigo-400/20 rounded-full blur-xl opacity-75"></div>
+              
+              <img src="logo.jpeg" alt="Zyra Logo" class="relative w-[380px] h-[380px] object-contain drop-shadow-md" />
+            </div>
+
+            <!-- ETIQUETA SUTIL ARRIBA/ABAJO SI QUERÉS, O SIMPLEMENTE LIMPIO -->
+            <span class="inline-block px-4 py-1.5 bg-purple-100/80 border border-purple-200/60 text-purple-700 rounded-full text-xs font-bold tracking-wider uppercase shadow-sm backdrop-blur-sm">
               Plataforma de Control
             </span>
-            
-            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
-              BIENVENIDO A ZYRA GESTION
-            </h2>
-            
-            <p class="text-slate-600 text-sm md:text-base font-medium leading-relaxed">
-              Gestión integral para tu Academia
-            </p>
+
           </div>
 
         </section>
-
 
         <!-- PANTALLA: ALUMNOS -->
         <section id="section-alumnos" class="hidden h-full flex flex-col space-y-6">
