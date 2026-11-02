@@ -309,7 +309,7 @@
         </section>
         
 
-        <!-- PANTALLA: PERSONAL DE LA ACADEMIA -->
+<!-- PANTALLA: PERSONAL DE LA ACADEMIA -->
         <section id="section-personal" class="hidden h-full flex flex-col space-y-6">
           <div class="flex items-center justify-between border-b border-purple-100 pb-4 shrink-0">
             <div>
@@ -364,21 +364,24 @@
             </table>
           </div>
 
-          <div id="fondoPersonal" class="relative flex-1 rounded-2xl overflow-hidden border border-purple-100 shadow-xl flex items-center justify-center p-6 min-h-[250px]">
-            <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&w=1200&q=80" alt="Docente de Música" class="absolute inset-0 w-full h-full object-cover brightness-40" />
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent"></div>
-            <div class="relative z-10 text-center max-w-md space-y-3">
-              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 backdrop-blur-sm">
-                <i data-lucide="award" class="w-6 h-6"></i>
+          <!-- PANEL CENTRAL CENTRADO Y LIMPIO (SIN FOTO) -->
+          <div id="fondoPersonal" class="relative flex-1 rounded-2xl overflow-hidden border border-purple-100 shadow-sm flex items-center justify-center p-8 bg-gradient-to-br from-purple-100/70 via-indigo-50/60 to-purple-50/80">
+            <!-- Resplandor ambiental -->
+            <div class="absolute w-[500px] h-[500px] bg-purple-200/40 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 text-center max-w-lg space-y-4 bg-white/80 backdrop-blur-md p-8 rounded-3xl border border-purple-100 shadow-xl shadow-purple-950/5">
+              <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-indigo-500/10 text-indigo-600 border border-indigo-500/20 shadow-sm">
+                <i data-lucide="award" class="w-7 h-7"></i>
               </div>
-              <h3 class="text-lg font-bold text-white">Gestión de Personal Docente</h3>
-              <p class="text-xs text-slate-200">
-                Utilice el botón <strong class="text-indigo-300">"Nuevo Profesor"</strong> para registrar docentes o consulte el cuerpo académico con <strong class="text-cyan-300">"Buscar Profesor"</strong>.
+              <h3 class="text-xl font-extrabold text-slate-900 tracking-tight">Gestión de Personal Docente</h3>
+              <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                Utilice el botón <strong class="text-indigo-600">"Nuevo Profesor"</strong> para registrar docentes o consulte el cuerpo académico con <strong class="text-cyan-600">"Buscar Profesor"</strong>.
               </p>
             </div>
           </div>
         </section>
 
+        
         <!-- PANTALLA NUEVA: CURSOS -->
         <section id="section-cursos" class="hidden h-full flex flex-col space-y-6">
           <div class="flex items-center justify-between border-b border-purple-100 pb-4 shrink-0">
