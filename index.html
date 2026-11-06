@@ -2724,13 +2724,15 @@ function guardarRegistroAlianza() {
 
 // --- FUNCIONES ACTUALIZADAS DE AGENDA ---
 
-// --- FUNCIONES ACTUALIZADAS DE AGENDA ---
+// --- FUNCIONES ACTUALIZADAS DE AGENDA (FORZADO DIRECTO) ---
 
 function abrirModalNuevaClase() {
-  console.log("Abriendo modal..."); // Esto sirve para probar en la consola (F12)
+  console.log("Abriendo modal...");
   const modal = document.getElementById('modalNuevaClase');
   if (modal) {
+    // Le quitamos hidden y nos aseguramos de ponerlo visible
     modal.classList.remove('hidden');
+    modal.style.display = 'flex';
   } else {
     console.error("No se encontró el elemento modalNuevaClase en el HTML");
   }
@@ -2740,6 +2742,7 @@ function cerrarModalNuevaClase() {
   const modal = document.getElementById('modalNuevaClase');
   if (modal) {
     modal.classList.add('hidden');
+    modal.style.display = 'none';
   }
 }
 
@@ -2759,7 +2762,6 @@ function toggleAlertasAgenda() {
 function sincronizarGoogleCalendar() {
   window.open('https://calendar.google.com/', '_blank');
 }
-
   </script>
 
 
