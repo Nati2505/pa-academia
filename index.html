@@ -2722,6 +2722,28 @@ function guardarRegistroAlianza() {
   cerrarModalAlianza();
 }
 
+// --- FUNCIONES DE AGENDA & CLASES ---
+
+// Abre el modal o muestra la interfaz para nueva clase
+function abrirModalNuevaClase() {
+  // Acá podés desplegar un modal o mostrar un formulario flotante
+  alert("Próximamente: Formulario completo para agendar nueva clase o evento en Zyra.");
+}
+
+// Muestra u oculta el banner de alertas
+function toggleAlertasAgenda() {
+  const contenedorAlertas = document.getElementById('contenedorAlertasAgenda');
+  if (contenedorAlertas) {
+    contenedorAlertas.classList.toggle('hidden');
+  }
+}
+
+// Enlace directo con Google Calendar (Abre Google Calendar para crear o ver eventos)
+function sincronizarGoogleCalendar() {
+  // Abre una pestaña directa con Google Calendar para sincronizar turnos y clases
+  window.open('https://calendar.google.com/', '_blank');
+}
+
   </script>
 
 
