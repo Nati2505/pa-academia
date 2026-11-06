@@ -2721,26 +2721,31 @@ function guardarRegistroAlianza() {
 
 // --- FUNCIONES ACTUALIZADAS DE AGENDA ---
 
-// Abre el modal de nueva clase
+// --- FUNCIONES ACTUALIZADAS DE AGENDA ---
+
 function abrirModalNuevaClase() {
+  console.log("Abriendo modal..."); // Esto sirve para probar en la consola (F12)
   const modal = document.getElementById('modalNuevaClase');
-  if (modal) modal.classList.remove('hidden');
+  if (modal) {
+    modal.classList.remove('hidden');
+  } else {
+    console.error("No se encontró el elemento modalNuevaClase en el HTML");
+  }
 }
 
-// Cierra el modal de nueva clase
 function cerrarModalNuevaClase() {
   const modal = document.getElementById('modalNuevaClase');
-  if (modal) modal.classList.add('hidden');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
 }
 
-// Maneja la acción de guardar
 function guardarNuevaClase(event) {
   event.preventDefault();
   alert("¡Evento agendado con éxito!");
   cerrarModalNuevaClase();
 }
 
-// Alterna las alertas del banner superior
 function toggleAlertasAgenda() {
   const contenedorAlertas = document.getElementById('contenedorAlertasAgenda');
   if (contenedorAlertas) {
@@ -2748,7 +2753,6 @@ function toggleAlertasAgenda() {
   }
 }
 
-// Enlace directo a Google Calendar
 function sincronizarGoogleCalendar() {
   window.open('https://calendar.google.com/', '_blank');
 }
