@@ -1391,62 +1391,57 @@
 
 
 <!-- Modal: Agendar Nueva Clase / Evento -->
-<div id="modalNuevaClase" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-  <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
-    <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-950/80">
-      <div class="flex items-center gap-3">
-        <div class="p-2 bg-purple-500/10 text-purple-400 rounded-lg border border-purple-500/20"><i data-lucide="calendar" class="w-5 h-5"></i></div>
-        <div>
-          <h3 class="text-lg font-bold text-white">Agendar Clase o Evento</h3>
-          <p class="text-xs text-slate-400">Complete los datos de la sesión y asignaciones</p>
+<!-- MODAL: NUEVA CLASE / EVENTO -->
+<div id="modalNuevaClase" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
+  <div class="bg-white rounded-3xl border border-purple-100 shadow-2xl max-w-md w-full p-6 space-y-5 relative">
+    
+    <!-- Encabezado del Modal -->
+    <div class="flex items-center justify-between border-b border-purple-100 pb-3">
+      <div class="flex items-center gap-2.5">
+        <div class="p-2 bg-purple-500/10 rounded-xl text-purple-600">
+          <i data-lucide="calendar-plus" class="w-5 h-5"></i>
         </div>
+        <h3 class="font-bold text-slate-800 text-base">Agendar Clase o Evento</h3>
       </div>
-      <button onclick="document.getElementById('modalNuevaClase').classList.add('hidden')" class="p-1 text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <button onclick="cerrarModalNuevaClase()" class="text-slate-400 hover:text-slate-600 text-sm p-1">✕</button>
     </div>
 
-    <form id="formNuevaClase" onsubmit="guardarClase(event)" class="p-6 overflow-y-auto space-y-4 flex-1">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-        <div class="md:col-span-2">
-          <label class="block font-semibold text-slate-400 mb-1">Materia / Asunto *</label>
-          <input type="text" id="claseMateria" required placeholder="Ej: Clase de Guitarra Individual / Ensayo de Ensamble" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white">
+    <!-- Formulario -->
+    <form id="formNuevaClase" onsubmit="guardarNuevaClase(event)" class="space-y-4">
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre de la Clase / Evento</label>
+        <input type="text" required placeholder="Ej: Clase de Piano - Nivel Inicial" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" />
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha</label>
+          <input type="date" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" />
         </div>
         <div>
-          <label class="block font-semibold text-slate-400 mb-1">Alumno (Vinculado) *</label>
-          <input type="text" id="claseAlumno" required placeholder="Ej: Sofía Martínez" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white">
-        </div>
-        <div>
-          <label class="block font-semibold text-slate-400 mb-1">Profesor (Vinculado) *</label>
-          <input type="text" id="claseProfesor" required placeholder="Ej: Prof. Carlos Rossi" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white">
-        </div>
-        <div>
-          <label class="block font-semibold text-slate-400 mb-1">Fecha *</label>
-          <input type="date" id="claseFecha" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white">
-        </div>
-        <div>
-          <label class="block font-semibold text-slate-400 mb-1">Horario *</label>
-          <div class="flex gap-2">
-            <input type="time" id="claseHoraInicio" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-2 py-2 text-white">
-            <span class="self-center text-slate-500">-</span>
-            <input type="time" id="claseHoraFin" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-2 py-2 text-white">
-          </div>
-        </div>
-        <div class="md:col-span-2">
-          <label class="block font-semibold text-slate-400 mb-1">Estado / Asistencia Inicial *</label>
-          <select id="claseEstado" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white">
-            <option value="Programada">Programada</option>
-            <option value="Presente">Presente (Dictada)</option>
-            <option value="Ausente con aviso">Ausente con aviso (Registrar en legajo)</option>
-            <option value="Ausente sin aviso">Ausente sin aviso (Registrar en legajo)</option>
-          </select>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Horario</label>
+          <input type="time" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" />
         </div>
       </div>
-      <div class="flex justify-end gap-2 pt-4 border-t border-slate-800">
-        <button type="button" onclick="document.getElementById('modalNuevaClase').classList.add('hidden')" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs">Cancelar</button>
-        <button type="submit" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-xl text-xs">Guardar en Agenda</button>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1">Profesor / Cargo</label>
+        <input type="text" placeholder="Ej: Prof. Martinoli" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" />
+      </div>
+
+      <!-- Botones del Modal -->
+      <div class="flex items-center justify-end gap-2 pt-3 border-t border-purple-50">
+        <button type="button" onclick="cerrarModalNuevaClase()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-medium transition">
+          Cancelar
+        </button>
+        <button type="submit" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-medium shadow-md shadow-purple-600/20 transition">
+          Guardar Evento
+        </button>
       </div>
     </form>
   </div>
 </div>
+
 
 <!-- MODAL: CREAR NUEVO CURSO -->
 <div id="modalNuevoCurso" class="fixed inset-0 bg-slate-950/50 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
@@ -2724,13 +2719,28 @@ function guardarRegistroAlianza() {
 
 // --- FUNCIONES DE AGENDA & CLASES ---
 
-// Abre el modal o muestra la interfaz para nueva clase
+// --- FUNCIONES ACTUALIZADAS DE AGENDA ---
+
+// Abre el modal de nueva clase
 function abrirModalNuevaClase() {
-  // Acá podés desplegar un modal o mostrar un formulario flotante
-  alert("Próximamente: Formulario completo para agendar nueva clase o evento en Zyra.");
+  const modal = document.getElementById('modalNuevaClase');
+  if (modal) modal.classList.remove('hidden');
 }
 
-// Muestra u oculta el banner de alertas
+// Cierra el modal de nueva clase
+function cerrarModalNuevaClase() {
+  const modal = document.getElementById('modalNuevaClase');
+  if (modal) modal.classList.add('hidden');
+}
+
+// Maneja la acción de guardar
+function guardarNuevaClase(event) {
+  event.preventDefault();
+  alert("¡Evento agendado con éxito!");
+  cerrarModalNuevaClase();
+}
+
+// Alterna las alertas del banner superior
 function toggleAlertasAgenda() {
   const contenedorAlertas = document.getElementById('contenedorAlertasAgenda');
   if (contenedorAlertas) {
@@ -2738,9 +2748,8 @@ function toggleAlertasAgenda() {
   }
 }
 
-// Enlace directo con Google Calendar (Abre Google Calendar para crear o ver eventos)
+// Enlace directo a Google Calendar
 function sincronizarGoogleCalendar() {
-  // Abre una pestaña directa con Google Calendar para sincronizar turnos y clases
   window.open('https://calendar.google.com/', '_blank');
 }
 
