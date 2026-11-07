@@ -682,17 +682,49 @@
 
 
         <!-- PANTALLA: BACKUP -->
-        <section id="section-backup" class="hidden space-y-6">
-          <div class="border-b border-purple-100 pb-4">
-            <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-              <i data-lucide="hard-drive" class="text-blue-500"></i> Copias de Seguridad (Backup)
-            </h2>
-            <p class="text-xs text-slate-500">Respaldos de base de datos.</p>
+        <!-- PANTALLA: BACKUP / COPIA DE SEGURIDAD -->
+        <section id="section-backup" class="hidden h-full flex flex-col space-y-6">
+          <div class="flex items-center justify-between border-b border-purple-100 pb-4 shrink-0">
+            <div>
+              <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                <i data-lucide="database" class="text-purple-600"></i> Backup & Copia de Seguridad
+              </h2>
+              <p class="text-xs text-slate-500">Resguardá toda la información de tu academia con un solo clic.</p>
+            </div>
           </div>
-          <div class="bg-white border border-purple-100 rounded-xl p-6 space-y-4 max-w-md shadow-sm">
-            <button onclick="alert('Backup generado y guardado localmente.')" class="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium py-2 rounded-lg transition shadow-md">Generar Backup Ahora</button>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Tarjeta de Exportación -->
+            <div class="bg-white border border-purple-100 rounded-3xl p-6 shadow-sm flex flex-col justify-between space-y-4">
+              <div class="space-y-2">
+                <div class="w-10 h-10 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600 mb-3">
+                  <i data-lucide="download" class="w-5 h-5"></i>
+                </div>
+                <h3 class="font-bold text-slate-800 text-sm">Descargar Resguardo</h3>
+                <p class="text-xs text-slate-500">Exporta una copia de seguridad con todos los registros de alumnos, personal, inventario y eventos en un archivo seguro.</p>
+              </div>
+              <button onclick="exportarBackupZyra()" class="w-full bg-purple-600 hover:bg-purple-500 text-white text-xs py-2.5 rounded-xl font-medium transition shadow-md shadow-purple-600/20 flex items-center justify-center gap-2">
+                <i data-lucide="download" class="w-4 h-4"></i> Descargar Copia de Seguridad
+              </button>
+            </div>
+
+            <!-- Tarjeta de Importación -->
+            <div class="bg-white border border-purple-100 rounded-3xl p-6 shadow-sm flex flex-col justify-between space-y-4">
+              <div class="space-y-2">
+                <div class="w-10 h-10 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600 mb-3">
+                  <i data-lucide="upload" class="w-5 h-5"></i>
+                </div>
+                <h3 class="font-bold text-slate-800 text-sm">Restaurar Datos</h3>
+                <p class="text-xs text-slate-500">Carga un archivo de respaldo previo para restaurar la información de la academia en este dispositivo.</p>
+              </div>
+              <label class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs py-2.5 rounded-xl font-medium transition cursor-pointer flex items-center justify-center gap-2 text-center">
+                <i data-lucide="upload" class="w-4 h-4 text-purple-600"></i> Seleccionar Archivo y Restaurar
+                <input type="file" id="inputRestaurarBackup" accept=".json" onchange="importarBackupZyra(event)" class="hidden" />
+              </label>
+            </div>
           </div>
         </section>
+
 
         <!-- PANTALLA: GUÍA -->
         <section id="section-guia" class="hidden space-y-6">
@@ -2867,6 +2899,57 @@ function toggleAlertasAgenda() {
 function sincronizarGoogleCalendar() {
   window.open('https://calendar.google.com/', '_blank');
 }
+
+
+// --- FUNCIONES DE BACKUP Y RESTAURACIÓN ---
+
+function exportarBackupZyra() {
+  // Recopilamos todas las keys que usa Zyra en el localStorage
+  const datosBackup = {
+    version: "1.0",
+    fecha: new Date().toISOString(),
+    eventosAgenda: JSON.parse(localStorage.getItem('zyra_eventos_agenda')) || [],
+    alumnos: JSON.parse(localStorage.getItem('zyra_alumnos')) || [],
+    inventario: JSON.parse(localStorage.getItem('zyra_inventario')) || [],
+    personal: JSON.parse(localStorage.getItem('zyra_personal')) || []
+  };
+
+  // Convertimos el objeto a texto JSON
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(datosBackup, null, 2));
+  
+  // Creamos un link temporal de descarga
+  const downloadAnchor = document.createElement('a');
+  downloadAnchor.setAttribute("href", dataStr);
+  downloadAnchor.setAttribute("download", `zyra_backup_${new Date().toISOString().slice(0,10)}.json`);
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
+}
+
+function importarBackupZyra(event) {
+  const archivo = event.target.files[0];
+  if (!archivo) return;
+
+  const lector = new FileReader();
+  lector.onload = function(e) {
+    try {
+      const contenido = JSON.parse(e.target.result);
+      
+      // Restauramos los datos en el localStorage
+      if (contenido.eventosAgenda) localStorage.setItem('zyra_eventos_agenda', JSON.stringify(contenido.eventosAgenda));
+      if (contenido.alumnos) localStorage.setItem('zyra_alumnos', JSON.stringify(contenido.alumnos));
+      if (contenido.inventario) localStorage.setItem('zyra_inventario', JSON.stringify(contenido.inventario));
+      if (contenido.personal) localStorage.setItem('zyra_personal', JSON.stringify(contenido.personal));
+
+      alert("¡Copia de seguridad restaurada con éxito! La página se recargará para aplicar los cambios.");
+      location.reload();
+    } catch (error) {
+      alert("Error al leer el archivo. Asegurate de que sea un JSON válido de Zyra.");
+    }
+  };
+  lector.readAsText(archivo);
+}
+
 
 
   </script>
