@@ -210,72 +210,64 @@
       <main class="flex-1 overflow-y-auto custom-scroll bg-slate-50 p-6">
 
         <!-- DASHBOARD HERO -->
-<!-- DASHBOARD HERO CON MÉTRICAS LATERALES -->
+<!-- DASHBOARD HERO CON MÉTRICAS DIVERSIFICADAS -->
         <section id="section-inicio" class="h-full flex items-center justify-center p-6 relative overflow-hidden bg-gradient-to-br from-purple-100/40 via-indigo-50/30 to-purple-50/50">
           
-          <!-- Contenedor General que organiza todo en una fila/grilla simétrica -->
+          <!-- Contenedor General en Grilla -->
           <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-6 items-center justify-center">
 
             <!-- Columna Izquierda: 2 Tarjetas de Resumen -->
             <div class="lg:col-span-3 flex flex-col space-y-4">
-              <!-- Tarjeta 1 -->
+              <!-- Tarjeta 1: Alumnos Hoy -->
               <div class="bg-white/80 border border-purple-100/80 rounded-3xl p-5 shadow-sm backdrop-blur-md flex flex-col space-y-1">
                 <div class="flex items-center justify-between text-purple-600 mb-1">
-                  <span class="text-xs font-semibold text-slate-500">Resumen del Día:</span>
+                  <span class="text-xs font-semibold text-slate-500">Alumnos Hoy</span>
                   <i data-lucide="users" class="w-4 h-4 text-purple-600"></i>
                 </div>
-                <div class="text-2xl font-black text-slate-800">12</div>
-                <p class="text-xs text-slate-500 font-medium">Alumnos Presentes</p>
+                <div class="text-2xl font-black text-slate-800">18</div>
               </div>
 
-              <!-- Tarjeta 2 -->
+              <!-- Tarjeta 2: Docentes / Staff -->
               <div class="bg-white/80 border border-purple-100/80 rounded-3xl p-5 shadow-sm backdrop-blur-md flex flex-col space-y-1">
                 <div class="flex items-center justify-between text-purple-600 mb-1">
-                  <span class="text-xs font-semibold text-slate-500">Resumen del Día:</span>
-                  <i data-lucide="calendar" class="w-4 h-4 text-purple-600"></i>
+                  <span class="text-xs font-semibold text-slate-500">Docentes / Staff</span>
+                  <i data-lucide="user-check" class="w-4 h-4 text-purple-600"></i>
                 </div>
-                <div class="text-2xl font-black text-slate-800">5</div>
-                <p class="text-xs text-slate-500 font-medium">Clases Agendadas</p>
+                <div class="text-2xl font-black text-slate-800">12</div>
               </div>
             </div>
 
-            <!-- Columna Central: Tarjeta Principal con el Logo de Zyra -->
-            <div class="lg:col-span-6 bg-white/90 border border-purple-100 rounded-3xl p-8 shadow-xl backdrop-blur-md flex flex-col items-center justify-center text-center space-y-6">
-              <div class="w-48 h-48 md:w-56 md:h-56 flex items-center justify-center p-2">
-                <img src="logo.jpeg" alt="Logo de Zyra" class="w-full h-auto object-contain mix-blend-multiply opacity-95" />
-              </div>
-              <div class="space-y-1">
-                <h1 class="font-black text-slate-800 text-4xl tracking-tighter">zyra</h1>
-                <p class="text-xs font-bold text-purple-600 tracking-wider uppercase">Gestión para tu Academia</p>
+            <!-- Columna Central: Tarjeta Principal con Logo Integrado -->
+            <div class="lg:col-span-6 bg-white/40 border border-white/60 rounded-[40px] p-10 shadow-xl backdrop-blur-xl flex flex-col items-center justify-center text-center relative overflow-hidden">
+              <div class="w-64 h-64 md:w-72 md:h-72 flex items-center justify-center p-4">
+                <img src="logo.jpeg" alt="Logo de Zyra" class="w-full h-auto object-contain mix-blend-multiply opacity-95 drop-shadow-md" />
               </div>
             </div>
 
             <!-- Columna Derecha: 2 Tarjetas de Resumen -->
             <div class="lg:col-span-3 flex flex-col space-y-4">
-              <!-- Tarjeta 3 -->
+              <!-- Tarjeta 3: Inscripciones (Mes) -->
               <div class="bg-white/80 border border-purple-100/80 rounded-3xl p-5 shadow-sm backdrop-blur-md flex flex-col space-y-1">
                 <div class="flex items-center justify-between text-purple-600 mb-1">
-                  <span class="text-xs font-semibold text-slate-500">Resumen del Día:</span>
-                  <i data-lucide="calendar-check" class="w-4 h-4 text-purple-600"></i>
+                  <span class="text-xs font-semibold text-slate-500">Inscripciones (Mes)</span>
+                  <i data-lucide="user-plus" class="w-4 h-4 text-purple-600"></i>
                 </div>
-                <div class="text-2xl font-black text-slate-800">26</div>
-                <p class="text-xs text-slate-500 font-medium">Clases Agendadas</p>
+                <div class="text-2xl font-black text-slate-800">5</div>
               </div>
 
-              <!-- Tarjeta 4 -->
+              <!-- Tarjeta 4: Alertas Pendientes -->
               <div class="bg-white/80 border border-purple-100/80 rounded-3xl p-5 shadow-sm backdrop-blur-md flex flex-col space-y-1">
                 <div class="flex items-center justify-between text-purple-600 mb-1">
-                  <span class="text-xs font-semibold text-slate-500">Resumen del Día:</span>
-                  <i data-lucide="clock" class="w-4 h-4 text-purple-600"></i>
+                  <span class="text-xs font-semibold text-slate-500">Alertas Pendientes</span>
+                  <i data-lucide="bell" class="w-4 h-4 text-purple-600"></i>
                 </div>
                 <div class="text-2xl font-black text-slate-800">4</div>
-                <p class="text-xs text-slate-500 font-medium">Clases Agendadas</p>
               </div>
             </div>
 
           </div>
         </section>
-        
+                
         <!-- PANTALLA: ALUMNOS -->
          <!-- PANTALLA: ALUMNOS -->
         <section id="section-alumnos" class="hidden h-full flex flex-col space-y-6">
