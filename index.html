@@ -781,20 +781,32 @@
     </div>
 
     <!-- FOOTER -->
-    <footer class="bg-white border-t border-purple-100 text-xs text-slate-500 shrink-0 shadow-sm">
-      <div class="px-6 py-3 flex flex-wrap items-center justify-between gap-4 border-b border-purple-50">
-        <div class="flex flex-wrap items-center gap-6 text-[11px]">
-          <button onclick="openModal('modal-terms')" class="hover:text-purple-600 transition">Términos y Condiciones</button>
-          <button onclick="openModal('modal-privacy')" class="hover:text-purple-600 transition">Política de Privacidad</button>
-          <a href="tel:+5493580000000" class="hover:text-purple-600 transition">Teléfono</a>
-          <a href="mailto:contacto@puntotech.com" class="hover:text-purple-600 transition">Correo electrónico</a>
-        </div>
-      </div>
-      <div class="px-6 py-2.5 flex flex-wrap items-center justify-between gap-4 text-[11px]">
-        <span>Río Cuarto, Córdoba, Argentina</span>
-        <span>2026 Zyra Gestion – Desarrollado por Punto Tech</span>
-      </div>
-    </footer>
+  <!-- FOOTER LIMPIO Y ARMÓNICO -->
+        <footer class="w-full bg-white/60 backdrop-blur-md border-t border-purple-100/60 py-4 px-8 mt-auto">
+          <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between text-xs text-slate-500 space-y-3 md:space-y-0">
+            
+            <!-- Izquierda: Ubicación -->
+            <div class="flex items-center space-x-2 font-medium">
+              <span class="inline-block w-2 h-2 rounded-full bg-purple-400"></span>
+              <span>Río Cuarto, Córdoba, Argentina</span>
+            </div>
+
+            <!-- Centro: Enlaces y Versión -->
+            <div class="flex flex-wrap items-center justify-center gap-6 font-medium">
+              <span class="text-purple-600 font-semibold">Versión 1.0 — Zyra</span>
+              <a href="#" class="hover:text-purple-700 transition-colors">Términos y Condiciones</a>
+              <a href="#" class="hover:text-purple-700 transition-colors">Política de Privacidad</a>
+              <a href="#" class="hover:text-purple-700 transition-colors">Teléfono</a>
+              <a href="#" class="hover:text-purple-700 transition-colors">Correo electrónico</a>
+            </div>
+
+            <!-- Derecha: Créditos y Desarrollador -->
+            <div class="font-medium text-slate-400">
+              2026 Zyra &mdash; Desarrollado por <span class="text-slate-600 font-semibold">Punto Tech</span>
+            </div>
+
+          </div>
+        </footer>
   </div>
 
 
