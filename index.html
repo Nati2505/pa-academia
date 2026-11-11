@@ -210,7 +210,7 @@
       <main class="flex-1 overflow-y-auto custom-scroll bg-slate-50 p-6">
 
         <!-- DASHBOARD HERO -->
-<!-- DASHBOARD HERO CON MÉTRICAS DIVERSIFICADAS -->
+<!-- DASHBOARD HERO CON MEDALLÓN GLASSMOURPHIC -->
         <section id="section-inicio" class="h-full flex items-center justify-center p-6 relative overflow-hidden bg-gradient-to-br from-purple-100/40 via-indigo-50/30 to-purple-50/50">
           
           <!-- Contenedor General en Grilla -->
@@ -237,10 +237,16 @@
               </div>
             </div>
 
-            <!-- Columna Central: Tarjeta Principal con Logo Integrado -->
-            <div class="lg:col-span-6 bg-white/40 border border-white/60 rounded-[40px] p-10 shadow-xl backdrop-blur-xl flex flex-col items-center justify-center text-center relative overflow-hidden">
-              <div class="w-64 h-64 md:w-72 md:h-72 flex items-center justify-center p-4">
-                <img src="logo.jpeg" alt="Logo de Zyra" class="w-full h-auto object-contain mix-blend-multiply opacity-95 drop-shadow-md" />
+            <!-- Columna Central: Medallón Circular Glassmorphic (Opción B) -->
+            <div class="lg:col-span-6 flex items-center justify-center p-6">
+              <div class="relative flex items-center justify-center p-4 rounded-full bg-white/40 border border-white/70 shadow-2xl backdrop-blur-2xl ring-1 ring-purple-200/50">
+                <!-- Resplandor sutil trasero -->
+                <div class="absolute inset-0 rounded-full bg-purple-300/30 blur-2xl pointer-events-none"></div>
+                
+                <!-- Logo con recorte circular perfecto -->
+                <div class="relative w-60 h-60 md:w-72 md:h-72 rounded-full overflow-hidden flex items-center justify-center bg-white p-2 shadow-inner">
+                  <img src="logo.jpeg" alt="Logo de Zyra" class="w-full h-full object-cover rounded-full mix-blend-multiply opacity-95" />
+                </div>
               </div>
             </div>
 
@@ -267,7 +273,8 @@
 
           </div>
         </section>
-                
+        
+        
         <!-- PANTALLA: ALUMNOS -->
          <!-- PANTALLA: ALUMNOS -->
         <section id="section-alumnos" class="hidden h-full flex flex-col space-y-6">
