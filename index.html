@@ -2353,26 +2353,30 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById(`form-${formType}`).classList.remove('hidden');
     }
 
-    function loginUser() {
+function loginUser() {
       const loginUserField = document.getElementById('login-user').value.trim();
       const loginPassField = document.getElementById('login-pass').value;
-      const savedUserJson = localStorage.getItem('zyra_user');
 
-      if (!savedUserJson) {
-        alert("No hay ninguna cuenta registrada en este navegador. Por favor regístrate primero.");
-        toggleAuthForm('register');
-        return;
+      // Si no hay ningún usuario en el navegador, le inyectamos por defecto el tuyo para que nunca te trabe
+      if (!localStorage.getItem('zyra_user')) {
+        const defaultUser = {
+          name: "Administrador",
+          email: "admin",
+          password: "Academia2026"
+        };
+        localStorage.setItem('zyra_user', JSON.stringify(defaultUser));
       }
 
-      const savedUser = JSON.parse(savedUserJson);
+      const savedUser = JSON.parse(localStorage.getItem('zyra_user'));
 
-      if (loginUserField === savedUser.email && loginPassField === savedUser.password) {
+      // Validamos (aceptando tanto "admin" como el email completo por si acaso)
+      if ((loginUserField === savedUser.email || loginUserField === "admin") && loginPassField === savedUser.password) {
         document.getElementById('auth-screen').classList.add('hidden');
         document.getElementById('auth-screen').style.display = 'none';
         document.getElementById('app-content').classList.remove('hidden');
         navigateTo('inicio');
       } else {
-        alert("Usuario o contraseña incorrectos. Verificá tus datos.");
+        alert("Usuario o contraseña incorrectos. (Probá con usuario: admin y contraseña: Academia2026)");
       }
     }
 
