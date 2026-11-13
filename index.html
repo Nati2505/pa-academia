@@ -2327,52 +2327,59 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-// --- NAVEGACIÓN Y AUTENTICACIÓN ---
-    function navigateTo(sectionId) {
-  // Agregamos 'cursos' y 'alianza' a la lista de secciones válidas
-  const sections = ['inicio', 'alumnos', 'inventario', 'personal', 'finanzas', 'agenda', 'cursos', 'alianza', 'backup', 'guia'];
-  
-  sections.forEach(id => {
-    const sec = document.getElementById(`section-${id}`);
-    const nav = document.getElementById(`nav-${id}`);
-    if (sec) sec.classList.add('hidden');
-    if (nav) nav.classList.remove('bg-purple-100', 'text-purple-700', 'bg-slate-800', 'text-white');
-  });
+function loginUser() {
+      const loginUserField = document.getElementById('login-user').value.trim();
+      const loginPassField = document.getElementById('login-pass').value;
+      const savedUserJson = localStorage.getItem('zyra_user');
 
-  const activeSec = document.getElementById(`section-${sectionId}`);
-  const activeNav = document.getElementById(`nav-${sectionId}`);
-  if (activeSec) activeSec.classList.remove('hidden');
-  if (activeNav) activeNav.classList.add('bg-purple-100', 'text-purple-700', 'font-semibold');
-}
+      if (!savedUserJson) {
+        alert("No hay ninguna cuenta registrada en este navegador. Por favor regístrate primero.");
+        toggleAuthForm('register');
+        return;
+      }
 
-   function toggleAuthForm(formType) {
-  document.getElementById('form-welcome').classList.add('hidden');
-  document.getElementById('form-login').classList.add('hidden');
-  document.getElementById('form-subscribe').classList.add('hidden');
-  document.getElementById('form-register').classList.add('hidden');
-  document.getElementById('form-recover').classList.add('hidden');
-  document.getElementById(`form-${formType}`).classList.remove('hidden');
-}
+      const savedUser = JSON.parse(savedUserJson);
 
-
-    function loginUser() {
-      document.getElementById('auth-screen').classList.add('hidden');
-      document.getElementById('app-content').classList.remove('hidden');
-      navigateTo('inicio');
-      document.getElementById('auth-screen').style.display = 'none';
+      if (loginUserField === savedUser.email && loginPassField === savedUser.password) {
+        document.getElementById('auth-screen').classList.add('hidden');
+        document.getElementById('auth-screen').style.display = 'none';
+        document.getElementById('app-content').classList.remove('hidden');
+        navigateTo('inicio');
+      } else {
+        alert("Usuario o contraseña incorrectos. Verificá tus datos.");
+      }
     }
 
     function logoutUser() {
       document.getElementById('app-content').classList.add('hidden');
-      document.getElementById('auth-screen').classList.remove('hidden');
+      const authScreen = document.getElementById('auth-screen');
+      authScreen.classList.remove('hidden');
+      authScreen.style.display = 'flex';
+      toggleAuthForm('welcome');
     }
 
-    function registerUser() { alert('Cuenta registrada.'); toggleAuthForm('login'); }
-    function recoverPass() { alert('Instrucciones enviadas.'); toggleAuthForm('login'); }
-    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('hidden'); }
-  
+    function registerUser() {
+      const nameInput = document.querySelector('#form-register input[type="text"]');
+      const emailInput = document.querySelector('#form-register input[type="email"]');
+      const passInput = document.querySelector('#form-register input[type="password"]');
+
+      if (!emailInput || !passInput || !emailInput.value.trim() || !passInput.value) {
+        alert("Por favor completá todos los campos.");
+        return;
+      }
+
+      const userData = {
+        name: nameInput ? nameInput.value.trim() : "Usuario",
+        email: emailInput.value.trim(),
+        password: passInput.value
+      };
+
+      localStorage.setItem('zyra_user', JSON.stringify(userData));
+      alert("¡Cuenta registrada con éxito! Ya podés iniciar sesión.");
+      toggleAuthForm('login');
+    }
+
+
   // Base de datos de Finanzas
 let finanzasEjemplo = [
   { id: 301, fecha: "2026-10-01", concepto: "Cuota Mensual - Sofía Martínez", categoria: "Cuotas Alumnos", tipo: "INGRESO", monto: 250000 },
