@@ -3437,101 +3437,105 @@ document.addEventListener('DOMContentLoaded', () => {
 
   </script>
 
-// --- TARJETAS INTERACTIVAS DEL DASHBOARD ---
-function obtenerDatosTarjetas() {
-  // Intenta leer datos reales de localStorage si existen, sino usa respaldo inicial
-  const alumnosGuardados = JSON.parse(localStorage.getItem('zyra_alumnos') || 'null');
-  const personalGuardado = JSON.parse(localStorage.getItem('zyra_personal') || 'null');
-  const eventosGuardados = JSON.parse(localStorage.getItem('zyra_eventos') || 'null');
+<script>
+  // --- TARJETAS INTERACTIVAS DEL DASHBOARD ---
+  function obtenerDatosTarjetas() {
+    // Intenta leer datos reales de localStorage si existen, sino usa respaldo inicial
+    const alumnosGuardados = JSON.parse(localStorage.getItem('zyra_alumnos') || 'null');
+    const personalGuardado = JSON.parse(localStorage.getItem('zyra_personal') || 'null');
+    const eventosGuardados = JSON.parse(localStorage.getItem('zyra_eventos') || 'null');
 
-  return {
-    alumnos: {
-      titulo: 'Alumnos con Actividad Hoy',
-      subtitulo: 'Asistencias y clases programadas',
-      seccionDestino: 'alumnos',
-      items: alumnosGuardados && alumnosGuardados.length > 0
-        ? alumnosGuardados.slice(0, 6).map(a => ({ principal: a.nombre || 'Alumno', detalle: a.curso || 'Activo' }))
-        : [
-            { principal: 'Valentina Gómez', detalle: 'Danza Contemporánea • 17:00 hs' },
-            { principal: 'Lucas Fernández', detalle: 'Acrobacia Aérea • 18:30 hs' },
-            { principal: 'Sofía Martínez', detalle: 'Iniciación Musical • 19:00 hs' }
-          ]
-    },
-    docentes: {
-      titulo: 'Docentes y Staff Activo',
-      subtitulo: 'Equipo de la academia',
-      seccionDestino: 'personal',
-      items: personalGuardado && personalGuardado.length > 0
-        ? personalGuardado.slice(0, 6).map(p => ({ principal: p.nombre || 'Docente', detalle: p.rol || 'Staff' }))
-        : [
-            { principal: 'Prof. Camila Rossi', detalle: 'Coordinación y Danza' },
-            { principal: 'Prof. Martín Díaz', detalle: 'Entrenamiento Funcional' },
-            { principal: 'Laura Pérez', detalle: 'Recepción y Administración' }
-          ]
-    },
-    inscripciones: {
-      titulo: 'Nuevas Inscripciones del Mes',
-      subtitulo: 'Altas recientes registradas',
-      seccionDestino: 'alumnos',
-      items: alumnosGuardados && alumnosGuardados.length > 0
-        ? alumnosGuardados.slice(-5).map(a => ({ principal: a.nombre || 'Nuevo Alumno', detalle: 'Inscripto este mes' }))
-        : [
-            { principal: 'Mateo Silva', detalle: 'Alta: 12 Nov • Taller Inicial' },
-            { principal: 'Julieta Castro', detalle: 'Alta: 08 Nov • Nivel Intermedio' },
-            { principal: 'Tomás Herrera', detalle: 'Alta: 03 Nov • Clase de Prueba' }
-          ]
-    }
-    alertas: {
-      titulo: 'Alertas y Recordatorios Pendientes',
-      subtitulo: 'Avisos importantes del día',
-      seccionDestino: 'agenda',
-      items: eventosGuardados && eventosGuardados.length > 0
-        ? eventosGuardados.slice(0, 5).map(e => ({ principal: e.titulo || 'Recordatorio', detalle: e.fecha || 'Pendiente' }))
-        : [
-            { principal: 'Vencimiento de cuotas mensuales', detalle: 'Revisar estado en Finanzas' },
-            { principal: 'Confirmar sala para ensayo general', detalle: 'Agenda • Viernes 18:00 hs' },
-            { principal: 'Revisar stock de materiales', detalle: 'Inventario • 2 ítems bajos' }
-          ]
-    }
-  };
-}
-
-function abrirResumenTarjeta(tipo) {
-  const data = obtenerDatosTarjetas()[tipo];
-  if (!data) return;
-
-  document.getElementById('modal-tarjeta-titulo').textContent = data.titulo;
-  document.getElementById('modal-tarjeta-subtitulo').textContent = data.subtitulo;
-
-  const contenedor = document.getElementById('modal-tarjeta-contenido');
-  contenedor.innerHTML = data.items.map(item => `
-    <div class="flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-2xl">
-      <span class="text-xs font-semibold text-slate-700">${item.principal}</span>
-      <span class="text-[11px] font-medium text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full">${item.detalle}</span>
-    </div>
-  `).join('');
-
-  const btnIr = document.getElementById('btn-ir-modulo-tarjeta');
-  btnIr.onclick = function() {
-    cerrarResumenTarjeta();
-    if (typeof navigateTo === 'function') {
-      navigateTo(data.seccionDestino);
-    }
-  };
-
-  const modal = document.getElementById('modal-resumen-tarjeta');
-  modal.classList.remove('hidden');
-  modal.classList.add('flex');
-  if (typeof lucide !== 'undefined') lucide.createIcons();
-}
-
-function cerrarResumenTarjeta() {
-  const modal = document.getElementById('modal-resumen-tarjeta');
-  if (modal) {
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
+    return {
+      alumnos: {
+        titulo: 'Alumnos con Actividad Hoy',
+        subtitulo: 'Asistencias y clases programadas',
+        seccionDestino: 'alumnos',
+        items: alumnosGuardados && alumnosGuardados.length > 0
+          ? alumnosGuardados.slice(0, 6).map(a => ({ principal: a.nombre || 'Alumno', detalle: a.curso || 'Activo' }))
+          : [
+              { principal: 'Valentina Gómez', detalle: 'Danza Contemporánea • 17:00 hs' },
+              { principal: 'Lucas Fernández', detalle: 'Acrobacia Aérea • 18:30 hs' },
+              { principal: 'Sofía Martínez', detalle: 'Iniciación Musical • 19:00 hs' }
+            ]
+      },
+      docentes: {
+        titulo: 'Docentes y Staff Activo',
+        subtitulo: 'Equipo de la academia',
+        seccionDestino: 'personal',
+        items: personalGuardado && personalGuardado.length > 0
+          ? personalGuardado.slice(0, 6).map(p => ({ principal: p.nombre || 'Docente', detalle: p.rol || 'Staff' }))
+          : [
+              { principal: 'Prof. Camila Rossi', detalle: 'Coordinación y Danza' },
+              { principal: 'Prof. Martín Díaz', detalle: 'Entrenamiento Funcional' },
+              { principal: 'Laura Pérez', detalle: 'Recepción y Administración' }
+            ]
+      },
+      inscripciones: {
+        titulo: 'Nuevas Inscripciones del Mes',
+        subtitulo: 'Altas recientes registradas',
+        seccionDestino: 'alumnos',
+        items: alumnosGuardados && alumnosGuardados.length > 0
+          ? alumnosGuardados.slice(-5).map(a => ({ principal: a.nombre || 'Nuevo Alumno', detalle: 'Inscripto este mes' }))
+          : [
+              { principal: 'Mateo Silva', detalle: 'Alta: 12 Nov • Taller Inicial' },
+              { principal: 'Julieta Castro', detalle: 'Alta: 08 Nov • Nivel Intermedio' },
+              { principal: 'Tomás Herrera', detalle: 'Alta: 03 Nov • Clase de Prueba' }
+            ]
+      },
+      alertas: {
+        titulo: 'Alertas y Recordatorios Pendientes',
+        subtitulo: 'Avisos importantes del día',
+        seccionDestino: 'agenda',
+        items: eventosGuardados && eventosGuardados.length > 0
+          ? eventosGuardados.slice(0, 5).map(e => ({ principal: e.titulo || 'Recordatorio', detalle: e.fecha || 'Pendiente' }))
+          : [
+              { principal: 'Vencimiento de cuotas mensuales', detalle: 'Revisar estado en Finanzas' },
+              { principal: 'Confirmar sala para ensayo general', detalle: 'Agenda • Viernes 18:00 hs' },
+              { principal: 'Revisar stock de materiales', detalle: 'Inventario • 2 ítems bajos' }
+            ]
+      }
+    };
   }
-}
+
+  function abrirResumenTarjeta(tipo) {
+    const data = obtenerDatosTarjetas()[tipo];
+    if (!data) return;
+
+    document.getElementById('modal-tarjeta-titulo').textContent = data.titulo;
+    document.getElementById('modal-tarjeta-subtitulo').textContent = data.subtitulo;
+
+    const contenedor = document.getElementById('modal-tarjeta-contenido');
+    contenedor.innerHTML = data.items.map(item => `
+      <div class="flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-2xl">
+        <span class="text-xs font-semibold text-slate-700">${item.principal}</span>
+        <span class="text-[11px] font-medium text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full">${item.detalle}</span>
+      </div>
+    `).join('');
+
+    const btnIr = document.getElementById('btn-ir-modulo-tarjeta');
+    btnIr.onclick = function() {
+      cerrarResumenTarjeta();
+      if (typeof navigateTo === 'function') {
+        navigateTo(data.seccionDestino);
+      }
+    };
+
+    const modal = document.getElementById('modal-resumen-tarjeta');
+    if (modal) {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+  }
+
+  function cerrarResumenTarjeta() {
+    const modal = document.getElementById('modal-resumen-tarjeta');
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  }
+</script>
 
 </body>
 </html>
