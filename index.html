@@ -204,10 +204,10 @@
             <span>Cursos</span>
           </button>
 
-          <!-- NUEVO: Botón Alianza Rómulo Gallegos -->
+          <!-- NUEVO: Botón Alianza Con otras Academias -->
           <button onclick="navigateTo('alianza')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-alianza">
             <i data-lucide="handshake" class="w-4 h-4 text-cyan-500"></i>
-            <span>Alianza Rómulo Gallegos</span>
+            <span>Alianza Academias</span>
           </button>
 
                     <button onclick="navigateTo('finanzas')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-finanzas">
@@ -1733,12 +1733,12 @@
   </div>
 </div>
 
-<!-- MODAL: REGISTRAR ALIANZA RÓMULO GALLEGOS -->
+<!-- MODAL: REGISTRAR ALIANZA CON OTRAS ACADEMIAS -->
 <div id="modalNuevaAlianza" class="fixed inset-0 bg-slate-950/50 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
   <div class="bg-white border border-purple-100 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
     <div class="flex justify-between items-center border-b border-purple-100 pb-3">
       <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
-        <i data-lucide="handshake" class="text-cyan-600 w-5 h-5"></i> Alianza Rómulo Gallegos
+        <i data-lucide="handshake" class="text-cyan-600 w-5 h-5"></i> Alianza Con Otras Academias
       </h3>
       <button onclick="cerrarModalAlianza()" class="text-slate-400 hover:text-slate-700"><i data-lucide="x" class="w-5 h-5"></i></button>
     </div>
@@ -2174,7 +2174,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-  // --- DATOS Y FUNCIONES PARA ALIANZA RÓMULO GALLEGOS ---
+  // --- DATOS Y FUNCIONES PARA ALIANZA CON OTRAS ACADEMIAS ---
   function abrirModalNuevaAlianzaRegistro() {
     document.getElementById('modalNuevaAlianza').classList.remove('hidden');
   }
