@@ -710,7 +710,7 @@
         <!-- PANTALLA: AGENDA & CLASES -->
         <section id="section-agenda" class="hidden h-full flex flex-col space-y-6">
           <!-- CABECERA Y BOTONES DE ACCIÓN -->
-          <div class="flex items-center justify-between border-b border-purple-100 pb-4 shrink-0">
+          <div class="flex flex-wrap items-center justify-between gap-4 border-b border-purple-100 pb-4 shrink-0">
             <div>
               <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
                 <i data-lucide="calendar" class="text-purple-600"></i> Agenda & Control de Clases
@@ -746,17 +746,70 @@
             </div>
           </div>
 
-          <!-- LISTADO DE EVENTOS PROGRAMADOS -->
-          <div class="space-y-3">
-            <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2">
-              <i data-lucide="clock" class="w-4 h-4 text-purple-500"></i> Próximas Clases & Eventos
-            </h3>
-            <div id="listaEventosAgenda" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <!-- Los eventos guardados se renderizan acá dinámicamente -->
+          <!-- CONTENIDO PRINCIPAL EN DOS COLUMNAS -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            
+            <!-- COLUMNA IZQUIERDA (7 cols): CALENDARIO INTERACTIVO -->
+            <div class="lg:col-span-7 bg-white/90 border border-purple-100 rounded-2xl p-5 shadow-sm backdrop-blur-md space-y-4">
+              <!-- Controles de Mes -->
+              <div class="flex items-center justify-between">
+                <h3 id="calendario-mes-anio" class="text-base font-extrabold text-slate-800 capitalize">Noviembre 2026</h3>
+                <div class="flex items-center gap-1.5">
+                  <button type="button" onclick="cambiarMesCalendario(-1)" class="p-1.5 rounded-lg border border-slate-200 hover:bg-purple-50 text-slate-600 transition" title="Mes anterior">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                  </button>
+                  <button type="button" onclick="irAHoyCalendario()" class="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-purple-50 text-xs font-semibold text-slate-600 transition">
+                    Hoy
+                  </button>
+                  <button type="button" onclick="cambiarMesCalendario(1)" class="p-1.5 rounded-lg border border-slate-200 hover:bg-purple-50 text-slate-600 transition" title="Mes siguiente">
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Días de la semana -->
+              <div class="grid grid-cols-7 text-center text-[11px] font-bold text-slate-400 uppercase tracking-wider pb-1 border-b border-slate-100">
+                <div>Lun</div>
+                <div>Mar</div>
+                <div>Mié</div>
+                <div>Jue</div>
+                <div>Vie</div>
+                <div>Sáb</div>
+                <div>Dom</div>
+              </div>
+
+              <!-- Grilla de días (Se genera dinámicamente por JS) -->
+              <div id="calendario-grilla-dias" class="grid grid-cols-7 gap-1.5 text-sm">
+              </div>
+
+              <!-- Pie de estado Google Calendar -->
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                <span id="estado-sync-google" class="inline-flex items-center gap-1.5 text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2.5 py-1 rounded-full font-medium">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  Sincronizado con Google Calendar
+                </span>
+                <button type="button" onclick="limpiarFiltroFechaAgenda()" id="btn-ver-todos-eventos" class="hidden text-purple-600 hover:underline font-medium">
+                  Ver todos los eventos
+                </button>
+              </div>
             </div>
+
+            <!-- COLUMNA DERECHA (5 cols): PRÓXIMAS CLASES & EVENTOS -->
+            <div class="lg:col-span-5 space-y-3">
+              <div class="flex items-center justify-between">
+                <h3 id="titulo-lista-eventos" class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                  <i data-lucide="clock" class="w-4 h-4 text-purple-500"></i> Próximas Clases & Eventos
+                </h3>
+              </div>
+              
+              <!-- Contenedor adaptado a columna vertical -->
+              <div id="listaEventosAgenda" class="flex flex-col gap-3 max-h-[520px] overflow-y-auto pr-1">
+                <!-- Los eventos guardados se renderizan acá dinámicamente -->
+              </div>
+            </div>
+
           </div>
         </section>
-
 
         <!-- PANTALLA: BACKUP -->
         <!-- PANTALLA: BACKUP / COPIA DE SEGURIDAD -->
@@ -2882,23 +2935,109 @@ function guardarRegistroAlianza() {
   cerrarModalAlianza();
 }
 
-// --- FUNCIONES DE AGENDA & CLASES ---
-
-// --- FUNCIONES ACTUALIZADAS DE AGENDA ---
-
-// --- FUNCIONES ACTUALIZADAS DE AGENDA (FORZADO DIRECTO) ---
-
-// --- NUEVA ESTRATEGIA: MODAL DINÁMICO ---
-// --- GESTIÓN DE EVENTOS DE AGENDA CON PERSISTENCIA ---
+// --- GESTIÓN DE EVENTOS DE AGENDA Y CALENDARIO INTERACTIVO ---
 
 // Cargar eventos guardados al iniciar
 let eventosAgenda = JSON.parse(localStorage.getItem('zyra_eventos_agenda')) || [];
+let fechaCalendarioActual = new Date();
+let fechaSeleccionadaFiltro = null;
 
-// Renderizar eventos al cargar la página
+const nombresMeses = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+
+// Renderizar al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
+  renderizarCalendario();
   renderizarEventosAgenda();
 });
 
+// --- LÓGICA DEL CALENDARIO ---
+function renderizarCalendario() {
+  const grilla = document.getElementById('calendario-grilla-dias');
+  const tituloMes = document.getElementById('calendario-mes-anio');
+  if (!grilla || !tituloMes) return;
+
+  const anio = fechaCalendarioActual.getFullYear();
+  const mes = fechaCalendarioActual.getMonth();
+  tituloMes.textContent = `${nombresMeses[mes]} ${anio}`;
+
+  const primerDiaMes = new Date(anio, mes, 1).getDay();
+  const offsetLunes = primerDiaMes === 0 ? 6 : primerDiaMes - 1;
+  const diasEnMes = new Date(anio, mes + 1, 0).getDate();
+  const hoy = new Date();
+
+  grilla.innerHTML = '';
+
+  // Celdas vacías previas
+  for (let i = 0; i < offsetLunes; i++) {
+    grilla.innerHTML += `<div class="h-14 rounded-xl bg-slate-50/50"></div>`;
+  }
+
+  // Días del mes
+  for (let dia = 1; dia <= diasEnMes; dia++) {
+    const fechaStr = `${anio}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+    const esHoy = hoy.getDate() === dia && hoy.getMonth() === mes && hoy.getFullYear() === anio;
+    const estaSeleccionado = fechaSeleccionadaFiltro === fechaStr;
+
+    const eventosDelDia = eventosAgenda.filter(ev => ev.fecha === fechaStr);
+    const tieneEventos = eventosDelDia.length > 0;
+
+    let clasesCelda = "h-14 p-1.5 rounded-xl border flex flex-col justify-between cursor-pointer transition select-none ";
+    if (estaSeleccionado) {
+      clasesCelda += "bg-purple-600 text-white border-purple-600 shadow-md";
+    } else if (esHoy) {
+      clasesCelda += "bg-purple-50 border-purple-300 text-purple-900 font-bold";
+    } else {
+      clasesCelda += "bg-white hover:bg-purple-50/60 border-slate-100 text-slate-700";
+    }
+
+    const indicadorEvento = tieneEventos
+      ? `<div class="w-full h-1.5 rounded-full ${estaSeleccionado ? 'bg-cyan-300' : 'bg-gradient-to-r from-purple-500 to-cyan-400'}"></div>`
+      : `<div class="h-1.5"></div>`;
+
+    grilla.innerHTML += `
+      <div onclick="seleccionarDiaCalendario('${fechaStr}')" class="${clasesCelda}">
+        <span class="text-xs font-semibold">${dia}</span>
+        ${indicadorEvento}
+      </div>
+    `;
+  }
+}
+
+function cambiarMesCalendario(delta) {
+  fechaCalendarioActual.setMonth(fechaCalendarioActual.getMonth() + delta);
+  renderizarCalendario();
+}
+
+function irAHoyCalendario() {
+  fechaCalendarioActual = new Date();
+  fechaSeleccionadaFiltro = null;
+  document.getElementById('btn-ver-todos-eventos')?.classList.add('hidden');
+  renderizarCalendario();
+  renderizarEventosAgenda();
+}
+
+function seleccionarDiaCalendario(fechaStr) {
+  fechaSeleccionadaFiltro = (fechaSeleccionadaFiltro === fechaStr) ? null : fechaStr;
+  const btnTodos = document.getElementById('btn-ver-todos-eventos');
+  if (btnTodos) {
+    btnTodos.classList.toggle('hidden', !fechaSeleccionadaFiltro);
+  }
+  renderizarCalendario();
+  renderizarEventosAgenda(fechaSeleccionadaFiltro);
+}
+
+function limpiarFiltroFechaAgenda() {
+  fechaSeleccionadaFiltro = null;
+  document.getElementById('btn-ver-todos-eventos')?.classList.add('hidden');
+  renderizarCalendario();
+  renderizarEventosAgenda();
+}
+
+
+// --- GESTIÓN DE MODALES Y CRUD DE EVENTOS ---
 function abrirModalNuevaClase() {
   const modalAnterior = document.getElementById('modalNuevaClaseDinamico');
   if (modalAnterior) modalAnterior.remove();
@@ -2906,7 +3045,6 @@ function abrirModalNuevaClase() {
   const modalHTML = `
     <div id="modalNuevaClaseDinamico" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
       <div class="bg-white rounded-3xl border border-purple-100 shadow-2xl max-w-md w-full p-6 space-y-5 relative">
-        
         <div class="flex items-center justify-between border-b border-purple-100 pb-3">
           <div class="flex items-center gap-2.5">
             <div class="p-2 bg-purple-500/10 rounded-xl text-purple-600">
@@ -2926,7 +3064,7 @@ function abrirModalNuevaClase() {
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha</label>
-              <input type="date" id="agendaFecha" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" />
+              <input type="date" id="agendaFecha" required value="${fechaSeleccionadaFiltro || ''}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-600 mb-1">Horario</label>
@@ -2975,30 +3113,36 @@ function guardarNuevaClase(event) {
   eventosAgenda.push(nuevoEvento);
   localStorage.setItem('zyra_eventos_agenda', JSON.stringify(eventosAgenda));
   
-  renderizarEventosAgenda();
+  renderizarCalendario();
+  renderizarEventosAgenda(fechaSeleccionadaFiltro);
   cerrarModalNuevaClase();
 }
 
 function eliminarEventoAgenda(id) {
   eventosAgenda = eventosAgenda.filter(ev => ev.id !== id);
   localStorage.setItem('zyra_eventos_agenda', JSON.stringify(eventosAgenda));
-  renderizarEventosAgenda();
+  renderizarCalendario();
+  renderizarEventosAgenda(fechaSeleccionadaFiltro);
 }
 
-function renderizarEventosAgenda() {
+function renderizarEventosAgenda(filtroFecha = null) {
   const contenedor = document.getElementById('listaEventosAgenda');
   if (!contenedor) return;
 
-  if (eventosAgenda.length === 0) {
+  const eventosAMostrar = filtroFecha 
+    ? eventosAgenda.filter(ev => ev.fecha === filtroFecha)
+    : eventosAgenda;
+
+  if (eventosAMostrar.length === 0) {
     contenedor.innerHTML = `
-      <div class="col-span-full bg-purple-50/50 border border-dashed border-purple-200 rounded-2xl p-8 text-center">
-        <p class="text-xs text-slate-500">No hay clases ni eventos agendados aún.</p>
+      <div class="bg-purple-50/50 border border-dashed border-purple-200 rounded-2xl p-8 text-center">
+        <p class="text-xs text-slate-500">${filtroFecha ? 'No hay eventos para la fecha seleccionada.' : 'No hay clases ni eventos agendados aún.'}</p>
       </div>
     `;
     return;
   }
 
-  contenedor.innerHTML = eventosAgenda.map(ev => `
+  contenedor.innerHTML = eventosAMostrar.map(ev => `
     <div class="bg-white border border-purple-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-3">
       <div class="flex items-start justify-between">
         <div>
