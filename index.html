@@ -3502,7 +3502,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  function abrirResumenTarjeta(tipo) {
+function abrirResumenTarjeta(tipo) {
     const data = obtenerDatosTarjetas()[tipo];
     if (!data) return;
 
@@ -3528,7 +3528,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('modal-resumen-tarjeta');
     if (modal) {
       modal.classList.remove('hidden');
-      modal.classList.add('flex');
+      modal.style.display = 'flex'; // Forzamos el despliegue visual
+      modal.style.zIndex = '99999';   // Lo mandamos al frente de todo
       if (typeof lucide !== 'undefined') lucide.createIcons();
     }
   }
@@ -3537,9 +3538,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('modal-resumen-tarjeta');
     if (modal) {
       modal.classList.add('hidden');
-      modal.classList.remove('flex');
+      modal.style.display = 'none'; // Ocultamos limpiamente
     }
   }
+  
 </script>
 
 <!-- MODAL DE VISTA RÁPIDA DE TARJETAS -->
