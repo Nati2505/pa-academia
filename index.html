@@ -3267,21 +3267,50 @@ function importarBackupZyra(event) {
   lector.readAsText(archivo);
 }
 
-// --- GESTIÓN DE NOTAS PERSONALES (ADMIN) ---
-let misNotasPersonales = JSON.parse(localStorage.getItem('zyra_notas_personales')) || [
-  {
-    id: 1,
-    titulo: "Ideas para el próximo módulo",
-    cuerpo: "Evaluar sumar un filtro rápido por profesor en la agenda y revisar los estilos del dashboard.",
-    fecha: "Hoy"
+// --- GESTIÓN DE NOTAS PERSONALES PRIVADAS POR USUARIO ---
+
+// Obtiene una clave única de almacenamiento según el usuario activo
+function obtenerClaveNotasUsuario() {
+  // Intentamos leer el usuario activo de tu sesión (ajustá el nombre de la clave si usás otra para la sesión)
+  const sesion = JSON.parse(localStorage.getItem('zyra_session')) || 
+                 JSON.parse(localStorage.getItem('usuarioActivo')) || 
+                 { username: localStorage.getItem('zyra_user') || 'admin' };
+  
+  const usuario = (sesion.username || sesion.email || sesion.usuario || 'admin').toLowerCase().trim();
+  return `zyra_notas_${usuario}`;
+}
+
+function cargarNotasDelUsuario() {
+  const clave = obtenerClaveNotasUsuario();
+  const guardadas = localStorage.getItem(clave);
+  
+  if (guardadas) {
+    return JSON.parse(guardadas);
   }
-];
+  
+  // Si es el admin y entra por primera vez, le dejamos la nota de ejemplo
+  if (clave === 'zyra_notas_admin') {
+    return [
+      {
+        id: 1,
+        titulo: "Ideas para el próximo módulo",
+        cuerpo: "Evaluar sumar un filtro rápido por profesor en la agenda y revisar los estilos del dashboard.",
+        fecha: "Hoy"
+      }
+    ];
+  }
+  
+  return [];
+}
 
 function guardarNotaPersonal() {
   const inputTitulo = document.getElementById('input-titulo-nota-personal');
   const inputCuerpo = document.getElementById('input-cuerpo-nota-personal');
   
   if (!inputTitulo.value.trim() && !inputCuerpo.value.trim()) return;
+
+  const clave = obtenerClaveNotasUsuario();
+  const notasActuales = cargarNotasDelUsuario();
 
   const nuevaNota = {
     id: Date.now(),
@@ -3290,8 +3319,8 @@ function guardarNotaPersonal() {
     fecha: new Date().toLocaleDateString()
   };
 
-  misNotasPersonales.unshift(nuevaNota);
-  localStorage.setItem('zyra_notas_personales', JSON.stringify(misNotasPersonales));
+  notasActuales.unshift(nuevaNota);
+  localStorage.setItem(clave, JSON.stringify(notasActuales));
 
   inputTitulo.value = '';
   inputCuerpo.value = '';
@@ -3299,8 +3328,11 @@ function guardarNotaPersonal() {
 }
 
 function eliminarNotaPersonal(id) {
-  misNotasPersonales = misNotasPersonales.filter(n => n.id !== id);
-  localStorage.setItem('zyra_notas_personales', JSON.stringify(misNotasPersonales));
+  const clave = obtenerClaveNotasUsuario();
+  let notasActuales = cargarNotasDelUsuario();
+  
+  notasActuales = notasActuales.filter(n => n.id !== id);
+  localStorage.setItem(clave, JSON.stringify(notasActuales));
   renderizarNotasPersonales();
 }
 
@@ -3308,7 +3340,9 @@ function renderizarNotasPersonales() {
   const contenedor = document.getElementById('lista-notas-personales');
   if (!contenedor) return;
 
-  if (misNotasPersonales.length === 0) {
+  const notasActuales = cargarNotasDelUsuario();
+
+  if (notasActuales.length === 0) {
     contenedor.innerHTML = `
       <div class="col-span-full bg-purple-50/50 border border-dashed border-purple-200 rounded-2xl p-8 text-center">
         <p class="text-xs text-slate-500">No tenés notas personales guardadas todavía.</p>
@@ -3317,7 +3351,7 @@ function renderizarNotasPersonales() {
     return;
   }
 
-  contenedor.innerHTML = misNotasPersonales.map(nota => `
+  contenedor.innerHTML = notasActuales.map(nota => `
     <div class="bg-white border border-purple-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-3">
       <div class="space-y-1.5">
         <div class="flex items-start justify-between">
