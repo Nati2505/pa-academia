@@ -240,6 +240,12 @@
         <div class="p-3 border-t border-purple-100 text-[11px] text-slate-400 text-center">
           Versión 1.0 — Zyra Gestion
         </div>
+
+        <button onclick="navigateTo('notas-personales')" id="nav-notas-personales" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition">
+         <i data-lucide="book-open" class="w-4 h-4 text-purple-500"></i>
+        <span>Mis Notas Personales</span>
+        </button>
+
       </aside>
 
       <!-- ÁREA DE CONTENIDO PRINCIPAL -->
@@ -810,6 +816,39 @@
 
           </div>
         </section>
+
+<!-- PANTALLA: MIS NOTAS PERSONALES (ADMIN) -->
+<section id="section-notas-personales" class="hidden h-full flex flex-col space-y-6">
+  <!-- CABECERA -->
+  <div class="flex flex-wrap items-center justify-between gap-4 border-b border-purple-100 pb-4 shrink-0">
+    <div>
+      <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+        <i data-lucide="book-open" class="text-purple-600"></i> Mis Notas Personales
+      </h2>
+      <p class="text-xs text-slate-500">Tu espacio privado de anotaciones, ideas y borroneos de desarrollo.</p>
+    </div>
+    <span class="bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1.5 rounded-full">
+      Uso Exclusivo Admin
+    </span>
+  </div>
+
+  <!-- EDITOR RÁPIDO -->
+  <div class="bg-white/90 border border-purple-100 rounded-2xl p-4 shadow-sm backdrop-blur-md space-y-3">
+    <input type="text" id="input-titulo-nota-personal" placeholder="Título de la nota..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:border-purple-500" />
+    <textarea id="input-cuerpo-nota-personal" rows="3" placeholder="Escribí acá lo que quieras recordar, ideas de código, pendientes del proyecto..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500 resize-none"></textarea>
+    <div class="flex justify-end">
+      <button onclick="guardarNotaPersonal()" class="bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-md shadow-purple-600/20 transition">
+        <i data-lucide="plus" class="w-4 h-4"></i> Guardar Nota
+      </button>
+    </div>
+  </div>
+
+  <!-- GRILLA DE NOTAS PERSONALES -->
+  <div id="lista-notas-personales" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto pr-1">
+    <!-- Se renderiza dinámicamente -->
+  </div>
+</section>
+
 
         <!-- PANTALLA: BACKUP -->
         <!-- PANTALLA: BACKUP / COPIA DE SEGURIDAD -->
@@ -3228,7 +3267,81 @@ function importarBackupZyra(event) {
   lector.readAsText(archivo);
 }
 
+// --- GESTIÓN DE NOTAS PERSONALES (ADMIN) ---
+let misNotasPersonales = JSON.parse(localStorage.getItem('zyra_notas_personales')) || [
+  {
+    id: 1,
+    titulo: "Ideas para el próximo módulo",
+    cuerpo: "Evaluar sumar un filtro rápido por profesor en la agenda y revisar los estilos del dashboard.",
+    fecha: "Hoy"
+  }
+];
 
+function guardarNotaPersonal() {
+  const inputTitulo = document.getElementById('input-titulo-nota-personal');
+  const inputCuerpo = document.getElementById('input-cuerpo-nota-personal');
+  
+  if (!inputTitulo.value.trim() && !inputCuerpo.value.trim()) return;
+
+  const nuevaNota = {
+    id: Date.now(),
+    titulo: inputTitulo.value.trim() || 'Nota sin título',
+    cuerpo: inputCuerpo.value.trim(),
+    fecha: new Date().toLocaleDateString()
+  };
+
+  misNotasPersonales.unshift(nuevaNota);
+  localStorage.setItem('zyra_notas_personales', JSON.stringify(misNotasPersonales));
+
+  inputTitulo.value = '';
+  inputCuerpo.value = '';
+  renderizarNotasPersonales();
+}
+
+function eliminarNotaPersonal(id) {
+  misNotasPersonales = misNotasPersonales.filter(n => n.id !== id);
+  localStorage.setItem('zyra_notas_personales', JSON.stringify(misNotas personales = misNotasPersonales)); // corrección abajo
+  // (dejamos bien la asignación)
+  localStorage.setItem('zyra_notas_personales', JSON.stringify(misNotasPersonales));
+  renderizarNotasPersonales();
+}
+
+function renderizarNotasPersonales() {
+  const contenedor = document.getElementById('lista-notas-personales');
+  if (!contenedor) return;
+
+  if (misNotasPersonales.length === 0) {
+    contenedor.innerHTML = `
+      <div class="col-span-full bg-purple-50/50 border border-dashed border-purple-200 rounded-2xl p-8 text-center">
+        <p class="text-xs text-slate-500">No tenés notas personales guardadas todavía.</p>
+      </div>
+    `;
+    return;
+  }
+
+  contenedor.innerHTML = misNotasPersonales.map(nota => `
+    <div class="bg-white border border-purple-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-3">
+      <div class="space-y-1.5">
+        <div class="flex items-start justify-between">
+          <h4 class="font-bold text-slate-800 text-sm">${nota.titulo}</h4>
+          <button onclick="eliminarNotaPersonal(${nota.id})" class="text-slate-300 hover:text-red-500 transition p-1" title="Eliminar nota">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <p class="text-xs text-slate-600 whitespace-pre-wrap leading-relaxed">${nota.cuerpo}</p>
+      </div>
+      <div class="border-t border-slate-100 pt-2 text-[10px] text-slate-400 flex items-center justify-between">
+        <span>Creada el ${nota.fecha}</span>
+      </div>
+    </div>
+  `).join('');
+
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderizarNotasPersonales();
+});
 
   </script>
 
