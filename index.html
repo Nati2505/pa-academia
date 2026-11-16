@@ -10,22 +10,22 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Chart.js para Estadísticas de Finanzas -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
+  <style>
     body {
-      background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 50%, #fdf4ff 100%);
-      color: #1e293b;
+      background-color: #0f172a;
+      color: #f8fafc;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     .custom-scroll::-webkit-scrollbar {
       width: 6px;
     }
     .custom-scroll::-webkit-scrollbar-thumb {
-      background-color: #cbd5e1;
+      background-color: #334155;
       border-radius: 4px;
     }
   </style>
 </head>
-<body class="h-screen flex flex-col overflow-hidden bg-gradient-to-br from-[#F5F3FF] via-[#EDE9FE] to-[#FAF5FF] text-slate-800">
+<body class="h-screen flex flex-col overflow-hidden">
 
   <!-- ========================================== -->
   <!-- BLOQUE 1: AUTENTICACIÓN / LOGIN Y REGISTRO -->
@@ -146,8 +146,8 @@
   <!-- ========================================== -->
   <div id="app-content" class="flex flex-col h-full hidden bg-slate-50 text-slate-800">
     
-<!-- ENCABEZADO / HEADER -->
-<header class="bg-white/40 backdrop-blur-md border-b border-purple-200/40 px-4 py-3 flex items-center justify-between shrink-0 shadow-[0_4px_20px_rgb(139,92,246,0.03)]">
+   <!-- ENCABEZADO / HEADER -->
+<header class="bg-white/80 backdrop-blur-md border-b border-purple-100 px-4 py-3 flex items-center justify-between shrink-0 shadow-sm">
   <!-- Logo y Título Interactivos (Lleva al Inicio) -->
   <div onclick="navigateTo('inicio')" class="flex items-center gap-3 cursor-pointer group py-1">
     <div class="relative">
@@ -161,102 +161,104 @@
 
   <!-- Botones de la Derecha -->
   <div class="flex items-center gap-3">
-    <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-500 hover:text-purple-600 border border-purple-200/60 rounded-xl bg-white/50 transition">
+    <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-500 hover:text-purple-600 border border-purple-100 rounded-lg">
       <i data-lucide="menu" class="w-5 h-5"></i>
     </button>
-    <button onclick="logoutUser()" class="flex items-center gap-1.5 bg-purple-100/70 hover:bg-purple-200/80 text-purple-700 border border-purple-200/60 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition shadow-sm">
+    <button onclick="logoutUser()" class="flex items-center gap-1.5 bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 px-3 py-1.5 rounded-lg text-xs font-semibold transition shadow-sm">
       <i data-lucide="log-out" class="w-4 h-4"></i>
       <span>Cerrar sesión</span>
     </button>
   </div>
 </header>
-
     <!-- CUERPO PRINCIPAL -->
-    <div class="flex flex-1 overflow-hidden bg-transparent"></div>
+    <div class="flex flex-1 overflow-hidden">
 
       <!-- MENÚ LATERAL (SIDEBAR) -->
-      <aside id="sidebar" class="w-64 bg-white/40 backdrop-blur-md border-r border-purple-200/40 flex flex-col justify-between shrink-0 transition-all duration-300 shadow-[4px_0_20px_rgb(139,92,246,0.03)]">
+      <aside id="sidebar" class="w-64 bg-white/80 backdrop-blur-md border-r border-purple-100 flex flex-col justify-between shrink-0 transition-all duration-300 shadow-sm">
         <div class="p-3 space-y-1 custom-scroll overflow-y-auto">
-          <p class="text-[10px] font-bold text-purple-500 uppercase tracking-wider px-3 mb-2">Menú Principal</p>
+          <p class="text-[10px] font-bold text-purple-400 uppercase tracking-wider px-3 mb-2">Menú Principal</p>
 
-          <button onclick="navigateTo('inicio')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-purple-100/60 hover:text-purple-700 transition active-nav" id="nav-inicio">
+          <button onclick="navigateTo('inicio')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition active-nav" id="nav-inicio">
             <i data-lucide="home" class="w-4 h-4 text-cyan-500"></i>
             <span>Inicio</span>
           </button>
 
-          <button onclick="navigateTo('alumnos')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-purple-100/60 hover:text-purple-700 transition" id="nav-alumnos">
+          <button onclick="navigateTo('alumnos')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-alumnos">
             <i data-lucide="graduation-cap" class="w-4 h-4 text-amber-500"></i>
             <span>Alumnos</span>
           </button>
 
-          <button onclick="navigateTo('inventario')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-purple-100/60 hover:text-purple-700 transition" id="nav-inventario">
+          <button onclick="navigateTo('inventario')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-inventario">
             <i data-lucide="box" class="w-4 h-4 text-emerald-500"></i>
             <span>Inventario</span>
           </button>
 
-          <button onclick="navigateTo('personal')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-purple-100/60 hover:text-purple-700 transition" id="nav-personal">
+          <button onclick="navigateTo('personal')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-personal">
             <i data-lucide="users" class="w-4 h-4 text-indigo-500"></i>
             <span>Personal de la Academia</span>
           </button>
 
           <!-- NUEVO: Botón Cursos -->
-          <button onclick="navigateTo('cursos')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-purple-100/60 hover:text-purple-700 transition" id="nav-cursos">
+          <button onclick="navigateTo('cursos')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-cursos">
             <i data-lucide="book-marked" class="w-4 h-4 text-purple-500"></i>
             <span>Cursos</span>
           </button>
 
           <!-- NUEVO: Botón Alianza Con otras Academias -->
-          <button onclick="navigateTo('alianza')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-purple-100/60 hover:text-purple-700 transition" id="nav-alianza">
+          <button onclick="navigateTo('alianza')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-alianza">
             <i data-lucide="handshake" class="w-4 h-4 text-cyan-500"></i>
             <span>Alianza Academias</span>
           </button>
 
-          <button onclick="navigateTo('finanzas')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-purple-100/60 hover:text-purple-700 transition" id="nav-finanzas">
+                    <button onclick="navigateTo('finanzas')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-finanzas">
             <i data-lucide="dollar-sign" class="w-4 h-4 text-green-600"></i>
             <span>Finanzas</span>
           </button>
 
-          <button onclick="navigateTo('agenda')" id="nav-agenda" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-purple-100/60 hover:text-purple-700 transition">
+          <button onclick="navigateTo('agenda')" id="nav-agenda" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition">
             <i data-lucide="calendar" class="w-4 h-4 text-purple-500"></i> <span>Agenda & Clases</span>
           </button>
 
-          <button onclick="navigateTo('backup')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-purple-100/60 hover:text-purple-700 transition" id="nav-backup">
+          <button onclick="navigateTo('backup')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-backup">
             <i data-lucide="hard-drive" class="w-4 h-4 text-blue-500"></i>
             <span>Backup / Copia Seg.</span>
           </button>
 
-          <button onclick="navigateTo('notas-personales')" id="nav-notas-personales" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-purple-100/60 hover:text-purple-700 transition">
-           <i data-lucide="book-open" class="w-4 h-4 text-purple-500"></i>
-           <span>Mis Notas Personales</span>
-          </button>
+        <button onclick="navigateTo('notas-personales')" id="nav-notas-personales" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition">
+         <i data-lucide="book-open" class="w-4 h-4 text-purple-500"></i>
+        <span>Mis Notas Personales</span>
+        </button>
 
-          <div class="pt-3 mt-3 border-t border-purple-200/40">
-            <!-- BOTÓN: CONTACTO WHATSAPP DIRECTO -->
-            <a href="https://wa.me/+543582406993?text=Hola%20Zyra,%20te%20escribo%20desde%20la%20gestión%20de%20la%20academia..." target="_blank" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-emerald-50/80 hover:text-emerald-700 transition">
-              <i data-lucide="message-circle" class="w-4 h-4 text-emerald-500"></i>
-              <span>Contacto WhatsApp</span>
-            </a>
+          <div class="pt-4 mt-4 border-t border-purple-100">
+           <!-- BOTÓN: CONTACTO WHATSAPP DIRECTO -->
+<a href="https://wa.me/+543582406993?text=Hola%20Zyra,%20te%20escribo%20desde%20la%20gestión%20de%20la%20academia..." target="_blank" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 transition">
+  <i data-lucide="message-circle" class="w-4 h-4 text-emerald-500"></i>
+  <span>Contacto WhatsApp</span>
+</a>
 
-            <button onclick="navigateTo('guia')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-purple-100/60 hover:text-purple-700 transition" id="nav-guia">
+            <button onclick="navigateTo('guia')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-guia">
               <i data-lucide="book-open" class="w-4 h-4 text-slate-400"></i>
               <span>Guía de Usuario</span>
             </button>
           </div>
         </div>
 
-        <div class="p-3 border-t border-purple-200/40 text-[11px] text-slate-400 text-center">
+        <div class="p-3 border-t border-purple-100 text-[11px] text-slate-400 text-center">
           Versión 1.0 — Zyra Gestion
         </div>
+
+
+
       </aside>
 
-
       <!-- ÁREA DE CONTENIDO PRINCIPAL -->
-      <main class="flex-1 overflow-y-auto custom-scroll bg-transparent">
+      <main class="flex-1 overflow-y-auto custom-scroll bg-slate-50 p-6">
 
 
         <!-- DASHBOARD HERO CON MEDALLÓN GLASSMORPHIC INTERACTIVO -->
-<!-- DASHBOARD HERO CON MEDALLÓN GLASSMORPHIC INTERACTIVO -->
-<section id="section-inicio" class="min-h-full flex items-center justify-center p-6 md:p-10 relative overflow-hidden bg-transparent">
+<section id="section-inicio" class="h-full flex items-center justify-center p-6 relative overflow-hidden bg-gradient-to-br from-purple-100/40 via-indigo-50/30 to-purple-50/50">
+  
+  <!-- Contenedor General en Grilla -->
   <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-6 items-center justify-center">
 
     <!-- Columna Izquierda: 2 Tarjetas de Resumen -->
