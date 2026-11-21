@@ -227,6 +227,11 @@
             <i data-lucide="calendar" class="w-4 h-4 text-purple-500"></i> <span>Agenda & Clases</span>
           </button>
 
+          <button onclick="navigateTo('notificaciones')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-purple-100/60 hover:text-purple-700 transition">
+  <i data-lucide="bell" class="w-4 h-4 text-purple-500"></i>
+  <span>Notificaciones</span>
+</button>
+
           <button onclick="navigateTo('backup')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition" id="nav-backup">
             <i data-lucide="hard-drive" class="w-4 h-4 text-blue-500"></i>
             <span>Backup / Copia Seg.</span>
@@ -627,6 +632,145 @@
             </div>
           </div>
         </section>
+
+        <!-- PANTALLA: NOTIFICACIONES -->
+<section id="section-notificaciones" class="hidden h-full flex flex-col space-y-6 overflow-y-auto custom-scroll pb-6">
+  <div class="flex items-center justify-between border-b border-purple-100 pb-4 shrink-0">
+    <div>
+      <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+        <i data-lucide="bell" class="text-purple-600"></i> Panel de Configuración de Notificaciones
+      </h2>
+      <p class="text-xs text-slate-500">Configurá los recordatorios automáticos para alumnos y personal por WhatsApp o correo electrónico.</p>
+    </div>
+    <button type="button" onclick="guardarConfigNotificaciones()" class="bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold px-4 py-2 rounded-xl flex items-center gap-1.5 transition shadow-lg shadow-purple-600/20">
+      <i data-lucide="save" class="w-4 h-4"></i> Guardar Cambios
+    </button>
+  </div>
+
+  <!-- Aviso de confirmación al guardar -->
+  <div id="notif-saved-toast" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium px-4 py-2.5 rounded-xl flex items-center gap-2">
+    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+    <span>Configuración de notificaciones guardada correctamente.</span>
+  </div>
+
+  <div class="space-y-4">
+    <!-- TARJETA 1: RECORDATORIOS DE CUOTAS -->
+    <div class="bg-white/70 backdrop-blur-md border border-purple-200/60 rounded-2xl p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="space-y-2">
+        <label class="flex items-center gap-3 cursor-pointer">
+          <input type="checkbox" id="notif-cuotas-activa" checked class="w-4 h-4 accent-purple-600 rounded">
+          <span class="text-sm font-bold text-slate-800">Recordatorios de Cuotas</span>
+        </label>
+        <p class="text-xs text-slate-500 pl-7">Aviso de Vencimiento de Cuotas (Alumnos)</p>
+        <div class="pl-7 flex flex-wrap items-center gap-4 text-xs text-slate-700 pt-1">
+          <label class="flex items-center gap-1.5">
+            <input type="radio" name="cuotas-momento" value="antes" checked class="accent-purple-600">
+            <span>Enviar</span>
+            <select id="notif-cuotas-dias" class="bg-white border border-purple-200 rounded-lg px-2 py-1 text-xs font-semibold text-purple-700 focus:outline-none">
+              <option value="1">1</option>
+              <option value="3" selected>3</option>
+              <option value="5">5</option>
+              <option value="7">7</option>
+            </select>
+            <span>días antes</span>
+          </label>
+          <label class="flex items-center gap-1.5">
+            <input type="radio" name="cuotas-momento" value="mismo_dia" class="accent-purple-600">
+            <span>Enviar el día del vencimiento</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="flex md:flex-col gap-3 pl-7 md:pl-0 shrink-0 text-xs font-medium text-slate-700">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" id="notif-cuotas-wsp" checked class="w-4 h-4 accent-purple-600 rounded">
+          <span>WhatsApp</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" id="notif-cuotas-mail" class="w-4 h-4 accent-purple-600 rounded">
+          <span>Correo Electrónico</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- TARJETA 2: CLASES PRÓXIMAS -->
+    <div class="bg-white/70 backdrop-blur-md border border-purple-200/60 rounded-2xl p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="space-y-2">
+        <label class="flex items-center gap-3 cursor-pointer">
+          <input type="checkbox" id="notif-clases-activa" checked class="w-4 h-4 accent-purple-600 rounded">
+          <span class="text-sm font-bold text-slate-800">Clases Próximas</span>
+        </label>
+        <p class="text-xs text-slate-500 pl-7">Aviso de Clases (Alumnos)</p>
+        <div class="pl-7 flex flex-wrap items-center gap-4 text-xs text-slate-700 pt-1">
+          <label class="flex items-center gap-1.5">
+            <input type="radio" name="clases-momento" value="horas_antes" checked class="accent-purple-600">
+            <span>Enviar</span>
+            <select id="notif-clases-horas" class="bg-white border border-purple-200 rounded-lg px-2 py-1 text-xs font-semibold text-purple-700 focus:outline-none">
+              <option value="1">1</option>
+              <option value="2" selected>2</option>
+              <option value="4">4</option>
+              <option value="24">24</option>
+            </select>
+            <span>horas antes</span>
+          </label>
+          <label class="flex items-center gap-1.5">
+            <input type="radio" name="clases-momento" value="diario" class="accent-purple-600">
+            <span>Enviar recordatorio diario</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="flex md:flex-col gap-3 pl-7 md:pl-0 shrink-0 text-xs font-medium text-slate-700">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" id="notif-clases-wsp" checked class="w-4 h-4 accent-purple-600 rounded">
+          <span>WhatsApp</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" id="notif-clases-mail" class="w-4 h-4 accent-purple-600 rounded">
+          <span>Correo Electrónico</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- TARJETA 3: REUNIONES & EVENTOS -->
+    <div class="bg-white/70 backdrop-blur-md border border-purple-200/60 rounded-2xl p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="space-y-2">
+        <label class="flex items-center gap-3 cursor-pointer">
+          <input type="checkbox" id="notif-reuniones-activa" checked class="w-4 h-4 accent-purple-600 rounded">
+          <span class="text-sm font-bold text-slate-800">Reuniones & Eventos</span>
+        </label>
+        <p class="text-xs text-slate-500 pl-7">Aviso de Reuniones de Personal (Personal & Docentes)</p>
+        <div class="pl-7 flex flex-wrap items-center gap-4 text-xs text-slate-700 pt-1">
+          <label class="flex items-center gap-1.5">
+            <input type="radio" name="reuniones-momento" value="dias_antes" checked class="accent-purple-600">
+            <span>Enviar</span>
+            <select id="notif-reuniones-dias" class="bg-white border border-purple-200 rounded-lg px-2 py-1 text-xs font-semibold text-purple-700 focus:outline-none">
+              <option value="1" selected>1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+            <span>días antes</span>
+          </label>
+          <label class="flex items-center gap-1.5">
+            <input type="radio" name="reuniones-momento" value="15_min" class="accent-purple-600">
+            <span>Enviar recordatorio 15 min. antes</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="flex md:flex-col gap-3 pl-7 md:pl-0 shrink-0 text-xs font-medium text-slate-700">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" id="notif-reuniones-wsp" checked class="w-4 h-4 accent-purple-600 rounded">
+          <span>WhatsApp</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" id="notif-reuniones-mail" checked class="w-4 h-4 accent-purple-600 rounded">
+          <span>Correo Electrónico</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</section>
 
         <!-- PANTALLA: FINANZAS -->
         <section id="section-finanzas" class="hidden h-full flex flex-col justify-center items-center p-6 bg-slate-50">
@@ -3676,6 +3820,77 @@ ${mensajeUsuario}`;
   document.getElementById('sidebar').classList.add('hidden');
 }
 
+
+function guardarConfigNotificaciones() {
+  const config = {
+    cuotas: {
+      activa: document.getElementById('notif-cuotas-activa').checked,
+      momento: document.querySelector('input[name="cuotas-momento"]:checked')?.value || 'antes',
+      dias: document.getElementById('notif-cuotas-dias').value,
+      wsp: document.getElementById('notif-cuotas-wsp').checked,
+      mail: document.getElementById('notif-cuotas-mail').checked
+    },
+    clases: {
+      activa: document.getElementById('notif-clases-activa').checked,
+      momento: document.querySelector('input[name="clases-momento"]:checked')?.value || 'horas_antes',
+      horas: document.getElementById('notif-clases-horas').value,
+      wsp: document.getElementById('notif-clases-wsp').checked,
+      mail: document.getElementById('notif-clases-mail').checked
+    },
+    reuniones: {
+      activa: document.getElementById('notif-reuniones-activa').checked,
+      momento: document.querySelector('input[name="reuniones-momento"]:checked')?.value || 'dias_antes',
+      dias: document.getElementById('notif-reuniones-dias').value,
+      wsp: document.getElementById('notif-reuniones-wsp').checked,
+      mail: document.getElementById('notif-reuniones-mail').checked
+    }
+  };
+
+  localStorage.setItem('zyra_notif_config', JSON.stringify(config));
+
+  const toast = document.getElementById('notif-saved-toast');
+  if (toast) {
+    toast.classList.remove('hidden');
+    if (window.lucide) lucide.createIcons();
+    setTimeout(() => toast.classList.add('hidden'), 3000);
+  }
+}
+
+function cargarConfigNotificaciones() {
+  const saved = localStorage.getItem('zyra_notif_config');
+  if (!saved) return;
+  try {
+    const cfg = JSON.parse(saved);
+    if (cfg.cuotas) {
+      document.getElementById('notif-cuotas-activa').checked = cfg.cuotas.activa;
+      document.getElementById('notif-cuotas-dias').value = cfg.cuotas.dias;
+      document.getElementById('notif-cuotas-wsp').checked = cfg.cuotas.wsp;
+      document.getElementById('notif-cuotas-mail').checked = cfg.cuotas.mail;
+      const rCuota = document.querySelector(`input[name="cuotas-momento"][value="${cfg.cuotas.momento}"]`);
+      if (rCuota) rCuota.checked = true;
+    }
+    if (cfg.clases) {
+      document.getElementById('notif-clases-activa').checked = cfg.clases.activa;
+      document.getElementById('notif-clases-horas').value = cfg.clases.horas;
+      document.getElementById('notif-clases-wsp').checked = cfg.clases.wsp;
+      document.getElementById('notif-clases-mail').checked = cfg.clases.mail;
+      const rClase = document.querySelector(`input[name="clases-momento"][value="${cfg.clases.momento}"]`);
+      if (rClase) rClase.checked = true;
+    }
+    if (cfg.reuniones) {
+      document.getElementById('notif-reuniones-activa').checked = cfg.reuniones.activa;
+      document.getElementById('notif-reuniones-dias').value = cfg.reuniones.dias;
+      document.getElementById('notif-reuniones-wsp').checked = cfg.reuniones.wsp;
+      document.getElementById('notif-reuniones-mail').checked = cfg.reuniones.mail;
+      const rReu = document.querySelector(`input[name="reuniones-momento"][value="${cfg.reuniones.momento}"]`);
+      if (rReu) rReu.checked = true;
+    }
+  } catch (e) {
+    console.error('Error al cargar config de notificaciones:', e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', cargarConfigNotificaciones);
 
 </script>
 
