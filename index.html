@@ -693,6 +693,62 @@
       </div>
     </div>
 
+    <!-- RECORDATORIOS PERSONALIZADOS (NO PREDETERMINADOS) -->
+<div class="bg-white/70 backdrop-blur-md border border-purple-200/60 rounded-2xl p-5 shadow-sm space-y-4">
+  <div class="flex flex-wrap items-center justify-between gap-2 border-b border-purple-100 pb-3">
+    <div>
+      <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+        <i data-lucide="plus-circle" class="w-4 h-4 text-purple-600"></i>
+        Recordatorios Personalizados
+      </h3>
+      <p class="text-xs text-slate-500">Creá avisos puntuales o recordatorios fuera de cuotas, clases y reuniones.</p>
+    </div>
+  </div>
+
+  <!-- Mini formulario para crear recordatorio -->
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end bg-purple-50/50 border border-purple-100 rounded-xl p-3.5">
+    <div class="md:col-span-4 space-y-1">
+      <label for="custom-notif-titulo" class="block text-[11px] font-semibold text-slate-700">Título del recordatorio</label>
+      <input type="text" id="custom-notif-titulo" placeholder="Ej: Retiro de credenciales" class="w-full bg-white border border-purple-200 rounded-lg px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-purple-500">
+    </div>
+
+    <div class="md:col-span-3 space-y-1">
+      <label for="custom-notif-destino" class="block text-[11px] font-semibold text-slate-700">Destinatarios</label>
+      <select id="custom-notif-destino" class="w-full bg-white border border-purple-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-purple-500">
+        <option value="Alumnos">Alumnos</option>
+        <option value="Personal & Docentes">Personal & Docentes</option>
+        <option value="Alumnos y Personal">Alumnos y Personal</option>
+      </select>
+    </div>
+
+    <div class="md:col-span-2 space-y-1">
+      <label for="custom-notif-fecha" class="block text-[11px] font-semibold text-slate-700">Fecha aviso</label>
+      <input type="date" id="custom-notif-fecha" class="w-full bg-white border border-purple-200 rounded-lg px-2 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-purple-500">
+    </div>
+
+    <div class="md:col-span-3 flex items-center justify-between gap-2">
+      <div class="flex flex-col gap-1 text-[11px] font-medium text-slate-700">
+        <label class="flex items-center gap-1.5 cursor-pointer">
+          <input type="checkbox" id="custom-notif-wsp" checked class="w-3.5 h-3.5 accent-purple-600 rounded">
+          <span>WhatsApp</span>
+        </label>
+        <label class="flex items-center gap-1.5 cursor-pointer">
+          <input type="checkbox" id="custom-notif-mail" class="w-3.5 h-3.5 accent-purple-600 rounded">
+          <span>Correo</span>
+        </label>
+      </div>
+      <button type="button" onclick="agregarRecordatorioPersonalizado()" class="bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold px-3 py-2 rounded-xl transition shrink-0 shadow-sm">
+        Agregar
+      </button>
+    </div>
+  </div>
+
+  <!-- Listado de recordatorios personalizados -->
+  <div id="lista-recordatorios-personalizados" class="space-y-2">
+    <p id="sin-custom-notifs" class="text-xs text-slate-400 text-center py-2">Todavía no creaste recordatorios personalizados.</p>
+  </div>
+</div>
+
     <!-- TARJETA 2: CLASES PRÓXIMAS -->
     <div class="bg-white/70 backdrop-blur-md border border-purple-200/60 rounded-2xl p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div class="space-y-2">
@@ -3885,6 +3941,167 @@ function cargarConfigNotificaciones() {
       const rReu = document.querySelector(`input[name="reuniones-momento"][value="${cfg.reuniones.momento}"]`);
       if (rReu) rReu.checked = true;
     }
+  } catch (e) {
+    console.error('Error al cargar config de notificaciones:', e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', cargarConfigNotificaciones);
+
+let recordatoriosPersonalizados = [];
+
+function renderizarRecordatoriosPersonalizados() {
+  const contenedor = document.getElementById('lista-recordatorios-personalizados');
+  if (!contenedor) return;
+
+  if (!recordatoriosPersonalizados.length) {
+    contenedor.innerHTML = '<p class="text-xs text-slate-400 text-center py-2">Todavía no creaste recordatorios personalizados.</p>';
+    return;
+  }
+
+  contenedor.innerHTML = recordatoriosPersonalizados.map((item) => {
+    const canales = [
+      item.wsp ? 'WhatsApp' : null,
+      item.mail ? 'Correo Electrónico' : null
+    ].filter(Boolean).join(' + ') || 'Sin canal';
+
+    return `
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-white border border-purple-100 ${item.activa ? '' : 'opacity-60'}">
+        <div class="space-y-0.5">
+          <div class="flex items-center gap-2">
+            <input type="checkbox" ${item.activa ? 'checked' : ''} onchange="toggleRecordatorioPersonalizado('${item.id}')" class="w-4 h-4 accent-purple-600 rounded cursor-pointer">
+            <span class="text-xs font-bold text-slate-800">${item.titulo}</span>
+          </div>
+          <p class="text-[11px] text-slate-500 pl-6">
+            Destinatarios: <span class="font-medium text-slate-700">${item.destino}</span>
+            ${item.fecha ? ` · Fecha: <span class="font-medium text-purple-700">${item.fecha}</span>` : ''}
+            · Canales: <span class="font-medium text-slate-700">${canales}</span>
+          </p>
+        </div>
+        <button type="button" onclick="eliminarRecordatorioPersonalizado('${item.id}')" class="self-end sm:self-center text-[11px] font-medium text-rose-600 hover:bg-rose-50 px-2.5 py-1 rounded-lg transition">
+          Eliminar
+        </button>
+      </div>
+    `;
+  }).join('');
+
+  if (window.lucide) lucide.createIcons();
+}
+
+function agregarRecordatorioPersonalizado() {
+  const inputTitulo = document.getElementById('custom-notif-titulo');
+  const destino = document.getElementById('custom-notif-destino').value;
+  const fecha = document.getElementById('custom-notif-fecha').value;
+  const wsp = document.getElementById('custom-notif-wsp').checked;
+  const mail = document.getElementById('custom-notif-mail').checked;
+
+  const titulo = inputTitulo.value.trim();
+  if (!titulo) {
+    inputTitulo.focus();
+    return;
+  }
+
+  recordatoriosPersonalizados.push({
+    id: String(Date.now()),
+    titulo,
+    destino,
+    fecha,
+    wsp,
+    mail,
+    activa: true
+  });
+
+  inputTitulo.value = '';
+  document.getElementById('custom-notif-fecha').value = '';
+
+  renderizarRecordatoriosPersonalizados();
+  guardarConfigNotificaciones();
+}
+
+function toggleRecordatorioPersonalizado(id) {
+  recordatoriosPersonalizados = recordatoriosPersonalizados.map((item) =>
+    item.id === id ? { ...item, activa: !item.activa } : item
+  );
+  renderizarRecordatoriosPersonalizados();
+  guardarConfigNotificaciones();
+}
+
+function eliminarRecordatorioPersonalizado(id) {
+  recordatoriosPersonalizados = recordatoriosPersonalizados.filter((item) => item.id !== id);
+  renderizarRecordatoriosPersonalizados();
+  guardarConfigNotificaciones();
+}
+
+function guardarConfigNotificaciones() {
+  const config = {
+    cuotas: {
+      activa: document.getElementById('notif-cuotas-activa').checked,
+      momento: document.querySelector('input[name="cuotas-momento"]:checked')?.value || 'antes',
+      dias: document.getElementById('notif-cuotas-dias').value,
+      wsp: document.getElementById('notif-cuotas-wsp').checked,
+      mail: document.getElementById('notif-cuotas-mail').checked
+    },
+    clases: {
+      activa: document.getElementById('notif-clases-activa').checked,
+      momento: document.querySelector('input[name="clases-momento"]:checked')?.value || 'horas_antes',
+      horas: document.getElementById('notif-clases-horas').value,
+      wsp: document.getElementById('notif-clases-wsp').checked,
+      mail: document.getElementById('notif-clases-mail').checked
+    },
+    reuniones: {
+      activa: document.getElementById('notif-reuniones-activa').checked,
+      momento: document.querySelector('input[name="reuniones-momento"]:checked')?.value || 'dias_antes',
+      dias: document.getElementById('notif-reuniones-dias').value,
+      wsp: document.getElementById('notif-reuniones-wsp').checked,
+      mail: document.getElementById('notif-reuniones-mail').checked
+    },
+    personalizados: recordatoriosPersonalizados
+  };
+
+  localStorage.setItem('zyra_notif_config', JSON.stringify(config));
+
+  const toast = document.getElementById('notif-saved-toast');
+  if (toast) {
+    toast.classList.remove('hidden');
+    if (window.lucide) lucide.createIcons();
+    setTimeout(() => toast.classList.add('hidden'), 3000);
+  }
+}
+
+function cargarConfigNotificaciones() {
+  const saved = localStorage.getItem('zyra_notif_config');
+  if (!saved) {
+    renderizarRecordatoriosPersonalizados();
+    return;
+  }
+  try {
+    const cfg = JSON.parse(saved);
+    if (cfg.cuotas) {
+      document.getElementById('notif-cuotas-activa').checked = cfg.cuotas.activa;
+      document.getElementById('notif-cuotas-dias').value = cfg.cuotas.dias;
+      document.getElementById('notif-cuotas-wsp').checked = cfg.cuotas.wsp;
+      document.getElementById('notif-cuotas-mail').checked = cfg.cuotas.mail;
+      const rCuota = document.querySelector(`input[name="cuotas-momento"][value="${cfg.cuotas.momento}"]`);
+      if (rCuota) rCuota.checked = true;
+    }
+    if (cfg.clases) {
+      document.getElementById('notif-clases-activa').checked = cfg.clases.activa;
+      document.getElementById('notif-clases-horas').value = cfg.clases.horas;
+      document.getElementById('notif-clases-wsp').checked = cfg.clases.wsp;
+      document.getElementById('notif-clases-mail').checked = cfg.clases.mail;
+      const rClase = document.querySelector(`input[name="clases-momento"][value="${cfg.clases.momento}"]`);
+      if (rClase) rClase.checked = true;
+    }
+    if (cfg.reuniones) {
+      document.getElementById('notif-reuniones-activa').checked = cfg.reuniones.activa;
+      document.getElementById('notif-reuniones-dias').value = cfg.reuniones.dias;
+      document.getElementById('notif-reuniones-wsp').checked = cfg.reuniones.wsp;
+      document.getElementById('notif-reuniones-mail').checked = cfg.reuniones.mail;
+      const rReu = document.querySelector(`input[name="reuniones-momento"][value="${cfg.reuniones.momento}"]`);
+      if (rReu) rReu.checked = true;
+    }
+    recordatoriosPersonalizados = Array.isArray(cfg.personalizados) ? cfg.personalizados : [];
+    renderizarRecordatoriosPersonalizados();
   } catch (e) {
     console.error('Error al cargar config de notificaciones:', e);
   }
