@@ -2229,11 +2229,12 @@ const CURSOS_DEFAULT = [
 let listaCursos = JSON.parse(localStorage.getItem('zyra_cursos')) || CURSOS_DEFAULT;
 
 if (typeof alumnosEjemplo === 'undefined') {
-  var alumnosEjemplo = [];
+  globalThis.alumnosEjemplo = [];
 }
 const legajosGuardados = JSON.parse(localStorage.getItem('zyra_legajos_alumnos'));
 if (Array.isArray(legajosGuardados) && legajosGuardados.length > 0) {
-  alumnosEjemplo = legajosGuardados;
+  alumnosEjemplo.length = 0;
+  alumnosEjemplo.push(...legajosGuardados);
 }
 var listaLegajosAlumnos = alumnosEjemplo;
 
