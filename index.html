@@ -787,8 +787,9 @@
 </section>
 
 <!-- MODAL: NUEVO RECORDATORIO PERSONALIZADO -->
+<!-- MODAL: NUEVO RECORDATORIO PERSONALIZADO -->
 <div id="modalNuevoRecordatorio" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-  <div class="bg-white/95 backdrop-blur-md border border-purple-200 rounded-2xl w-full max-w-md p-5 shadow-2xl space-y-4">
+  <div class="bg-white/95 backdrop-blur-md border border-purple-200 rounded-2xl w-full max-w-lg p-5 shadow-2xl space-y-4">
     <div class="flex items-center justify-between border-b border-purple-100 pb-3">
       <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
         <i data-lucide="bell-plus" class="w-4 h-4 text-purple-600"></i>
@@ -800,27 +801,60 @@
     </div>
 
     <div class="space-y-3 text-xs">
+      <!-- Título -->
       <div class="space-y-1">
         <label for="custom-notif-titulo" class="block font-semibold text-slate-700">Título del recordatorio</label>
         <input type="text" id="custom-notif-titulo" placeholder="Ej: Retiro de credenciales / Muestra anual" class="w-full bg-slate-50 border border-purple-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:border-purple-500">
       </div>
 
-      <div class="grid grid-cols-2 gap-3">
+      <!-- Curso y Destinatarios -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div class="space-y-1">
-          <label for="custom-notif-destino" class="block font-semibold text-slate-700">Destinatarios</label>
-          <select id="custom-notif-destino" class="w-full bg-slate-50 border border-purple-200 rounded-xl px-2.5 py-2 text-slate-700 focus:outline-none focus:border-purple-500">
-            <option value="Alumnos">Alumnos</option>
-            <option value="Personal & Docentes">Personal & Docentes</option>
-            <option value="Alumnos y Personal">Alumnos y Personal</option>
+          <label for="custom-notif-curso" class="block font-semibold text-slate-700">Curso</label>
+          <select id="custom-notif-curso" class="w-full bg-slate-50 border border-purple-200 rounded-xl px-2.5 py-2 text-slate-700 focus:outline-none focus:border-purple-500">
+            <option value="General / Todos los cursos">General / Todos los cursos</option>
           </select>
         </div>
 
         <div class="space-y-1">
-          <label for="custom-notif-fecha" class="block font-semibold text-slate-700">Fecha del aviso</label>
-          <input type="date" id="custom-notif-fecha" class="w-full bg-slate-50 border border-purple-200 rounded-xl px-2.5 py-2 text-slate-700 focus:outline-none focus:border-purple-500">
+          <label for="custom-notif-destino" class="block font-semibold text-slate-700">Destinatarios</label>
+          <select id="custom-notif-destino" onchange="toggleCamposOtrosNotif()" class="w-full bg-slate-50 border border-purple-200 rounded-xl px-2.5 py-2 text-slate-700 focus:outline-none focus:border-purple-500">
+            <option value="Alumnos">Alumnos</option>
+            <option value="Tutores / Responsables">Tutores / Responsables</option>
+            <option value="Docentes">Docentes</option>
+            <option value="CEO / Dirección">CEO / Dirección</option>
+            <option value="Todos">Todos</option>
+            <option value="Otros">Otros</option>
+          </select>
         </div>
       </div>
 
+      <!-- Campos extra solo cuando Destinatarios = "Otros" -->
+      <div id="custom-notif-otros-box" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 rounded-xl bg-purple-50/70 border border-purple-200/70">
+        <div class="space-y-1">
+          <label for="custom-notif-otro-tel" class="block font-semibold text-slate-700">Teléfono / WhatsApp</label>
+          <input type="tel" id="custom-notif-otro-tel" placeholder="Ej: +54 9 358..." class="w-full bg-white border border-purple-200 rounded-lg px-2.5 py-1.5 text-slate-800 focus:outline-none focus:border-purple-500">
+        </div>
+        <div class="space-y-1">
+          <label for="custom-notif-otro-mail" class="block font-semibold text-slate-700">Correo Electrónico</label>
+          <input type="email" id="custom-notif-otro-mail" placeholder="Ej: contacto@mail.com" class="w-full bg-white border border-purple-200 rounded-lg px-2.5 py-1.5 text-slate-800 focus:outline-none focus:border-purple-500">
+        </div>
+      </div>
+
+      <!-- Fecha y Hora -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="space-y-1">
+          <label for="custom-notif-fecha" class="block font-semibold text-slate-700">Fecha del aviso</label>
+          <input type="date" id="custom-notif-fecha" class="w-full bg-slate-50 border border-purple-200 rounded-xl px-2.5 py-2 text-slate-700 focus:outline-none focus:border-purple-500">
+        </div>
+
+        <div class="space-y-1">
+          <label for="custom-notif-hora" class="block font-semibold text-slate-700">Hora del aviso</label>
+          <input type="time" id="custom-notif-hora" class="w-full bg-slate-50 border border-purple-200 rounded-xl px-2.5 py-2 text-slate-700 focus:outline-none focus:border-purple-500">
+        </div>
+      </div>
+
+      <!-- Canales -->
       <div class="space-y-1.5 pt-1">
         <span class="block font-semibold text-slate-700">Canales de envío</span>
         <div class="flex items-center gap-5">
@@ -846,6 +880,7 @@
     </div>
   </div>
 </div>
+
 
         <!-- PANTALLA: FINANZAS -->
         <section id="section-finanzas" class="hidden h-full flex flex-col justify-center items-center p-6 bg-slate-50">
@@ -3969,7 +4004,56 @@ document.addEventListener('DOMContentLoaded', cargarConfigNotificaciones);
 
 let recordatoriosPersonalizados = [];
 
+function poblarCursosEnModalNotif() {
+  const selectCurso = document.getElementById('custom-notif-curso');
+  if (!selectCurso) return;
+
+  selectCurso.innerHTML = '<option value="General / Todos los cursos">General / Todos los cursos</option>';
+
+  // Busca cursos en variable global o en localStorage
+  let listaCursos = [];
+  if (typeof cursos !== 'undefined' && Array.isArray(cursos)) {
+    listaCursos = cursos;
+  } else {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.toLowerCase().includes('curso')) {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(key));
+          if (Array.isArray(parsed)) {
+            listaCursos = parsed;
+            break;
+          }
+        } catch (e) {}
+      }
+    }
+  }
+
+  listaCursos.forEach((c) => {
+    const nombre = typeof c === 'string' ? c : (c.nombre || c.titulo || c.curso);
+    if (nombre) {
+      const opt = document.createElement('option');
+      opt.value = nombre;
+      opt.textContent = nombre;
+      selectCurso.appendChild(opt);
+    }
+  });
+}
+
+function toggleCamposOtrosNotif() {
+  const destino = document.getElementById('custom-notif-destino')?.value;
+  const boxOtros = document.getElementById('custom-notif-otros-box');
+  if (!boxOtros) return;
+  if (destino === 'Otros') {
+    boxOtros.classList.remove('hidden');
+  } else {
+    boxOtros.classList.add('hidden');
+  }
+}
+
 function abrirModalNuevoRecordatorio() {
+  poblarCursosEnModalNotif();
+  toggleCamposOtrosNotif();
   const modal = document.getElementById('modalNuevoRecordatorio');
   if (modal) {
     modal.classList.remove('hidden');
@@ -3977,11 +4061,6 @@ function abrirModalNuevoRecordatorio() {
     const input = document.getElementById('custom-notif-titulo');
     if (input) input.focus();
   }
-}
-
-function cerrarModalNuevoRecordatorio() {
-  const modal = document.getElementById('modalNuevoRecordatorio');
-  if (modal) modal.classList.add('hidden');
 }
 
 function renderizarRecordatoriosPersonalizados() {
@@ -3999,6 +4078,10 @@ function renderizarRecordatoriosPersonalizados() {
       item.mail ? 'Correo Electrónico' : null
     ].filter(Boolean).join(' + ') || 'Sin canal';
 
+    const contactoExtra = item.destino === 'Otros'
+      ? [item.otroTel, item.otroMail].filter(Boolean).join(' / ')
+      : '';
+
     return `
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-white border border-purple-100 ${item.activa ? '' : 'opacity-60'}">
         <div class="space-y-0.5">
@@ -4007,8 +4090,11 @@ function renderizarRecordatoriosPersonalizados() {
             <span class="text-xs font-bold text-slate-800">${item.titulo}</span>
           </div>
           <p class="text-[11px] text-slate-500 pl-6">
-            Destinatarios: <span class="font-medium text-slate-700">${item.destino}</span>
-            ${item.fecha ? ` · Fecha: <span class="font-medium text-purple-700">${item.fecha}</span>` : ''}
+            Curso: <span class="font-medium text-purple-700">${item.curso || 'General / Todos los cursos'}</span>
+            · Destinatarios: <span class="font-medium text-slate-700">${item.destino}</span>
+            ${contactoExtra ? ` (<span class="text-slate-600">${contactoExtra}</span>)` : ''}
+            ${item.fecha ? ` · Fecha: <span class="font-medium text-slate-700">${item.fecha}</span>` : ''}
+            ${item.hora ? ` a las <span class="font-medium text-slate-700">${item.hora} hs</span>` : ''}
             · Canales: <span class="font-medium text-slate-700">${canales}</span>
           </p>
         </div>
@@ -4024,8 +4110,12 @@ function renderizarRecordatoriosPersonalizados() {
 
 function agregarRecordatorioPersonalizado() {
   const inputTitulo = document.getElementById('custom-notif-titulo');
+  const curso = document.getElementById('custom-notif-curso').value;
   const destino = document.getElementById('custom-notif-destino').value;
   const fecha = document.getElementById('custom-notif-fecha').value;
+  const hora = document.getElementById('custom-notif-hora').value;
+  const otroTel = document.getElementById('custom-notif-otro-tel').value.trim();
+  const otroMail = document.getElementById('custom-notif-otro-mail').value.trim();
   const wsp = document.getElementById('custom-notif-wsp').checked;
   const mail = document.getElementById('custom-notif-mail').checked;
 
@@ -4035,11 +4125,21 @@ function agregarRecordatorioPersonalizado() {
     return;
   }
 
+  if (destino === 'Otros' && !otroTel && !otroMail) {
+    alert('Si elegís "Otros", ingresá al menos un teléfono o un correo electrónico.');
+    document.getElementById('custom-notif-otro-tel').focus();
+    return;
+  }
+
   recordatoriosPersonalizados.push({
     id: String(Date.now()),
     titulo,
+    curso,
     destino,
+    otroTel,
+    otroMail,
     fecha,
+    hora,
     wsp,
     mail,
     activa: true
@@ -4047,11 +4147,23 @@ function agregarRecordatorioPersonalizado() {
 
   inputTitulo.value = '';
   document.getElementById('custom-notif-fecha').value = '';
+  document.getElementById('custom-notif-hora').value = '';
+  document.getElementById('custom-notif-otro-tel').value = '';
+  document.getElementById('custom-notif-otro-mail').value = '';
 
   renderizarRecordatoriosPersonalizados();
   guardarConfigNotificaciones(true);
   cerrarModalNuevoRecordatorio();
 }
+
+function cerrarModalNuevoRecordatorio() {
+  const modal = document.getElementById('modalNuevoRecordatorio');
+  if (modal) modal.classList.add('hidden');
+}
+
+
+
+
 
 function toggleRecordatorioPersonalizado(id) {
   recordatoriosPersonalizados = recordatoriosPersonalizados.map((item) =>
